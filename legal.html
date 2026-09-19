@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#00B4FF">
+  <script>(function(){try{var t=localStorage.getItem('dp_theme')||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <title>Informations Légales — DigitalPay Haiti</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/site.webmanifest">
+
+  <style>
+    :root {
+      --bg-page: #F5F7FB; --bg-card: #FFFFFF; --bg-subtle: #F0F4F9; --bg-hover: #F8FAFC;
+      --bg-glass: rgba(245, 247, 251, 0.72);
+      --border-subtle: #EDF1F7; --border-default: #E1E8F0; --border-strong: #C7D2E0;
+      --text-primary: #0A1633; --text-secondary: #4A5568; --text-tertiary: #8B94A7; --text-quaternary: #B5BDCA;
+      --blue-25: #F0F9FF; --blue-50: #E0F2FE; --blue-100: #BAE6FD; --blue-200: #7DD3FC;
+      --blue-400: #38BDF8; --blue-500: #00B4FF; --blue-600: #0055FF; --blue-700: #003BCC;
+      --blue-gradient: linear-gradient(135deg, #00B4FF 0%, #0055FF 100%);
+      --success: #059669; --success-bg: #ECFDF5;
+      --danger: #DC2626; --danger-bg: #FEF2F2;
+      --r-xs: 6px; --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-2xl: 28px; --r-3xl: 36px; --r-full: 9999px;
+      --shadow-2xs: 0 1px 1px rgba(10, 22, 51, 0.03);
+      --shadow-xs: 0 1px 2px rgba(10, 22, 51, 0.04), 0 1px 1px rgba(10, 22, 51, 0.02);
+      --shadow-sm: 0 2px 4px rgba(10, 22, 51, 0.04), 0 1px 2px rgba(10, 22, 51, 0.03);
+      --shadow-md: 0 4px 8px rgba(10, 22, 51, 0.05), 0 2px 4px rgba(10, 22, 51, 0.03);
+      --shadow-lg: 0 8px 16px rgba(10, 22, 51, 0.06), 0 4px 8px rgba(10, 22, 51, 0.04);
+      --shadow-blue: 0 4px 12px rgba(0, 85, 255, 0.22), 0 10px 28px rgba(0, 85, 255, 0.14);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { background: var(--bg-page); color: var(--text-primary); font-family: var(--font); font-size: 14px; line-height: 1.5; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; opacity: 0; transition: opacity 0.4s ease; padding-bottom: 90px; }
+    body.ready { opacity: 1; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+
+    .app-shell { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg-page); position: relative; display: flex; flex-direction: column; border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
+
+    .site-header { position: sticky; top: 0; z-index: 40; background: var(--bg-glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-bottom: 1px solid transparent; padding: 14px 18px; transition: all 0.3s var(--ease-out); }
+    .site-header.scrolled { border-bottom-color: var(--border-subtle); padding: 10px 18px; box-shadow: var(--shadow-xs); }
+    .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; }
+    .brand-logo { height: 32px; width: auto; max-width: 130px; object-fit: contain; cursor: pointer; display: block; transition: all 0.3s var(--ease-out); }
+    .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .icon-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border-default); display: flex; align-items: center; justify-content: center; color: var(--text-primary); cursor: pointer; position: relative; text-decoration: none; transition: all 0.2s var(--ease-out); box-shadow: var(--shadow-2xs); flex-shrink: 0; }
+    .icon-btn:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+    .icon-btn:active { transform: scale(0.9); }
+    .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+    .cart-badge { position: absolute; top: -3px; right: -3px; background: var(--blue-gradient); color: #FFFFFF; font-size: 10px; font-weight: 800; min-width: 19px; height: 19px; padding: 0 5px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px var(--bg-page); line-height: 1; }
+    .cart-badge.visible { display: flex; }
+
+    .legal-main { padding: 22px 18px 32px; flex: 1; }
+
+    .legal-hero { background: var(--blue-gradient); border-radius: var(--r-2xl); padding: 26px 22px; color: #FFFFFF; margin-bottom: 22px; position: relative; overflow: hidden; box-shadow: var(--shadow-blue); }
+    .legal-hero::after { content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
+    .legal-hero-icon { width: 52px; height: 52px; border-radius: 16px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; position: relative; z-index: 1; backdrop-filter: blur(8px); }
+    .legal-hero-icon svg { width: 26px; height: 26px; stroke: #FFFFFF; stroke-width: 2; fill: none; }
+    .legal-hero-title { font-size: 22px; font-weight: 900; letter-spacing: -0.6px; line-height: 1.15; margin-bottom: 8px; position: relative; z-index: 1; }
+    .legal-hero-sub { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.55; position: relative; z-index: 1; }
+
+    .legal-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow-xs); }
+    .legal-card-title { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle); }
+    .legal-card-title svg { width: 18px; height: 18px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; flex-shrink: 0; }
+    .legal-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 12px; }
+    .legal-card p:last-child { margin-bottom: 0; }
+    .legal-card h3 { font-size: 13.5px; font-weight: 800; color: var(--text-primary); margin-top: 16px; margin-bottom: 8px; letter-spacing: -0.2px; }
+    .legal-card h3:first-child { margin-top: 0; }
+    .legal-card ul { list-style: none; padding: 0; margin-bottom: 12px; }
+    .legal-card ul li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0 6px 22px; position: relative; }
+    .legal-card ul li::before { content: ''; position: absolute; left: 6px; top: 13px; width: 6px; height: 6px; border-radius: 50%; background: var(--blue-600); }
+    .legal-card strong { color: var(--text-primary); font-weight: 800; }
+    .legal-card a { color: var(--blue-600); font-weight: 700; text-decoration: none; }
+    .legal-card a:active { opacity: 0.6; }
+
+    .legal-meta { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-subtle); }
+    .legal-meta svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+
+    .contact-cta { background: linear-gradient(135deg, #0A1633 0%, #1E293B 100%); border-radius: var(--r-xl); padding: 22px 20px; margin-top: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
+    .contact-cta::after { content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%); pointer-events: none; }
+    .contact-cta-title { font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.3px; position: relative; z-index: 1; }
+    .contact-cta-sub { font-size: 12.5px; color: #94A3B8; line-height: 1.5; position: relative; z-index: 1; }
+    .contact-cta-btn { height: 48px; background: #10B981; color: #FFFFFF; border-radius: var(--r-md); font-size: 13.5px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 18px rgba(16,185,129,0.4); position: relative; z-index: 1; transition: all 0.2s var(--ease-out); }
+    .contact-cta-btn:active { transform: scale(0.98); }
+    .contact-cta-btn svg { width: 18px; height: 18px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+
+    .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transform: scale(0); animation: ripple-anim 0.6s var(--ease-out); pointer-events: none; }
+    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+    .site-footer { background: var(--bg-card); border-top: 1px solid var(--border-subtle); padding: 18px; }
+    .footer-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--text-tertiary); gap: 12px; }
+    .footer-status { display: flex; align-items: center; gap: 6px; color: var(--success); font-weight: 700; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); } 50% { box-shadow: 0 0 0 6px rgba(5, 150, 105, 0.05); } }
+
+    #toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 400; width: calc(100% - 32px); max-width: 400px; pointer-events: none; }
+    .toast { background: var(--text-primary); color: #FFFFFF; padding: 14px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-lg); transform: translateY(-20px); opacity: 0; transition: all 0.35s var(--ease-spring); overflow: hidden; position: relative; }
+    .toast::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; background: var(--blue-600); width: 100%; transform-origin: left; animation: toast-progress 2.6s linear forwards; }
+    @keyframes toast-progress { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.info { background: #1E3A8A; }
+    .toast.info::after { background: #93C5FD; }
+    .toast-icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+    .toast-icon svg { width: 18px; height: 18px; stroke: #93C5FD; stroke-width: 2.5; fill: none; }
+    .toast-msg { flex: 1; line-height: 1.35; }
+
+    .sidebar-overlay { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.55); backdrop-filter: blur(8px); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); }
+    .sidebar-overlay.active { opacity: 1; visibility: visible; }
+    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(85vw, 360px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
+    .sidebar-overlay.active .sidebar-drawer { transform: translateX(0); }
+    .sidebar-content { padding: 26px 22px 22px; display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
+    .sidebar-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle); }
+    .sidebar-brand { display: flex; align-items: center; gap: 12px; }
+    .sidebar-logo-wrap { width: 46px; height: 46px; border-radius: var(--r-md); background: var(--bg-subtle); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .sidebar-brand-name { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; line-height: 1.1; }
+    .sidebar-brand-sub { font-size: 12px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.3px; }
+    .sidebar-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
+    .sidebar-close svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .sidebar-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); margin: 22px 0 10px; }
+    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .lang-pill { background: var(--bg-subtle); border: 1px solid transparent; padding: 10px 12px; border-radius: var(--r-sm); display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text-primary); cursor: pointer; font-family: inherit; transition: all 0.18s ease; }
+    .lang-pill.active { background: var(--blue-50); border-color: var(--blue-600); color: var(--blue-600); font-weight: 800; }
+    .lang-pill .flag { font-size: 15px; line-height: 1; }
+    .sidebar-nav { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-nav-link { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: var(--r-md); color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.18s ease; cursor: pointer; font-family: inherit; background: none; border: none; width: 100%; text-align: left; }
+    .sidebar-nav-link:hover { background: var(--bg-hover); }
+    .sidebar-nav-link.active { background: var(--bg-subtle); color: var(--blue-600); font-weight: 700; }
+    .sidebar-nav-link svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; flex-shrink: 0; }
+    .sidebar-nav-link.active svg { stroke: var(--blue-600); }
+    .sidebar-auth { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px; }
+    .auth-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 46px; border-radius: var(--r-md); font-size: 13.5px; font-weight: 700; text-decoration: none; cursor: pointer; font-family: inherit; border: none; transition: all 0.18s ease; }
+    .auth-btn-primary { background: var(--blue-gradient); color: #FFFFFF; box-shadow: var(--shadow-blue); }
+    .auth-btn-secondary { background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-primary); }
+    .auth-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+    .sidebar-logged-info { font-size: 12px; color: var(--text-tertiary); font-weight: 600; text-align: center; margin-bottom: 4px; padding: 0 4px; word-break: break-all; }
+    .sidebar-logged-info strong { color: var(--text-primary); font-weight: 800; }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.94); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-top: 1px solid var(--border-subtle); padding: 8px 10px 12px; z-index: 55; box-shadow: 0 -2px 16px rgba(10, 22, 51, 0.04); }
+    .nav-track { position: relative; display: flex; align-items: center; justify-content: space-around; }
+    .nav-indicator { position: absolute; bottom: 0; height: 3px; border-radius: var(--r-full); background: var(--blue-gradient); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 2px 8px rgba(0, 85, 255, 0.4); width: 30px; }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 4px; background: none; border: none; cursor: pointer; font-family: inherit; color: var(--text-tertiary); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); position: relative; text-decoration: none; }
+    .nav-item:active { transform: scale(0.92); }
+    .nav-item.active { color: var(--blue-600); }
+    .nav-icon-wrap { position: relative; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+    .nav-icon-wrap svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; transition: all 0.2s ease; }
+    .nav-item.active .nav-icon-wrap svg { stroke-width: 2.2; transform: scale(1.05); }
+    .nav-label { font-size: 10.5px; font-weight: 700; letter-spacing: -0.1px; }
+    .nav-item.active .nav-label { font-weight: 800; }
+    .nav-item .nav-badge { position: absolute; top: -4px; right: -6px; background: var(--blue-gradient); color: #FFFFFF; font-size: 9px; font-weight: 800; min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #FFFFFF; line-height: 1; }
+    .nav-item .nav-badge.visible { display: flex; }
+  </style>
+
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/ux-enhancements.css">
+  <link rel="stylesheet" href="/assets/css/features.css">
+</head>
+<body>
+
+  <div id="toast-container"></div>
+
+  <div class="app-shell">
+
+    <header class="site-header" id="site-header">
+      <div class="header-top">
+        <img src="assets/logo.png" alt="DigitalPay" class="brand-logo" onclick="window.location.href='index.html'">
+        <div class="header-actions">
+          <a href="cart.html" class="icon-btn" aria-label="Panier">
+            <svg viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="cart-badge" id="cart-badge">0</span>
+          </a>
+          <button class="icon-btn" onclick="openSidebar()" aria-label="Menu">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="legal-main">
+
+      <div class="legal-hero">
+        <div class="legal-hero-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        </div>
+        <h1 class="legal-hero-title" data-i18n="heroTitle">Informations Légales</h1>
+        <p class="legal-hero-sub" data-i18n="heroSub">À propos, conditions générales et politique de confidentialité de DigitalPay Haïti.</p>
+      </div>
+
+      <div class="legal-card">
+        <h2 class="legal-card-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span data-i18n="aboutTitle">À propos de DigitalPay</span>
+        </h2>
+        <p data-i18n="aboutText1">DigitalPay Haïti est une plateforme numérique haïtienne spécialisée dans la vente de services digitaux : recharges de jeux mobiles, abonnements streaming, transferts financiers internationaux et cartes cadeaux.</p>
+        <p data-i18n="aboutText2">Notre mission est d'offrir aux Haïtiens un accès simple, rapide et sécurisé aux services numériques mondiaux, avec une livraison instantanée et un support disponible 24h/24.</p>
+        <p data-i18n="aboutText3">Nous nous engageons à fournir un service de qualité, à des prix compétitifs, avec une transparence totale sur nos tarifs et nos méthodes de livraison.</p>
+      </div>
+
+      <div class="legal-card">
+        <h2 class="legal-card-title">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <span data-i18n="termsTitle">Conditions Générales d'Utilisation</span>
+        </h2>
+
+        <h3 data-i18n="termsSub1">1. Acceptation des conditions</h3>
+        <p data-i18n="termsText1">En utilisant DigitalPay Haïti, vous acceptez sans réserve les présentes conditions générales. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.</p>
+
+        <h3 data-i18n="termsSub2">2. Compte utilisateur</h3>
+        <ul>
+          <li data-i18n="termsText2a">Vous devez avoir au moins 13 ans pour créer un compte.</li>
+          <li data-i18n="termsText2b">Vous êtes responsable de la confidentialité de votre mot de passe.</li>
+          <li data-i18n="termsText2c">Toute activité frauduleuse entraînera la suspension immédiate du compte.</li>
+        </ul>
+
+        <h3 data-i18n="termsSub3">3. Commandes et paiements</h3>
+        <ul>
+          <li data-i18n="termsText3a">Les prix sont affichés en gourdes haïtiennes (HTG) et peuvent être modifiés sans préavis.</li>
+          <li data-i18n="termsText3b">Les paiements s'effectuent via MonCash, NatCash, Meru ou le solde du portefeuille DigitalPay.</li>
+          <li data-i18n="termsText3c">Toute preuve de paiement falsifiée entraînera le rejet de la commande et la suspension du compte.</li>
+        </ul>
+
+        <h3 data-i18n="termsSub4">4. Livraison des services</h3>
+        <ul>
+          <li data-i18n="termsText4a">Les recharges Free Fire sont livrées automatiquement par code PIN en moins de 30 secondes.</li>
+          <li data-i18n="termsText4b">Les autres services sont traités manuellement sous 5 à 20 minutes pendant les heures d'ouverture.</li>
+          <li data-i18n="termsText4c">Aucune commande ne peut être annulée une fois livrée.</li>
+        </ul>
+
+        <h3 data-i18n="termsSub5">5. Remboursements</h3>
+        <p data-i18n="termsText5">En cas d'erreur de notre part (service non livré, PIN invalide), un remboursement ou un remplacement est effectué sous 24 heures. Aucun remboursement n'est possible en cas d'erreur de la part du client (ID joueur incorrect, oubli de champ, etc.).</p>
+
+        <div class="legal-meta">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span data-i18n="lastUpdate">Dernière mise à jour : Septembre 2026</span>
+        </div>
+      </div>
+
+      <div class="legal-card">
+        <h2 class="legal-card-title">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span data-i18n="privacyTitle">Politique de Confidentialité</span>
+        </h2>
+
+        <h3 data-i18n="privacySub1">Données collectées</h3>
+        <ul>
+          <li data-i18n="privacyText1a">Nom affiché et adresse email (lors de l'inscription)</li>
+          <li data-i18n="privacyText1b">Informations de livraison (ID joueur, email de compte, WhatsApp) uniquement pour traiter vos commandes</li>
+          <li data-i18n="privacyText1c">Preuves de paiement (captures d'écran) pour la validation des dépôts</li>
+          <li data-i18n="privacyText1d">Historique des transactions pour votre suivi personnel</li>
+        </ul>
+
+        <h3 data-i18n="privacySub2">Utilisation des données</h3>
+        <p data-i18n="privacyText2">Vos données sont utilisées exclusivement pour : traiter vos commandes, sécuriser votre compte, vous envoyer des notifications importantes et améliorer nos services.</p>
+
+        <h3 data-i18n="privacySub3">Sécurité</h3>
+        <p data-i18n="privacyText3">Vos données sont stockées de manière sécurisée chez Firebase (Google Cloud). Les mots de passe sont chiffrés et ne sont jamais accessibles à notre équipe.</p>
+
+        <h3 data-i18n="privacySub4">Vos droits</h3>
+        <p data-i18n="privacyText4">Vous pouvez à tout moment demander la suppression de votre compte et de vos données en nous contactant via WhatsApp. La suppression est effective sous 48 heures.</p>
+
+        <h3 data-i18n="privacySub5">Partage des données</h3>
+        <p data-i18n="privacyText5">Nous ne vendons ni ne partageons vos données personnelles avec des tiers. Seuls les prestataires techniques (Firebase, Vercel) traitent vos données pour le fonctionnement du service.</p>
+      </div>
+
+      <div class="contact-cta">
+        <div class="contact-cta-title" data-i18n="ctaTitle">Une question légale ou une réclamation ?</div>
+        <div class="contact-cta-sub" data-i18n="ctaSub">Notre équipe juridique et support répond en moins de 24h.</div>
+        <a href="https://wa.me/50935362631" target="_blank" rel="noopener noreferrer" class="contact-cta-btn">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke-linecap="round"/></svg>
+          <span data-i18n="ctaBtn">Contacter le support</span>
+        </a>
+      </div>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-row">
+        <span>© 2026 DigitalPay S.A.</span>
+        <div class="footer-status">
+          <span class="status-dot"></span>
+          <span data-i18n="footerStatus">Système 24/7</span>
+        </div>
+      </div>
+    </footer>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()">
+      <aside class="sidebar-drawer" onclick="event.stopPropagation()">
+        <div class="sidebar-content">
+          <div class="sidebar-head">
+            <div class="sidebar-brand">
+              <div class="sidebar-logo-wrap"><img src="assets/logo.png" alt="DigitalPay"></div>
+              <div>
+                <div class="sidebar-brand-name">DigitalPay</div>
+                <div class="sidebar-brand-sub">Haiti</div>
+              </div>
+            </div>
+            <button class="sidebar-close" onclick="closeSidebar()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+          </div>
+
+          <div id="sidebar-user-zone"></div>
+
+          <div class="sidebar-body">
+            <div class="sidebar-label" data-i18n="langLabel">Langue / Language</div>
+            <div class="lang-grid">
+              <button class="lang-pill active" data-lang="fr" onclick="setLang('fr', this)"><span class="flag">🇫🇷</span> Français</button>
+              <button class="lang-pill" data-lang="ht" onclick="setLang('ht', this)"><span class="flag">🇭🇹</span> Kreyòl</button>
+              <button class="lang-pill" data-lang="en" onclick="setLang('en', this)"><span class="flag">🇺🇸</span> English</button>
+              <button class="lang-pill" data-lang="es" onclick="setLang('es', this)"><span class="flag">🇪🇸</span> Español</button>
+            </div>
+            <div class="sidebar-label" data-i18n="navLabel">Navigation</div>
+            <nav class="sidebar-nav">
+              <a href="index.html" class="sidebar-nav-link">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                <span data-i18n="navHome">Accueil</span>
+              </a>
+              <a href="commande.html" class="sidebar-nav-link">
+                <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <span data-i18n="navHistory">Historique</span>
+              </a>
+              <a href="wallet.html" class="sidebar-nav-link">
+                <svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg>
+                <span data-i18n="navWallet">Wallet</span>
+              </a>
+              <a href="index.html" class="sidebar-nav-link">
+                <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                <span data-i18n="navShop">Boutique</span>
+              </a>
+              <a href="help.html" class="sidebar-nav-link">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span data-i18n="navSupport">Support</span>
+              </a>
+
+              <div id="sidebar-auth-zone"></div>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="bottom-nav">
+      <div class="nav-track" id="nav-track">
+        <div class="nav-indicator" id="nav-indicator"></div>
+        <a href="index.html" class="nav-item" data-nav="home">
+          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+          <span class="nav-label">Accueil</span>
+        </a>
+        <a href="index.html" class="nav-item" data-nav="shop">
+          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+          <span class="nav-label">Boutique</span>
+        </a>
+        <a href="cart.html" class="nav-item" data-nav="cart">
+          <div class="nav-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="nav-badge" id="nav-cart-badge">0</span>
+          </div>
+          <span class="nav-label">Panier</span>
+        </a>
+        <a href="wallet.html" class="nav-item" data-nav="wallet">
+          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg></div>
+          <span class="nav-label">Wallet</span>
+        </a>
+      </div>
+    </nav>
+
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAAOQkkCgGdPvP31MrSp7ap9P20mAtQxBY",
+      authDomain: "digitalpay-officiel-v2.firebaseapp.com",
+      projectId: "digitalpay-officiel-v2",
+      storageBucket: "digitalpay-officiel-v2.firebasestorage.app",
+      messagingSenderId: "1030926360593",
+      appId: "1:1030926360593:web:c6e0f502af4ef6b76711b0"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const STATE = { lang: 'fr', user: null };
+
+    const I18N = {
+      fr: {
+        toastLang: "Langue : Français",
+        heroTitle: "Informations Légales",
+        heroSub: "À propos, conditions générales et politique de confidentialité de DigitalPay Haïti.",
+        aboutTitle: "À propos de DigitalPay",
+        aboutText1: "DigitalPay Haïti est une plateforme numérique haïtienne spécialisée dans la vente de services digitaux : recharges de jeux mobiles, abonnements streaming, transferts financiers internationaux et cartes cadeaux.",
+        aboutText2: "Notre mission est d'offrir aux Haïtiens un accès simple, rapide et sécurisé aux services numériques mondiaux, avec une livraison instantanée et un support disponible 24h/24.",
+        aboutText3: "Nous nous engageons à fournir un service de qualité, à des prix compétitifs, avec une transparence totale sur nos tarifs et nos méthodes de livraison.",
+        termsTitle: "Conditions Générales d'Utilisation",
+        termsSub1: "1. Acceptation des conditions",
+        termsText1: "En utilisant DigitalPay Haïti, vous acceptez sans réserve les présentes conditions générales. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.",
+        termsSub2: "2. Compte utilisateur",
+        termsText2a: "Vous devez avoir au moins 13 ans pour créer un compte.",
+        termsText2b: "Vous êtes responsable de la confidentialité de votre mot de passe.",
+        termsText2c: "Toute activité frauduleuse entraînera la suspension immédiate du compte.",
+        termsSub3: "3. Commandes et paiements",
+        termsText3a: "Les prix sont affichés en gourdes haïtiennes (HTG) et peuvent être modifiés sans préavis.",
+        termsText3b: "Les paiements s'effectuent via MonCash, NatCash, Meru ou le solde du portefeuille DigitalPay.",
+        termsText3c: "Toute preuve de paiement falsifiée entraînera le rejet de la commande et la suspension du compte.",
+        termsSub4: "4. Livraison des services",
+        termsText4a: "Les recharges Free Fire sont livrées automatiquement par code PIN en moins de 30 secondes.",
+        termsText4b: "Les autres services sont traités manuellement sous 5 à 20 minutes pendant les heures d'ouverture.",
+        termsText4c: "Aucune commande ne peut être annulée une fois livrée.",
+        termsSub5: "5. Remboursements",
+        termsText5: "En cas d'erreur de notre part (service non livré, PIN invalide), un remboursement ou un remplacement est effectué sous 24 heures. Aucun remboursement n'est possible en cas d'erreur de la part du client (ID joueur incorrect, oubli de champ, etc.).",
+        lastUpdate: "Dernière mise à jour : Septembre 2026",
+        privacyTitle: "Politique de Confidentialité",
+        privacySub1: "Données collectées",
+        privacyText1a: "Nom affiché et adresse email (lors de l'inscription)",
+        privacyText1b: "Informations de livraison (ID joueur, email de compte, WhatsApp) uniquement pour traiter vos commandes",
+        privacyText1c: "Preuves de paiement (captures d'écran) pour la validation des dépôts",
+        privacyText1d: "Historique des transactions pour votre suivi personnel",
+        privacySub2: "Utilisation des données",
+        privacyText2: "Vos données sont utilisées exclusivement pour : traiter vos commandes, sécuriser votre compte, vous envoyer des notifications importantes et améliorer nos services.",
+        privacySub3: "Sécurité",
+        privacyText3: "Vos données sont stockées de manière sécurisée chez Firebase (Google Cloud). Les mots de passe sont chiffrés et ne sont jamais accessibles à notre équipe.",
+        privacySub4: "Vos droits",
+        privacyText4: "Vous pouvez à tout moment demander la suppression de votre compte et de vos données en nous contactant via WhatsApp. La suppression est effective sous 48 heures.",
+        privacySub5: "Partage des données",
+        privacyText5: "Nous ne vendons ni ne partageons vos données personnelles avec des tiers. Seuls les prestataires techniques (Firebase, Vercel) traitent vos données pour le fonctionnement du service.",
+        ctaTitle: "Une question légale ou une réclamation ?",
+        ctaSub: "Notre équipe juridique et support répond en moins de 24h.",
+        ctaBtn: "Contacter le support",
+        footerStatus: "Système 24/7",
+        langLabel: "Langue / Language",
+        navLabel: "Navigation",
+        navHome: "Accueil", navHistory: "Historique", navWallet: "Wallet", navShop: "Boutique", navSupport: "Support",
+        connectedAs: "Connecté", authLogout: "Se Déconnecter",
+        authLogin: "Se Connecter", authRegister: "Créer un compte"
+      },
+      ht: {
+        toastLang: "Lang : Kreyòl Ayisyen",
+        heroTitle: "Enfòmasyon Legal",
+        heroSub: "Konsènan, kondisyon jeneral ak règleman konfidansyalite DigitalPay Ayiti.",
+        aboutTitle: "Konsènan DigitalPay",
+        aboutText1: "DigitalPay Ayiti se yon platfòm dijital ayisyen ki espesyalize nan vant sèvis dijital : rechaj jwèt mobil, abònman streaming, transfè finansye entènasyonal ak kat kado.",
+        aboutText2: "Misyon nou se ofri Ayisyen yo yon aksè senp, rapid ak sekirize nan sèvis dijital mondyal yo, ak livrezon enstantane ak sipò ki disponib 24 sou 24.",
+        aboutText3: "Nou angaje nou pou bay yon sèvis bon jan, nan pri konpetitif, ak transparans total sou tarif nou ak metòd livrezon nou.",
+        termsTitle: "Kondisyon Jeneral Itilizasyon",
+        termsSub1: "1. Akseptasyon kondisyon yo",
+        termsText1: "Lè w itilize DigitalPay Ayiti, ou aksepte san rezèv kondisyon jeneral sa yo. Si ou pa aksepte kondisyon sa yo, tanpri pa itilize sèvis nou yo.",
+        termsSub2: "2. Kont itilizatè",
+        termsText2a: "Ou dwe gen omwen 13 an pou kreye yon kont.",
+        termsText2b: "Ou responsab konfidansyalite modpas ou.",
+        termsText2c: "Nenpòt aktivite fwod pral lakòz sispansyon imedyat kont lan.",
+        termsSub3: "3. Kòmand ak peman",
+        termsText3a: "Pri yo afiche an goud ayisyen (HTG) epi yo ka modifye san avi.",
+        termsText3b: "Peman yo fèt atravè MonCash, NatCash, Meru oswa balans bous DigitalPay.",
+        termsText3c: "Nenpòt prèv peman fo pral lakòz rejè kòmand lan ak sispansyon kont lan.",
+        termsSub4: "4. Livrezon sèvis yo",
+        termsText4a: "Rechaj Free Fire yo livre otomatikman pa kòd PIN nan mwens pase 30 segonn.",
+        termsText4b: "Lòt sèvis yo trete manyèlman nan 5 a 20 minit pandan lè ouvèti yo.",
+        termsText4c: "Pa gen kòmand ki ka anile yon fwa li livre.",
+        termsSub5: "5. Ranbousman",
+        termsText5: "Nan ka erè sou pati nou (sèvis pa livre, PIN pa valid), yon ranbousman oswa yon ranplasman fèt nan 24 èdtan. Pa gen ranbousman posib nan ka erè kliyan (move ID jwè, bliye chan, elatriye).",
+        lastUpdate: "Dènye mizajou : Septanm 2026",
+        privacyTitle: "Règleman Konfidansyalite",
+        privacySub1: "Done kolekte",
+        privacyText1a: "Non afiche ak adrès imel (pandan enskripsyon)",
+        privacyText1b: "Enfòmasyon livrezon (ID jwè, imel kont, WhatsApp) sèlman pou trete kòmand ou",
+        privacyText1c: "Prèv peman (kaptur ekran) pou validasyon depo",
+        privacyText1d: "Istoryen tranzaksyon pou swivi pèsonèl ou",
+        privacySub2: "Itilizasyon done yo",
+        privacyText2: "Done ou yo itilize sèlman pou : trete kòmand ou, sekirize kont ou, voye notifikasyon enpòtan ba ou ak amelyore sèvis nou yo.",
+        privacySub3: "Sekirite",
+        privacyText3: "Done ou yo estoke an sekirite lakay Firebase (Google Cloud). Modpas yo chifre epi yo pa janm aksesib pou ekip nou an.",
+        privacySub4: "Dwa ou yo",
+        privacyText4: "Ou ka nan nenpòt moman mande sipresyon kont ou ak done ou lè w kontakte nou sou WhatsApp. Sipresyon an fèt nan 48 èdtan.",
+        privacySub5: "Pataje done yo",
+        privacyText5: "Nou pa vann ni pataje done pèsonèl ou yo ak twazyèm pati. Sèlman founisè teknik yo (Firebase, Vercel) trete done ou yo pou fonksyònman sèvis la.",
+        ctaTitle: "Yon kesyon legal oswa yon reklamasyon ?",
+        ctaSub: "Ekip legal ak sipò nou an reponn nan mwens pase 24è.",
+        ctaBtn: "Kontakte sipò",
+        footerStatus: "Sistèm 24/7",
+        langLabel: "Lang / Language",
+        navLabel: "Navigasyon",
+        navHome: "Akèy", navHistory: "Istorik", navWallet: "Bous", navShop: "Boutik", navSupport: "Sipò",
+        connectedAs: "Konekte", authLogout: "Dekonekte",
+        authLogin: "Konekte", authRegister: "Kreye yon kont"
+      },
+      en: {
+        toastLang: "Language: English",
+        heroTitle: "Legal Information",
+        heroSub: "About, terms and conditions and privacy policy of DigitalPay Haiti.",
+        aboutTitle: "About DigitalPay",
+        aboutText1: "DigitalPay Haiti is a Haitian digital platform specialized in selling digital services: mobile game top-ups, streaming subscriptions, international money transfers and gift cards.",
+        aboutText2: "Our mission is to provide Haitians with simple, fast and secure access to global digital services, with instant delivery and 24/7 support.",
+        aboutText3: "We are committed to providing quality service at competitive prices, with complete transparency on our rates and delivery methods.",
+        termsTitle: "Terms of Service",
+        termsSub1: "1. Acceptance of terms",
+        termsText1: "By using DigitalPay Haiti, you fully accept these terms and conditions. If you do not accept them, please do not use our services.",
+        termsSub2: "2. User account",
+        termsText2a: "You must be at least 13 years old to create an account.",
+        termsText2b: "You are responsible for the confidentiality of your password.",
+        termsText2c: "Any fraudulent activity will result in immediate account suspension.",
+        termsSub3: "3. Orders and payments",
+        termsText3a: "Prices are displayed in Haitian gourdes (HTG) and may be modified without notice.",
+        termsText3b: "Payments are made via MonCash, NatCash, Meru or DigitalPay wallet balance.",
+        termsText3c: "Any falsified proof of payment will result in order rejection and account suspension.",
+        termsSub4: "4. Service delivery",
+        termsText4a: "Free Fire top-ups are delivered automatically by PIN code in under 30 seconds.",
+        termsText4b: "Other services are processed manually within 5-20 minutes during opening hours.",
+        termsText4c: "No order can be cancelled once delivered.",
+        termsSub5: "5. Refunds",
+        termsText5: "In case of error on our part (service not delivered, invalid PIN), a refund or replacement is made within 24 hours. No refund is possible in case of client error (incorrect player ID, missing field, etc.).",
+        lastUpdate: "Last updated: September 2026",
+        privacyTitle: "Privacy Policy",
+        privacySub1: "Data collected",
+        privacyText1a: "Display name and email address (during registration)",
+        privacyText1b: "Delivery information (player ID, account email, WhatsApp) only to process your orders",
+        privacyText1c: "Payment proofs (screenshots) for deposit validation",
+        privacyText1d: "Transaction history for your personal tracking",
+        privacySub2: "Use of data",
+        privacyText2: "Your data is used exclusively to: process your orders, secure your account, send you important notifications and improve our services.",
+        privacySub3: "Security",
+        privacyText3: "Your data is stored securely with Firebase (Google Cloud). Passwords are encrypted and never accessible to our team.",
+        privacySub4: "Your rights",
+        privacyText4: "You can request deletion of your account and data at any time by contacting us via WhatsApp. Deletion is effective within 48 hours.",
+        privacySub5: "Data sharing",
+        privacyText5: "We do not sell or share your personal data with third parties. Only technical providers (Firebase, Vercel) process your data for service operation.",
+        ctaTitle: "A legal question or complaint?",
+        ctaSub: "Our legal and support team responds within 24 hours.",
+        ctaBtn: "Contact support",
+        footerStatus: "24/7 System",
+        langLabel: "Language / Langue",
+        navLabel: "Navigation",
+        navHome: "Home", navHistory: "History", navWallet: "Wallet", navShop: "Shop", navSupport: "Support",
+        connectedAs: "Signed in", authLogout: "Sign Out",
+        authLogin: "Sign In", authRegister: "Create account"
+      },
+      es: {
+        toastLang: "Idioma: Español",
+        heroTitle: "Información Legal",
+        heroSub: "Acerca de, términos y condiciones y política de privacidad de DigitalPay Haití.",
+        aboutTitle: "Acerca de DigitalPay",
+        aboutText1: "DigitalPay Haití es una plataforma digital haitiana especializada en la venta de servicios digitales: recargas de juegos móviles, suscripciones de streaming, transferencias internacionales y tarjetas regalo.",
+        aboutText2: "Nuestra misión es ofrecer a los haitianos un acceso simple, rápido y seguro a los servicios digitales globales, con entrega instantánea y soporte 24/7.",
+        aboutText3: "Nos comprometemos a ofrecer un servicio de calidad a precios competitivos, con total transparencia en nuestras tarifas y métodos de entrega.",
+        termsTitle: "Términos y Condiciones",
+        termsSub1: "1. Aceptación de los términos",
+        termsText1: "Al usar DigitalPay Haití, acepta plenamente estos términos y condiciones. Si no los acepta, no utilice nuestros servicios.",
+        termsSub2: "2. Cuenta de usuario",
+        termsText2a: "Debe tener al menos 13 años para crear una cuenta.",
+        termsText2b: "Usted es responsable de la confidencialidad de su contraseña.",
+        termsText2c: "Cualquier actividad fraudulenta resultará en suspensión inmediata de la cuenta.",
+        termsSub3: "3. Pedidos y pagos",
+        termsText3a: "Los precios se muestran en gourdes haitianos (HTG) y pueden modificarse sin previo aviso.",
+        termsText3b: "Los pagos se realizan vía MonCash, NatCash, Meru o saldo de la billetera DigitalPay.",
+        termsText3c: "Cualquier prueba de pago falsificada resultará en el rechazo del pedido y la suspensión de la cuenta.",
+        termsSub4: "4. Entrega de servicios",
+        termsText4a: "Las recargas de Free Fire se entregan automáticamente por código PIN en menos de 30 segundos.",
+        termsText4b: "Otros servicios se procesan manualmente dentro de 5-20 minutos durante el horario de apertura.",
+        termsText4c: "Ningún pedido puede cancelarse una vez entregado.",
+        termsSub5: "5. Reembolsos",
+        termsText5: "En caso de error de nuestra parte (servicio no entregado, PIN inválido), se realiza un reembolso o reemplazo dentro de 24 horas. No es posible reembolso en caso de error del cliente (ID de jugador incorrecto, campo olvidado, etc.).",
+        lastUpdate: "Última actualización: Septiembre 2026",
+        privacyTitle: "Política de Privacidad",
+        privacySub1: "Datos recopilados",
+        privacyText1a: "Nombre y correo electrónico (durante el registro)",
+        privacyText1b: "Información de entrega (ID de jugador, correo de cuenta, WhatsApp) solo para procesar sus pedidos",
+        privacyText1c: "Comprobantes de pago (capturas) para validación de depósitos",
+        privacyText1d: "Historial de transacciones para su seguimiento personal",
+        privacySub2: "Uso de datos",
+        privacyText2: "Sus datos se utilizan exclusivamente para: procesar sus pedidos, proteger su cuenta, enviarle notificaciones importantes y mejorar nuestros servicios.",
+        privacySub3: "Seguridad",
+        privacyText3: "Sus datos se almacenan de forma segura con Firebase (Google Cloud). Las contraseñas están cifradas y nunca son accesibles a nuestro equipo.",
+        privacySub4: "Sus derechos",
+        privacyText4: "Puede solicitar la eliminación de su cuenta y datos en cualquier momento contactándonos por WhatsApp. La eliminación es efectiva dentro de 48 horas.",
+        privacySub5: "Compartir datos",
+        privacyText5: "No vendemos ni compartimos sus datos personales con terceros. Solo los proveedores técnicos (Firebase, Vercel) procesan sus datos para el funcionamiento del servicio.",
+        ctaTitle: "¿Una pregunta legal o queja?",
+        ctaSub: "Nuestro equipo legal y de soporte responde en 24 horas.",
+        ctaBtn: "Contactar soporte",
+        footerStatus: "Sistema 24/7",
+        langLabel: "Idioma / Language",
+        navLabel: "Navegación",
+        navHome: "Inicio", navHistory: "Historial", navWallet: "Billetera", navShop: "Tienda", navSupport: "Soporte",
+        connectedAs: "Conectado", authLogout: "Cerrar Sesión",
+        authLogin: "Iniciar Sesión", authRegister: "Crear cuenta"
+      }
+    };
+
+    const t = (key) => (I18N[STATE.lang] && I18N[STATE.lang][key]) || key;
+
+    function escapeHtml(str) {
+      if (str === undefined || str === null) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<div class="toast-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div><div class="toast-msg">${escapeHtml(message)}</div>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('show'));
+      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 350); }, 2600);
+    }
+
+    function applyTranslations() {
+      document.documentElement.setAttribute('lang', STATE.lang);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (I18N[STATE.lang][key]) el.textContent = I18N[STATE.lang][key];
+      });
+    }
+
+    function setLang(code, btn) {
+      STATE.lang = code;
+      localStorage.setItem('dp_lang', code);
+      document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      applyTranslations();
+      updateSidebarAuthUI();
+      showToast(t('toastLang'), 'info');
+    }
+
+    function updateSidebarAuthUI() {
+      const userZone = document.getElementById('sidebar-user-zone');
+      if (userZone) {
+        if (STATE.user) {
+          const email = STATE.user.email || '';
+          const initials = (email.substring(0, 2) || 'U').toUpperCase();
+          userZone.innerHTML = `
+            <div class="sidebar-user-card">
+              <div class="sidebar-user-avatar">${escapeHtml(initials)}</div>
+              <div class="sidebar-user-info">
+                <div class="sidebar-user-label">${escapeHtml(t('connectedAs'))}</div>
+                <div class="sidebar-user-email">${escapeHtml(email)}</div>
+              </div>
+            </div>
+          `;
+        } else {
+          userZone.innerHTML = `
+            <div class="sidebar-user-card guest">
+              <div class="sidebar-user-avatar">?</div>
+              <div class="sidebar-user-info">
+                <div class="sidebar-user-label">Invité</div>
+                <div class="sidebar-user-email">Non connecté</div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      const zone = document.getElementById('sidebar-auth-zone');
+      if (!zone) return;
+      if (STATE.user) {
+        zone.innerHTML = `
+          <button class="sidebar-nav-link danger" onclick="handleLogout()">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>${escapeHtml(t('authLogout'))}</span>
+          </button>
+        `;
+      } else {
+        zone.innerHTML = `
+          <a href="authentification/login.html" class="sidebar-nav-link" style="background:var(--blue-gradient);color:#FFF;margin-top:8px;justify-content:center;font-weight:800;">
+            <svg viewBox="0 0 24 24" style="stroke:#FFF;opacity:1;"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>${escapeHtml(t('authLogin'))}</span>
+          </a>
+          <a href="authentification/register.html" class="sidebar-nav-link" style="margin-top:4px;justify-content:center;font-weight:700;background:var(--bg-subtle);">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            <span>${escapeHtml(t('authRegister'))}</span>
+          </a>
+        `;
+      }
+    }
+
+    function handleLogout() {
+      auth.signOut().then(() => {
+        showToast(STATE.lang === 'fr' ? 'Déconnexion réussie' : 'Signed out', 'info');
+        closeSidebar();
+      });
+    }
+
+    function openSidebar() { document.getElementById('sidebar-overlay').classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeSidebar() { document.getElementById('sidebar-overlay').classList.remove('active'); document.body.style.overflow = ''; }
+
+    let scrollRaf = null;
+    function initScrollEffects() {
+      const header = document.getElementById('site-header');
+      window.addEventListener('scroll', () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => {
+          if (window.scrollY > 20) header.classList.add('scrolled');
+          else header.classList.remove('scrolled');
+          scrollRaf = null;
+        });
+      }, { passive: true });
+    }
+
+    function initRipple() {
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.icon-btn, .auth-btn, .contact-cta-btn');
+        if (btn && !btn.disabled) {
+          const rect = btn.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = (e.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
+          const y = (e.clientY || rect.top + rect.height / 2) - rect.top - size / 2;
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = x + 'px';
+          ripple.style.top = y + 'px';
+          btn.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        }
+      });
+    }
+
+    function updateCartBadge() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('dp_cart') || '[]');
+        const badge = document.getElementById('cart-badge');
+        const navBadge = document.getElementById('nav-cart-badge');
+        if (cart.length > 0) {
+          if (badge) { badge.textContent = cart.length; badge.classList.add('visible'); }
+          if (navBadge) { navBadge.textContent = cart.length; navBadge.classList.add('visible'); }
+        } else {
+          if (badge) badge.classList.remove('visible');
+          if (navBadge) navBadge.classList.remove('visible');
+        }
+      } catch (e) {}
+    }
+
+    function moveNavIndicator() {
+      const indicator = document.getElementById('nav-indicator');
+      const track = document.getElementById('nav-track');
+      const active = track?.querySelector('.nav-item.active');
+      if (!indicator || !track || !active) return;
+      const trackRect = track.getBoundingClientRect();
+      const btnRect = active.getBoundingClientRect();
+      indicator.style.left = (btnRect.left - trackRect.left + btnRect.width / 2 - 15) + 'px';
+    }
+
+    auth.onAuthStateChanged(user => {
+      STATE.user = user;
+      updateSidebarAuthUI();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('dp_lang') || 'fr';
+      STATE.lang = saved;
+      const langBtn = document.querySelector(`.lang-pill[data-lang="${saved}"]`);
+      if (langBtn) {
+        document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
+        langBtn.classList.add('active');
+      }
+      applyTranslations();
+      updateSidebarAuthUI();
+      updateCartBadge();
+      initScrollEffects();
+      initRipple();
+      setTimeout(() => {
+        moveNavIndicator();
+        document.body.classList.add('ready');
+      }, 100);
+      window.addEventListener('resize', moveNavIndicator);
+    });
+  </script>
+  <script src="/assets/js/notifications.js"></script>
+  <script src="/assets/js/chat.js"></script>
+  <script src="/assets/js/design-system.js"></script>
+  <script src="/assets/js/ux-enhancements.js"></script>
+  <script src="/assets/js/wishlist.js"></script>
+  <script src="/assets/js/features.js"></script>
+</body>
+</html>
