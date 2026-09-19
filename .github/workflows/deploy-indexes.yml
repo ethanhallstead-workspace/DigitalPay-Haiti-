@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - 'firestore.indexes.json'
-      - 'firestore.rules'
 
 jobs:
   deploy:
@@ -29,6 +28,3 @@ jobs:
 
       - name: Deploy Firestore Indexes
         run: firebase deploy --only firestore:indexes --project digitalpay-officiel-v2 --non-interactive
-
-      - name: Deploy Firestore Rules
-        run: firebase deploy --only firestore:rules --project digitalpay-officiel-v2 --non-interactive
