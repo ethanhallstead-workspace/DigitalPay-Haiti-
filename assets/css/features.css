@@ -1,0 +1,812 @@
+/* ═══════════════════════════════════════════════════════════
+   DigitalPay Haiti — Business Features v1.4 FINAL
+   Wishlist · Notes · Avis · Alertes stock
+   Multi-devise · Multi-panier · Stats · Cadeaux · Rate-limit
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══ WISHLIST ICON ON PRODUCT CARDS ═══
+   Caché par défaut · Apparaît au survol (desktop) ou tap (mobile)
+   Toujours visible si déjà en favoris */
+.dp-wish-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 6;
+  transition: opacity 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  font-family: inherit;
+  padding: 0;
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+.product-card:hover .dp-wish-btn,
+.product-card:focus-within .dp-wish-btn {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.product-card.dp-wish-revealed .dp-wish-btn {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.dp-wish-btn.active {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  pointer-events: auto !important;
+}
+
+.dp-wish-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+.dp-wish-btn:active {
+  transform: scale(0.92);
+}
+
+.dp-wish-btn svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--text-secondary);
+  fill: none;
+  stroke-width: 2;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.dp-wish-btn.active svg {
+  fill: #E11D48;
+  stroke: #E11D48;
+}
+
+html[data-theme="dark"] .dp-wish-btn {
+  background: rgba(15,22,38,0.95);
+}
+
+html[data-theme="dark"] .dp-wish-btn svg {
+  stroke: var(--text-secondary);
+}
+
+html[data-theme="dark"] .dp-wish-btn.active svg {
+  fill: #E11D48;
+  stroke: #E11D48;
+}
+
+/* ═══ NOTES PERSONNELLES (commande) ═══ */
+.dp-note-box {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--bg-subtle);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-md);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  position: relative;
+}
+
+.dp-note-box-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.dp-note-box-title {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dp-note-box-title svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+}
+
+.dp-note-edit-btn {
+  background: none;
+  border: none;
+  color: var(--blue-600);
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+
+.dp-note-text {
+  font-size: 12.5px;
+  color: var(--text-primary);
+  font-weight: 600;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dp-note-empty {
+  color: var(--text-tertiary);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.dp-note-textarea {
+  width: 100%;
+  min-height: 60px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: var(--text-primary);
+  outline: none;
+  resize: vertical;
+  margin-top: 4px;
+}
+
+.dp-note-textarea:focus {
+  border-color: var(--blue-600);
+  box-shadow: 0 0 0 3px var(--blue-50);
+}
+
+.dp-note-save {
+  margin-top: 6px;
+  height: 32px;
+  padding: 0 14px;
+  background: var(--blue-gradient);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--r-sm);
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ═══ RATING MODAL ═══ */
+.dp-rating-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,15,30,0.7);
+  backdrop-filter: blur(10px);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s var(--ease-out);
+}
+
+.dp-rating-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dp-rating-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--bg-card);
+  border-radius: var(--r-2xl);
+  padding: 24px 22px 22px;
+  box-shadow: var(--shadow-2xl);
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dp-rating-modal.active .dp-rating-card {
+  transform: scale(1);
+}
+
+.dp-rating-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.dp-rating-sub {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.dp-rating-stars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.dp-rating-star {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--bg-subtle);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.dp-rating-star svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--text-tertiary);
+  fill: none;
+  stroke-width: 1.8;
+  transition: all 0.2s ease;
+}
+
+.dp-rating-star.active svg,
+.dp-rating-star:hover svg {
+  fill: #F59E0B;
+  stroke: #F59E0B;
+  transform: scale(1.15);
+}
+
+.dp-rating-textarea {
+  width: 100%;
+  min-height: 80px;
+  background: var(--bg-subtle);
+  border: 1.5px solid transparent;
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-primary);
+  outline: none;
+  resize: none;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.dp-rating-textarea:focus {
+  background: var(--bg-card);
+  border-color: var(--blue-600);
+  box-shadow: 0 0 0 3px var(--blue-50);
+}
+
+.dp-rating-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.dp-rating-btn {
+  flex: 1;
+  height: 44px;
+  border-radius: var(--r-md);
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.dp-rating-cancel {
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+}
+
+.dp-rating-submit {
+  background: var(--blue-gradient);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-blue);
+}
+
+.dp-rating-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ═══ STOCK ALERT BUTTON ═══ */
+.dp-stock-alert-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  margin-top: 12px;
+  background: var(--warning-bg);
+  border: 1px solid var(--warning);
+  color: var(--warning);
+  border-radius: var(--r-md);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.dp-stock-alert-btn:hover {
+  background: #FEF3C7;
+}
+
+.dp-stock-alert-btn.active {
+  background: var(--success-bg);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.dp-stock-alert-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ═══ MULTI-DEVISE BADGE ═══ */
+.dp-usd-badge {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  margin-left: 5px;
+  letter-spacing: -0.1px;
+}
+
+/* ═══ MULTI-CART MENU ═══ */
+.dp-cart-menu-btn {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  margin-left: 8px;
+}
+
+.dp-cart-menu-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--text-secondary);
+}
+
+.dp-cart-menu {
+  position: fixed;
+  right: 16px;
+  top: 100px;
+  width: 240px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2xl);
+  z-index: 300;
+  padding: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+}
+
+.dp-cart-menu.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dp-cart-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  border-radius: var(--r-sm);
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.dp-cart-menu-item:hover {
+  background: var(--bg-hover);
+}
+
+.dp-cart-menu-item svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+/* ═══ STATS PERSONNELLES (wallet) ═══ */
+.dp-stats-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-xl);
+  padding: 18px;
+  box-shadow: var(--shadow-xs);
+  margin-bottom: 16px;
+}
+
+.dp-stats-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dp-stats-title svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--blue-600);
+}
+
+.dp-stats-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.dp-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.dp-stat-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: 12px;
+}
+
+.dp-stat-box-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 5px;
+}
+
+.dp-stat-box-value {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+  line-height: 1.1;
+}
+
+.dp-stat-box-value.blue {
+  color: var(--blue-600);
+}
+
+.dp-stat-box-value.green {
+  color: var(--success);
+}
+
+/* ═══ GIFT ORDER TOGGLE ═══ */
+.dp-gift-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg-subtle);
+  border: 1.5px solid transparent;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  width: 100%;
+  text-align: left;
+  margin-top: 12px;
+  transition: all 0.2s ease;
+}
+
+.dp-gift-toggle.active {
+  background: var(--blue-50);
+  border-color: var(--blue-600);
+}
+
+.dp-gift-toggle > svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--blue-600);
+  flex-shrink: 0;
+}
+
+.dp-gift-check {
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dp-gift-toggle.active .dp-gift-check {
+  background: var(--blue-600);
+  border-color: var(--blue-600);
+}
+
+.dp-gift-check svg {
+  width: 11px;
+  height: 11px;
+  stroke: #FFF;
+  display: none;
+}
+
+.dp-gift-toggle.active .dp-gift-check svg {
+  display: block;
+}
+
+/* ═══ WISHLIST DRAWER ═══ */
+.dp-wishlist-drawer {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,15,30,0.6);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s var(--ease-out);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.dp-wishlist-drawer.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dp-wishlist-sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  background: var(--bg-card);
+  border-radius: var(--r-3xl) var(--r-3xl) 0 0;
+  padding: 20px 20px 26px;
+  transform: translateY(100%);
+  transition: transform 0.4s var(--ease-out);
+  overflow-y: auto;
+}
+
+.dp-wishlist-drawer.active .dp-wishlist-sheet {
+  transform: translateY(0);
+}
+
+.dp-wishlist-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dp-wishlist-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dp-wishlist-title svg {
+  width: 18px;
+  height: 18px;
+  fill: #E11D48;
+  stroke: #E11D48;
+}
+
+.dp-wishlist-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dp-wishlist-close svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-secondary);
+  fill: none;
+  stroke-width: 2.4;
+}
+
+.dp-wishlist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dp-wishlist-item:last-child {
+  border-bottom: none;
+}
+
+.dp-wishlist-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-md);
+  background: var(--bg-subtle);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: var(--text-quaternary);
+  font-size: 14px;
+  position: relative;
+}
+
+.dp-wishlist-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dp-wishlist-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dp-wishlist-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.dp-wishlist-price {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--blue-600);
+}
+
+.dp-wishlist-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dp-wishlist-open,
+.dp-wishlist-remove {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dp-wishlist-open {
+  background: var(--blue-50);
+}
+
+.dp-wishlist-open svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--blue-600);
+  fill: none;
+  stroke-width: 2;
+}
+
+.dp-wishlist-remove {
+  background: var(--danger-bg);
+}
+
+.dp-wishlist-remove svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--danger);
+  fill: none;
+  stroke-width: 2.4;
+}
+
+.dp-wishlist-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ═══ WISHLIST COUNT BADGE (sidebar) ═══ */
+.dp-wishlist-count {
+  background: #E11D48;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ═══ DARK MODE ═══ */
+html[data-theme="dark"] .dp-note-box,
+html[data-theme="dark"] .dp-stats-card,
+html[data-theme="dark"] .dp-stat-box,
+html[data-theme="dark"] .dp-gift-toggle {
+  background: var(--bg-subtle);
+  border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .dp-note-textarea,
+html[data-theme="dark"] .dp-rating-textarea {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+html[data-theme="dark"] .dp-rating-card,
+html[data-theme="dark"] .dp-wishlist-sheet {
+  background: var(--bg-card);
+}
+
+html[data-theme="dark"] .dp-rating-star {
+  background: var(--bg-subtle);
+}
+
+html[data-theme="dark"] .dp-cart-menu {
+  background: var(--bg-card);
+  border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .dp-stock-alert-btn:hover {
+  background: #451A03;
+}

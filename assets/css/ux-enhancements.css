@@ -1,0 +1,441 @@
+/* ═══════════════════════════════════════════════════════════
+   DigitalPay Haiti — UX Enhancements v1.0
+   Fly-to-cart · Swipe · Pull-refresh · Fuzzy · Onboarding
+   Confetti · Progress bar · Web Share · Bottom-sheet drag
+   ═══════════════════════════════════════════════════════════ */
+
+.icon-btn, .nav-item .nav-icon-wrap {
+  transition: transform 0.2s ease;
+}
+
+/* ═══ PULL-TO-REFRESH INDICATOR ═══ */
+.dp-ptr-indicator {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.dp-ptr-indicator.visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.dp-ptr-indicator svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--blue-600);
+}
+
+.dp-ptr-indicator.spinning svg {
+  animation: dp-ptr-spin 0.8s linear infinite;
+}
+
+@keyframes dp-ptr-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ═══ SEARCH HISTORY DROPDOWN ═══ */
+.dp-search-history {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-xl);
+  z-index: 45;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s var(--ease-out);
+  overflow: hidden;
+}
+
+.dp-search-history.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dp-search-history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-tertiary);
+}
+
+.dp-search-history-clear {
+  background: none;
+  border: none;
+  color: var(--blue-600);
+  font-size: 10.5px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+
+.dp-search-history-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.dp-search-history-item:hover {
+  background: var(--bg-hover);
+}
+
+.dp-search-history-item svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* ═══ ONBOARDING ═══ */
+.dp-onboarding {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.dp-onboarding.visible {
+  opacity: 1;
+}
+
+.dp-onboarding-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--bg-card);
+  border-radius: var(--r-2xl);
+  padding: 28px 24px 24px;
+  position: relative;
+  box-shadow: var(--shadow-2xl);
+  transform: scale(0.95);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dp-onboarding.visible .dp-onboarding-card {
+  transform: scale(1);
+}
+
+.dp-onboarding-skip {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--bg-subtle);
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--r-full);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.dp-onboarding-slides {
+  position: relative;
+  min-height: 220px;
+  margin-bottom: 16px;
+}
+
+.dp-onboarding-slide {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.35s var(--ease-out);
+  pointer-events: none;
+}
+
+.dp-onboarding-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.dp-onboarding-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 24px;
+  background: var(--blue-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  box-shadow: var(--shadow-blue-lg);
+}
+
+.dp-onboarding-icon svg {
+  width: 34px;
+  height: 34px;
+  stroke: #FFFFFF;
+}
+
+.dp-onboarding-slide h3 {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.4px;
+}
+
+.dp-onboarding-slide p {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.dp-onboarding-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.dp-onboarding-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-default);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dp-onboarding-dot.active {
+  width: 22px;
+  background: var(--blue-600);
+}
+
+.dp-onboarding-next {
+  width: 100%;
+  height: 50px;
+  background: var(--blue-gradient);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: var(--shadow-blue);
+  letter-spacing: -0.1px;
+}
+
+.dp-onboarding-next:active {
+  transform: scale(0.98);
+}
+
+/* ═══ CONFETTI ═══ */
+.confetti-piece {
+  z-index: 9999;
+  position: fixed;
+  pointer-events: none;
+}
+
+/* ═══ ORDER PROGRESS BAR ═══ */
+.dp-order-progress {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 14px 12px 10px;
+  margin: 0 0 12px 0;
+  background: var(--bg-subtle);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.dp-order-progress-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.dp-order-progress-step.active {
+  opacity: 1;
+}
+
+.dp-order-progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  border: 2px solid var(--bg-card);
+  transition: all 0.3s ease;
+}
+
+.dp-order-progress-step.active .dp-order-progress-dot {
+  background: var(--blue-600);
+  box-shadow: 0 0 0 3px var(--blue-50);
+}
+
+.dp-order-progress-step span {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.dp-order-progress-step.active span {
+  color: var(--blue-600);
+}
+
+.dp-order-progress-line {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 2px;
+  background: var(--border-default);
+  margin: 0 -4px 18px;
+  transition: background 0.3s ease;
+}
+
+.dp-order-progress-line.active {
+  background: var(--blue-600);
+}
+
+/* ═══ WEB SHARE BUTTON ═══ */
+.dp-share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 38px;
+  margin-top: 10px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-default);
+  border-radius: var(--r-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.dp-share-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+.dp-share-btn:active {
+  transform: scale(0.98);
+}
+
+.dp-share-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+}
+
+/* ═══ ENHANCED EMPTY STATES ═══ */
+.dp-empty-enhanced .empty-cart-icon,
+.dp-empty-enhanced .empty-orders-icon,
+.dp-empty-enhanced .empty-tx-icon,
+.dp-empty-enhanced .empty-state-icon,
+.empty-cart.dp-empty-enhanced .empty-cart-icon,
+.empty-orders.dp-empty-enhanced .empty-orders-icon,
+.empty-tx.dp-empty-enhanced .empty-tx-icon,
+.empty-state.dp-empty-enhanced .empty-state-icon {
+  animation: dp-empty-bounce 2.5s ease-in-out infinite;
+}
+
+@keyframes dp-empty-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ═══ SWIPE-TO-DELETE (cart) ═══ */
+.cart-card {
+  will-change: transform;
+}
+
+@media (hover: none) {
+  .cart-card {
+    transition: transform 0.3s var(--ease-out), opacity 0.3s ease;
+  }
+}
+
+/* ═══ DARK MODE ADJUSTMENTS ═══ */
+html[data-theme="dark"] .dp-search-history {
+  background: var(--bg-card);
+}
+
+html[data-theme="dark"] .dp-search-history-item:hover {
+  background: var(--bg-hover);
+}
+
+html[data-theme="dark"] .dp-onboarding-card {
+  background: var(--bg-card);
+}
+
+html[data-theme="dark"] .dp-ptr-indicator {
+  background: var(--bg-card);
+  border-color: var(--border-default);
+}
+
+html[data-theme="dark"] .dp-share-btn {
+  background: var(--bg-subtle);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .dp-order-progress {
+  background: var(--bg-subtle);
+  border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .dp-order-progress-dot {
+  border-color: var(--bg-card);
+}
