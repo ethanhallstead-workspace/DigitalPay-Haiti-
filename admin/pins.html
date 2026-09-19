@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#00B4FF">
+  <script>(function(){try{var t=localStorage.getItem('dp_theme')||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <title>Coffre PINs — DigitalPay Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/site.webmanifest">
+  <style>
+    :root {
+      --bg-page: #F5F7FB; --bg-card: #FFFFFF; --bg-subtle: #F0F4F9; --bg-hover: #F8FAFC;
+      --bg-glass: rgba(245, 247, 251, 0.72);
+      --border-subtle: #EDF1F7; --border-default: #E1E8F0; --border-strong: #C7D2E0;
+      --text-primary: #0A1633; --text-secondary: #4A5568; --text-tertiary: #8B94A7; --text-quaternary: #B5BDCA;
+      --blue-25: #F0F9FF; --blue-50: #E0F2FE; --blue-100: #BAE6FD; --blue-200: #7DD3FC;
+      --blue-400: #38BDF8; --blue-500: #00B4FF; --blue-600: #0055FF; --blue-700: #003BCC;
+      --blue-gradient: linear-gradient(135deg, #00B4FF 0%, #0055FF 100%);
+      --success: #059669; --success-bg: #ECFDF5; --success-border: #A7F3D0;
+      --danger: #DC2626; --danger-bg: #FEF2F2; --danger-border: #FECACA;
+      --warning: #D97706; --warning-bg: #FFFBEB;
+      --gold: #F59E0B;
+      --r-xs: 6px; --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-2xl: 28px; --r-3xl: 36px; --r-full: 9999px;
+      --shadow-2xs: 0 1px 1px rgba(10, 22, 51, 0.03);
+      --shadow-xs: 0 1px 2px rgba(10, 22, 51, 0.04), 0 1px 1px rgba(10, 22, 51, 0.02);
+      --shadow-sm: 0 2px 4px rgba(10, 22, 51, 0.04), 0 1px 2px rgba(10, 22, 51, 0.03);
+      --shadow-md: 0 4px 8px rgba(10, 22, 51, 0.05), 0 2px 4px rgba(10, 22, 51, 0.03);
+      --shadow-lg: 0 8px 16px rgba(10, 22, 51, 0.06), 0 4px 8px rgba(10, 22, 51, 0.04);
+      --shadow-xl: 0 16px 32px rgba(10, 22, 51, 0.08), 0 8px 16px rgba(10, 22, 51, 0.04);
+      --shadow-2xl: 0 28px 56px rgba(10, 22, 51, 0.12), 0 12px 24px rgba(10, 22, 51, 0.06);
+      --shadow-blue: 0 4px 12px rgba(0, 85, 255, 0.22), 0 10px 28px rgba(0, 85, 255, 0.14);
+      --shadow-blue-lg: 0 8px 20px rgba(0, 85, 255, 0.28), 0 16px 40px rgba(0, 85, 255, 0.16);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { background: var(--bg-page); color: var(--text-primary); font-family: var(--font); font-size: 14px; line-height: 1.5; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; opacity: 1; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+
+    .app-shell { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg-page); position: relative; display: flex; flex-direction: column; border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
+
+    .twofa-screen { position: fixed; inset: 0; z-index: 200; background: var(--bg-page); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+    .twofa-shell { width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+    .twofa-icon { width: 72px; height: 72px; border-radius: 24px; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-blue-lg); position: relative; }
+    .twofa-icon::after { content: ''; position: absolute; inset: -8px; border-radius: 32px; background: var(--blue-gradient); opacity: 0.15; z-index: -1; }
+    .twofa-icon svg { width: 34px; height: 34px; stroke: #FFFFFF; stroke-width: 2; fill: none; }
+    .twofa-title { font-size: 22px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.6px; line-height: 1.2; }
+    .twofa-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.55; max-width: 340px; }
+    .twofa-desc strong { color: var(--text-primary); font-family: monospace; font-size: 12.5px; background: var(--bg-subtle); padding: 2px 8px; border-radius: var(--r-xs); }
+    .twofa-dots { display: flex; gap: 5px; justify-content: center; margin: 8px 0; width: 100%; max-width: 400px; }
+    .twofa-dot { flex: 1; min-width: 0; max-width: 44px; height: 56px; background: var(--bg-card); border: 1.5px solid var(--border-default); border-radius: var(--r-md); font-size: 22px; font-weight: 900; color: var(--text-primary); text-align: center; outline: none; font-family: inherit; transition: all 0.2s var(--ease-out); padding: 0; }
+    .twofa-dot:focus { border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); background: #FFFFFF; }
+    .twofa-dot.filled { background: var(--blue-50); border-color: var(--blue-200); color: var(--blue-700); }
+    .twofa-btn { width: 100%; height: 54px; background: var(--blue-gradient); color: #FFFFFF; border: none; border-radius: var(--r-md); font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-blue); transition: all 0.2s var(--ease-out); display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: -0.1px; }
+    .twofa-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-blue-lg); }
+    .twofa-btn:active { transform: scale(0.985); }
+    .twofa-cancel { background: none; border: none; color: var(--danger); font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 8px 16px; }
+    .twofa-loader { display: none; flex-direction: column; align-items: center; gap: 14px; }
+    .twofa-loader.visible { display: flex; }
+    .twofa-spinner { width: 40px; height: 40px; border: 3px solid var(--border-default); border-top-color: var(--blue-600); border-radius: 50%; animation: dpSpin 0.8s linear infinite; }
+    @keyframes dpSpin { to { transform: rotate(360deg); } }
+
+    .site-header { position: sticky; top: 0; z-index: 40; background: var(--bg-glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-bottom: 1px solid transparent; padding: 14px 18px 8px; transition: all 0.3s var(--ease-out); }
+    .site-header.scrolled { border-bottom-color: var(--border-subtle); padding: 10px 18px 8px; box-shadow: var(--shadow-xs); }
+    .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; margin-bottom: 10px; }
+    .brand-group { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand-logo { height: 30px; width: auto; max-width: 120px; object-fit: contain; display: block; }
+    .admin-tag { background: var(--text-primary); color: #FFFFFF; font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.6px; }
+    .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .icon-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border-default); display: flex; align-items: center; justify-content: center; color: var(--text-primary); cursor: pointer; position: relative; text-decoration: none; transition: all 0.2s var(--ease-out); box-shadow: var(--shadow-2xs); flex-shrink: 0; }
+    .icon-btn:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+    .icon-btn:active { transform: scale(0.9); }
+    .icon-btn svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    .admin-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+    .admin-tabs::-webkit-scrollbar { display: none; }
+    .tab-pill { background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-secondary); padding: 8px 13px; border-radius: var(--r-full); font-size: 11.5px; font-weight: 700; white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: inherit; transition: all 0.2s var(--ease-out); flex-shrink: 0; box-shadow: var(--shadow-2xs); text-decoration: none; }
+    .tab-pill:active { transform: scale(0.95); }
+    .tab-pill svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .tab-pill.active { background: var(--text-primary); border-color: var(--text-primary); color: #FFFFFF; box-shadow: 0 6px 16px rgba(10, 22, 51, 0.22); }
+    .tab-count { background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: var(--r-full); font-size: 9.5px; font-weight: 800; min-width: 16px; text-align: center; }
+    .tab-pill.active .tab-count { background: var(--blue-600); color: #FFFFFF; }
+
+    .pins-main { padding: 18px 18px 24px; flex: 1; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 14px; box-shadow: var(--shadow-xs); position: relative; overflow: hidden; }
+    .stat-card::before { content: ''; position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: radial-gradient(circle, rgba(0, 85, 255, 0.05) 0%, transparent 70%); }
+    .stat-label { font-size: 10px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .stat-value { font-size: 24px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.8px; line-height: 1; }
+    .stat-value.green { color: var(--success); }
+    .stat-value.red { color: var(--danger); }
+    .stat-value.blue { color: var(--blue-600); }
+    .stat-foot { font-size: 10.5px; color: var(--text-tertiary); font-weight: 600; margin-top: 6px; }
+
+    .card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: 18px; box-shadow: var(--shadow-xs); margin-bottom: 16px; }
+    .card-title { font-size: 15px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .card-title svg { width: 16px; height: 16px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; }
+    .card-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; }
+
+    .field-label { font-size: 10.5px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px; }
+    .admin-select { width: 100%; height: 46px; background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--r-md); padding: 0 40px 0 14px; font-size: 13.5px; font-weight: 700; color: var(--text-primary); outline: none; font-family: inherit; margin-bottom: 12px; transition: all 0.15s ease; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%238B94A7%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+    .admin-select:focus { background-color: #FFFFFF; border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); }
+    .admin-textarea { width: 100%; height: 140px; background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--r-md); padding: 12px 14px; font-size: 12.5px; font-family: 'SF Mono', 'Monaco', monospace; font-weight: 600; color: var(--text-primary); outline: none; resize: vertical; margin-bottom: 14px; line-height: 1.7; transition: all 0.15s ease; letter-spacing: 0.3px; }
+    .admin-textarea:focus { background: #FFFFFF; border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); }
+
+    .textarea-meta { display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: 700; color: var(--text-tertiary); margin: -8px 0 12px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .textarea-meta .count { color: var(--blue-600); }
+
+    .btn-primary-action { width: 100%; height: 50px; background: var(--blue-gradient); color: #FFFFFF; border: none; border-radius: var(--r-md); font-size: 13.5px; font-weight: 800; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-blue); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s var(--ease-out); letter-spacing: -0.1px; position: relative; overflow: hidden; }
+    .btn-primary-action:hover { transform: translateY(-1px); box-shadow: var(--shadow-blue-lg); }
+    .btn-primary-action:active { transform: scale(0.985); }
+    .btn-primary-action:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; transform: none; }
+    .btn-primary-action svg { width: 16px; height: 16px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+
+    .stock-matrix { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .stock-chip { background: var(--bg-subtle); border: 1.5px solid transparent; border-radius: var(--r-md); padding: 12px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.18s var(--ease-out); font-family: inherit; }
+    .stock-chip:hover { background: var(--bg-hover); border-color: var(--border-default); }
+    .stock-chip:active { transform: scale(0.98); }
+    .stock-chip.active { background: var(--blue-50); border-color: var(--blue-600); box-shadow: 0 0 0 1px var(--blue-600); }
+    .stock-chip-info { display: flex; flex-direction: column; gap: 2px; text-align: left; }
+    .stock-chip-name { font-size: 12px; font-weight: 800; color: var(--text-primary); line-height: 1.2; }
+    .stock-chip-sub { font-size: 9.5px; font-weight: 700; color: var(--text-tertiary); }
+    .stock-chip-badge { font-size: 12px; font-weight: 900; padding: 4px 9px; border-radius: var(--r-full); min-width: 34px; text-align: center; }
+    .stock-chip-badge.ok { background: var(--success-bg); color: var(--success); }
+    .stock-chip-badge.low { background: var(--warning-bg); color: var(--warning); }
+    .stock-chip-badge.empty { background: var(--danger-bg); color: var(--danger); }
+
+    .filters-bar { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; padding-bottom: 2px; }
+    .filters-bar::-webkit-scrollbar { display: none; }
+    .filter-pill { background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-secondary); padding: 7px 14px; border-radius: var(--r-full); font-size: 11.5px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; transition: all 0.2s ease; flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
+    .filter-pill.active { background: var(--text-primary); border-color: var(--text-primary); color: #FFFFFF; }
+    .filter-pill-count { background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: var(--r-full); font-size: 9.5px; font-weight: 800; min-width: 16px; text-align: center; }
+    .filter-pill.active .filter-pill-count { background: var(--blue-600); color: #FFFFFF; }
+
+    .search-wrap { position: relative; margin-bottom: 12px; }
+    .search-input { width: 100%; height: 46px; background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--r-md); padding: 0 14px 0 44px; font-size: 13px; font-weight: 600; color: var(--text-primary); outline: none; font-family: inherit; transition: all 0.2s ease; box-shadow: var(--shadow-2xs); }
+    .search-input:focus { border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); background: #FFFFFF; }
+    .search-input::placeholder { color: var(--text-quaternary); font-weight: 500; }
+    .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); pointer-events: none; }
+    .search-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    .pin-row { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; transition: all 0.2s ease; }
+    .pin-row:hover { border-color: var(--border-default); box-shadow: var(--shadow-sm); }
+    .pin-row.sold { opacity: 0.72; }
+    .pin-info { flex: 1; min-width: 0; }
+    .pin-code-text { font-family: 'SF Mono', 'Monaco', monospace; font-size: 13.5px; font-weight: 900; color: var(--blue-600); letter-spacing: 1.2px; word-break: break-all; line-height: 1.3; }
+    .pin-row.sold .pin-code-text { color: var(--text-secondary); text-decoration: line-through; text-decoration-color: var(--text-quaternary); }
+    .pin-meta { font-size: 10.5px; color: var(--text-tertiary); font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .pin-pack-tag { background: var(--bg-subtle); padding: 2px 8px; border-radius: var(--r-xs); color: var(--text-secondary); font-weight: 800; font-size: 9.5px; }
+    .pin-status-tag { padding: 2px 8px; border-radius: var(--r-xs); font-weight: 800; text-transform: uppercase; font-size: 9px; letter-spacing: 0.4px; }
+    .pin-status-tag.disponible { background: var(--success-bg); color: var(--success); }
+    .pin-status-tag.vendu { background: var(--danger-bg); color: var(--danger); }
+
+    .pin-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .btn-pin { height: 34px; border-radius: var(--r-sm); font-size: 11px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-family: inherit; transition: all 0.15s ease; padding: 0 11px; letter-spacing: -0.1px; }
+    .btn-pin svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .btn-pin-copy { background: var(--blue-50); color: var(--blue-700); border: 1px solid var(--blue-200); }
+    .btn-pin-copy:hover { background: var(--blue-100); }
+    .btn-pin-copy:active { transform: scale(0.95); }
+    .btn-pin-delete { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); width: 34px; padding: 0; }
+    .btn-pin-delete:hover { background: #FEE2E2; }
+    .btn-pin-delete:active { transform: scale(0.95); }
+
+    .empty-box { text-align: center; padding: 50px 20px; }
+    .empty-box-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .empty-box-icon svg { width: 28px; height: 28px; stroke: var(--text-tertiary); stroke-width: 1.8; fill: none; }
+    .empty-box-title { font-size: 14px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+    .empty-box-sub { font-size: 12px; color: var(--text-secondary); max-width: 280px; margin: 0 auto; line-height: 1.5; }
+
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 300; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); display: flex; align-items: flex-end; justify-content: center; }
+    .modal-backdrop.active { opacity: 1; visibility: visible; }
+    .modal-sheet { width: 100%; max-width: 480px; max-height: 92vh; background: var(--bg-card); border-radius: var(--r-3xl) var(--r-3xl) 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.45s var(--ease-out); overflow: hidden; box-shadow: var(--shadow-2xl); }
+    .modal-backdrop.active .modal-sheet { transform: translateY(0); }
+    .modal-grabber { width: 40px; height: 4px; background: var(--border-strong); border-radius: var(--r-full); margin: 10px auto 4px; opacity: 0.6; }
+    .modal-head { padding: 12px 20px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border-subtle); }
+    .modal-title { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; line-height: 1.3; }
+    .modal-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; flex-shrink: 0; font-family: inherit; }
+    .modal-close svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .modal-body { padding: 18px 20px; overflow-y: auto; flex: 1; }
+    .modal-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+    .modal-desc strong { color: var(--text-primary); font-weight: 800; }
+    .modal-code-box { background: var(--bg-subtle); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: 14px; margin: 14px 0; text-align: center; }
+    .modal-code-text { font-family: 'SF Mono', 'Monaco', monospace; font-size: 15px; font-weight: 900; color: var(--blue-600); letter-spacing: 1.5px; word-break: break-all; }
+    .modal-actions { display: flex; gap: 8px; padding: 16px 20px 20px; border-top: 1px solid var(--border-subtle); }
+    .btn-modal { flex: 1; height: 46px; border-radius: var(--r-md); border: none; font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit; transition: all 0.15s ease; }
+    .btn-modal-cancel { background: var(--bg-subtle); color: var(--text-secondary); }
+    .btn-modal-cancel:hover { background: var(--border-subtle); }
+    .btn-modal-danger { background: var(--danger); color: #FFFFFF; }
+    .btn-modal-danger:hover { background: #B91C1C; }
+
+    .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transform: scale(0); animation: ripple-anim 0.6s var(--ease-out); pointer-events: none; }
+    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+    #toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 500; width: calc(100% - 32px); max-width: 400px; pointer-events: none; }
+    .toast { background: var(--text-primary); color: #FFFFFF; padding: 14px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); transform: translateY(-20px); opacity: 0; transition: all 0.35s var(--ease-spring); overflow: hidden; position: relative; }
+    .toast::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; background: var(--blue-600); width: 100%; transform-origin: left; animation: toast-progress 2.6s linear forwards; }
+    @keyframes toast-progress { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success::after { background: #34D399; }
+    .toast.danger { background: #7F1D1D; }
+    .toast.danger::after { background: #FCA5A5; }
+    .toast.warning { background: #78350F; }
+    .toast.warning::after { background: #FCD34D; }
+    .toast.info { background: #1E3A8A; }
+    .toast.info::after { background: #93C5FD; }
+    .toast-icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+    .toast-icon svg { width: 18px; height: 18px; stroke-width: 2.5; fill: none; }
+    .toast.success .toast-icon svg { stroke: #34D399; }
+    .toast.danger .toast-icon svg { stroke: #FCA5A5; }
+    .toast.warning .toast-icon svg { stroke: #FCD34D; }
+    .toast.info .toast-icon svg { stroke: #93C5FD; }
+    .toast-msg { flex: 1; line-height: 1.35; }
+
+    .sidebar-overlay { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.55); backdrop-filter: blur(8px); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); }
+    .sidebar-overlay.active { opacity: 1; visibility: visible; }
+    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(85vw, 360px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
+    .sidebar-overlay.active .sidebar-drawer { transform: translateX(0); }
+    .sidebar-content { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+    .sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 20px 18px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-card); }
+    .sidebar-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .sidebar-logo-wrap { width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 100%); border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 85, 255, 0.1); }
+    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 7px; }
+    .sidebar-brand-name { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; line-height: 1.1; text-transform: uppercase; }
+    .sidebar-brand-sub { font-size: 10.5px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 3px; }
+    .sidebar-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid transparent; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all 0.18s var(--ease-out); flex-shrink: 0; }
+    .sidebar-close:hover { background: var(--bg-hover); border-color: var(--border-default); color: var(--text-primary); }
+    .sidebar-close:active { transform: scale(0.92); }
+    .sidebar-close svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+
+    .sidebar-user-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; margin: 16px 14px 10px; background: var(--bg-card); border: 1.5px solid var(--blue-200); border-radius: 18px; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 85, 255, 0.06); }
+    .sidebar-user-avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: -0.3px; flex-shrink: 0; box-shadow: 0 3px 12px rgba(0, 85, 255, 0.3); border: 2px solid #FFFFFF; }
+    .sidebar-user-info { flex: 1; min-width: 0; }
+    .sidebar-user-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--blue-600); margin-bottom: 4px; }
+    .sidebar-user-email { font-size: 13px; font-weight: 700; color: var(--text-primary); word-break: break-all; line-height: 1.35; letter-spacing: -0.2px; }
+
+    .sidebar-label { display: flex; align-items: center; gap: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-tertiary); margin: 20px 18px 10px; flex-shrink: 0; }
+    .sidebar-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%); }
+
+    .sidebar-body { padding: 0 14px 24px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .sidebar-body::-webkit-scrollbar { width: 4px; }
+
+    .sidebar-nav { display: flex; flex-direction: column; gap: 8px; }
+
+    .sidebar-nav-link { position: relative; display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; background: var(--bg-card); border: 1.5px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; font-size: 14.5px; font-weight: 700; width: 100%; text-align: left; cursor: pointer; transition: all 0.18s var(--ease-out); letter-spacing: -0.2px; box-shadow: 0 1px 3px rgba(10, 22, 51, 0.04); font-family: inherit; }
+    .sidebar-nav-link:hover { border-color: var(--border-default); box-shadow: 0 3px 10px rgba(10, 22, 51, 0.07); transform: translateY(-1px); }
+    .sidebar-nav-link:active { transform: translateY(0) scale(0.99); }
+    .sidebar-nav-link svg { width: 20px; height: 20px; stroke: var(--blue-600); stroke-width: 2; fill: none; flex-shrink: 0; padding: 11px; background: var(--blue-50); border-radius: 12px; box-sizing: content-box; transition: all 0.2s var(--ease-out); }
+    .sidebar-nav-link:hover svg { background: var(--blue-100); transform: scale(1.04); }
+    .sidebar-nav-link.active { background: var(--bg-card); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500), 0 4px 14px rgba(0, 85, 255, 0.12); }
+    .sidebar-nav-link.active svg { background: var(--blue-100); stroke: var(--blue-700); stroke-width: 2.2; }
+    .sidebar-nav-link.active::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--blue-600); margin-left: auto; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.15); }
+
+    .sidebar-nav-link.external::after { content: '↗'; width: auto; height: auto; background: none; border-radius: 0; box-shadow: none; font-size: 14px; color: var(--text-tertiary); opacity: 0.6; margin-left: auto; }
+
+    .sidebar-nav-link.danger { color: var(--danger); margin-top: 8px; border-color: var(--danger-border); }
+    .sidebar-nav-link.danger::before { content: ''; position: absolute; top: -12px; left: 8px; right: 8px; height: 1px; background: var(--border-subtle); }
+    .sidebar-nav-link.danger::after { display: none; }
+    .sidebar-nav-link.danger svg { stroke: var(--danger); background: var(--danger-bg); }
+    .sidebar-nav-link.danger:hover { background: var(--danger-bg); border-color: var(--danger); box-shadow: 0 3px 10px rgba(220, 38, 38, 0.15); }
+    .sidebar-nav-link.danger:hover svg { background: #FEE2E2; }
+
+    /* DARK MODE */
+    html[data-theme="dark"] .sidebar-content { background: var(--bg-card); }
+    html[data-theme="dark"] .sidebar-head { background: var(--bg-card); }
+    html[data-theme="dark"] .sidebar-user-card { background: var(--bg-card); border-color: rgba(0, 180, 255, 0.35); }
+    html[data-theme="dark"] .sidebar-user-card .sidebar-user-avatar { border-color: var(--bg-card); }
+    html[data-theme="dark"] .sidebar-nav-link { background: var(--bg-card); border-color: var(--border-subtle); }
+    html[data-theme="dark"] .sidebar-nav-link svg { background: var(--blue-50); stroke: var(--blue-600); }
+    html[data-theme="dark"] .sidebar-nav-link.active { border-color: var(--blue-500); color: var(--blue-600); box-shadow: 0 0 0 1px var(--blue-500), 0 4px 14px rgba(0, 180, 255, 0.15); }
+    html[data-theme="dark"] .sidebar-nav-link.danger { border-color: var(--danger-border); }
+    html[data-theme="dark"] .sidebar-nav-link.danger svg { background: var(--danger-bg); }
+  </style>
+
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+</head>
+<body>
+
+  <div id="toast-container"></div>
+
+  <div class="twofa-screen" id="twofa-screen">
+    <div class="twofa-shell">
+      <div class="twofa-loader" id="twofa-loader">
+        <div class="twofa-spinner"></div>
+        <div style="font-size:13px;font-weight:700;color:var(--text-secondary);">Vérification de la session...</div>
+      </div>
+
+      <div id="twofa-form-zone" style="display:none;flex-direction:column;align-items:center;gap:20px;">
+        <div class="twofa-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h1 class="twofa-title">Coffre-fort PINs</h1>
+        <p class="twofa-desc">Accès réservé à <strong>ethanhallstead@gmail.com</strong>.<br>Entrez le code d'administration à 8 chiffres.</p>
+        <div class="twofa-dots">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-1" inputmode="numeric" autocomplete="off">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-2" inputmode="numeric" autocomplete="off">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-3" inputmode="numeric" autocomplete="off">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-4" inputmode="numeric" autocomplete="off">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-5" inputmode="numeric" autocomplete="off">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-6" inputmode="numeric" autocomplete="off">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-7" inputmode="numeric" autocomplete="off">
+          <input type="tel" class="twofa-dot" maxlength="1" id="code-8" inputmode="numeric" autocomplete="off">
+        </div>
+        <button class="twofa-btn" onclick="verifyTwoFA()">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Déverrouiller le coffre
+        </button>
+        <button class="twofa-cancel" onclick="cancelTwoFA()">Annuler et quitter</button>
+      </div>
+
+      <div id="twofa-error-zone" style="display:none;flex-direction:column;align-items:center;gap:20px;">
+        <div class="twofa-icon" style="background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h1 class="twofa-title" style="color: var(--danger);">Session expirée</h1>
+        <p class="twofa-desc">Vous devez vous reconnecter avec le compte administrateur pour accéder au coffre-fort.</p>
+        <a href="../authentification/login.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:54px;background:var(--blue-gradient);color:#FFFFFF;border-radius:var(--r-md);font-size:14px;font-weight:800;text-decoration:none;box-shadow:var(--shadow-blue);font-family:inherit;">Se reconnecter</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell" id="pins-shell" style="display: none;">
+
+    <header class="site-header" id="site-header">
+      <div class="header-top">
+        <div class="brand-group" onclick="window.location.href='index.html'">
+          <img src="../assets/logo.png" alt="DigitalPay" class="brand-logo">
+          <span class="admin-tag">Console</span>
+        </div>
+        <div class="header-actions">
+          <a href="../index.html" class="icon-btn" title="Boutique">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          </a>
+          <button class="icon-btn" onclick="openSidebar()" aria-label="Menu">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <a href="index.html" class="tab-pill">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="pins.html" class="tab-pill active">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span>Coffre PINs</span>
+          <span class="tab-count" id="tab-count-pins">0</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="pins-main">
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Disponibles</div>
+          <div class="stat-value green" id="stat-available">0</div>
+          <div class="stat-foot">Prêts à la vente</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Vendus</div>
+          <div class="stat-value blue" id="stat-sold">0</div>
+          <div class="stat-foot">Historique total</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg>
+          <span>Injecter de nouveaux PINs</span>
+        </div>
+        <div class="card-desc">Collez les codes Hype Games (un par ligne). Ils seront distribués automatiquement aux acheteurs par ordre d'achat.</div>
+
+        <label class="field-label">Pack cible</label>
+        <select class="admin-select" id="pack-select">
+          <option value="ff_110">110 + 10 Diamants (157 HTG)</option>
+          <option value="ff_310">310 + 31 Diamants (471 HTG)</option>
+          <option value="ff_520">520 + 52 Diamants (775 HTG)</option>
+          <option value="ff_1060">1,060 + 106 Diamants (1,550 HTG)</option>
+          <option value="ff_2180">2,180 + 218 Diamants (3,100 HTG)</option>
+          <option value="ff_5600">5,600 + 560 Diamants (7,750 HTG)</option>
+        </select>
+
+        <label class="field-label">Codes PINs (un par ligne)</label>
+        <textarea class="admin-textarea" id="codes-input" placeholder="HYPE-1037-QUAM-1936&#10;HYPE-8392-4410-9281&#10;HYPE-2810-SHWI-2619" oninput="updateCodesCount()"></textarea>
+        <div class="textarea-meta">
+          <span>Format libre — un code par ligne</span>
+          <span class="count" id="codes-count">0 codes</span>
+        </div>
+
+        <button class="btn-primary-action" id="btn-inject" onclick="injectPins()">
+          <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg>
+          <span>Injecter dans le coffre</span>
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          <span>Stock par pack</span>
+        </div>
+        <div class="card-desc">Cliquez sur un pack pour filtrer la liste ci-dessous.</div>
+        <div class="stock-matrix" id="stock-matrix"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span>Coffre-fort complet</span>
+        </div>
+
+        <div class="filters-bar" id="status-filters">
+          <button class="filter-pill active" data-status="all" onclick="setStatusFilter('all', this)">
+            Tous <span class="filter-pill-count" id="cnt-all">0</span>
+          </button>
+          <button class="filter-pill" data-status="disponible" onclick="setStatusFilter('disponible', this)">
+            Disponibles <span class="filter-pill-count" id="cnt-available">0</span>
+          </button>
+          <button class="filter-pill" data-status="vendu" onclick="setStatusFilter('vendu', this)">
+            Vendus <span class="filter-pill-count" id="cnt-sold">0</span>
+          </button>
+        </div>
+
+        <div class="search-wrap">
+          <div class="search-icon"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"/></svg></div>
+          <input type="text" class="search-input" id="pin-search" placeholder="Rechercher un code ou une référence..." oninput="filterPins(this.value)">
+        </div>
+
+        <div id="pins-list">
+          <div class="empty-box"><div class="empty-box-title">Chargement...</div></div>
+        </div>
+      </div>
+
+    </main>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()">
+      <aside class="sidebar-drawer" onclick="event.stopPropagation()">
+        <div class="sidebar-content">
+          <div class="sidebar-head">
+            <div class="sidebar-brand">
+              <div class="sidebar-logo-wrap"><img src="../assets/logo.png" alt="DigitalPay"></div>
+              <div>
+                <div class="sidebar-brand-name">DigitalPay</div>
+                <div class="sidebar-brand-sub">Console Admin</div>
+              </div>
+            </div>
+            <button class="sidebar-close" onclick="closeSidebar()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+          </div>
+
+          <div class="sidebar-user-card">
+            <div class="sidebar-user-avatar">AD</div>
+            <div class="sidebar-user-info">
+              <div class="sidebar-user-label">Administrateur</div>
+              <div class="sidebar-user-email">ethanhallstead@gmail.com</div>
+            </div>
+          </div>
+
+          <div class="sidebar-body">
+            <div class="sidebar-label">Navigation admin</div>
+            <nav class="sidebar-nav">
+              <a href="index.html" class="sidebar-nav-link">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                <span>Tableau de bord</span>
+              </a>
+              <a href="pins.html" class="sidebar-nav-link active">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                <span>Coffre PINs Free Fire</span>
+              </a>
+              <a href="../index.html" class="sidebar-nav-link external">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                <span>Retour boutique</span>
+              </a>
+
+              <button class="sidebar-nav-link danger" onclick="performAdminSignOut()">
+                <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Se déconnecter</span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="modal-backdrop" id="modal-backdrop">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-grabber"></div>
+        <div class="modal-head">
+          <div class="modal-title" id="modal-title">Détail</div>
+          <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-desc" id="modal-desc"></div>
+          <div class="modal-code-box" id="modal-code-box" style="display:none;">
+            <div class="modal-code-text" id="modal-code-text"></div>
+          </div>
+        </div>
+        <div class="modal-actions" id="modal-actions">
+          <button class="btn-modal btn-modal-cancel" onclick="closeModal()">Annuler</button>
+          <button class="btn-modal btn-modal-danger" id="modal-confirm-btn" onclick="confirmModal()">Confirmer</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.body.style.opacity = '1';
+    document.body.classList.add('ready');
+    setInterval(function() {
+      if (document.body.style.opacity === '0') document.body.style.opacity = '1';
+    }, 2000);
+  </script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAAOQkkCgGdPvP31MrSp7ap9P20mAtQxBY",
+      authDomain: "digitalpay-officiel-v2.firebaseapp.com",
+      projectId: "digitalpay-officiel-v2",
+      storageBucket: "digitalpay-officiel-v2.firebasestorage.app",
+      messagingSenderId: "1030926360593",
+      appId: "1:1030926360593:web:c6e0f502af4ef6b76711b0"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const STRICT_ADMIN_EMAIL = 'ethanhallstead@gmail.com';
+    const SALT = 'DIGITALPAY_SECURE_SALT_2026_';
+    const ADMIN_CODE = '14032010';
+
+    function universalHash(str) {
+      let h1 = 5381, h2 = 52711;
+      for (let i = 0; i < str.length; i++) {
+        const c = str.charCodeAt(i);
+        h1 = (h1 * 33) ^ c;
+        h2 = (h2 * 33) ^ c;
+      }
+      return Math.abs(h1 >>> 0).toString(16) + Math.abs(h2 >>> 0).toString(16);
+    }
+    const TARGET_HASH = universalHash(SALT + ADMIN_CODE);
+
+    const PACKS_MAP = {
+      ff_110: { label: '110 + 10', sub: '157 HTG' },
+      ff_310: { label: '310 + 31', sub: '471 HTG' },
+      ff_520: { label: '520 + 52', sub: '775 HTG' },
+      ff_1060: { label: '1,060 + 106', sub: '1,550 HTG' },
+      ff_2180: { label: '2,180 + 218', sub: '3,100 HTG' },
+      ff_5600: { label: '5,600 + 560', sub: '7,750 HTG' }
+    };
+
+    const STATE = {
+      user: null,
+      allPins: [],
+      statusFilter: 'all',
+      packFilter: 'all',
+      searchQuery: '',
+      confirmCallback: null,
+      unsubs: [],
+      booted: false,
+      searchTimer: null
+    };
+
+    function escapeHtml(str) {
+      if (str === undefined || str === null) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const config = {
+        success: { icon: '<path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>' },
+        danger:  { icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' },
+        warning: { icon: '<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
+        info:    { icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>' }
+      };
+      const c = config[type] || config.success;
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<div class="toast-icon"><svg viewBox="0 0 24 24">${c.icon}</svg></div><div class="toast-msg">${escapeHtml(message)}</div>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('show'));
+      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 350); }, 2600);
+    }
+
+    function vibrate(ms = 8) {
+      if ('vibrate' in navigator) { try { navigator.vibrate(ms); } catch (e) {} }
+    }
+
+    function copyToClipboard(text, successMsg) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => showToast(successMsg, 'success')).catch(() => fallbackCopy(text, successMsg));
+      } else { fallbackCopy(text, successMsg); }
+    }
+
+    function fallbackCopy(text, successMsg) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showToast(successMsg, 'success'); }
+      catch (e) { showToast('Copie impossible', 'danger'); }
+      document.body.removeChild(ta);
+    }
+
+    function extractTimestamp(data) {
+      if (!data) return 0;
+      const v = data.createdAt;
+      if (!v) return 0;
+      if (typeof v.toMillis === 'function') return v.toMillis();
+      if (v.seconds) return v.seconds * 1000;
+      if (typeof v === 'number') return v;
+      return 0;
+    }
+
+    function showTwoFAForm() {
+      document.getElementById('twofa-loader').classList.remove('visible');
+      document.getElementById('twofa-error-zone').style.display = 'none';
+      document.getElementById('twofa-form-zone').style.display = 'flex';
+      setup2FA();
+    }
+
+    function showTwoFAError() {
+      document.getElementById('twofa-loader').classList.remove('visible');
+      document.getElementById('twofa-form-zone').style.display = 'none';
+      document.getElementById('twofa-error-zone').style.display = 'flex';
+    }
+
+    let twofaSetup = false;
+    function setup2FA() {
+      if (twofaSetup) return;
+      twofaSetup = true;
+      const inputs = document.querySelectorAll('.twofa-dot');
+      inputs.forEach((input, idx) => {
+        input.addEventListener('input', (e) => {
+          const v = e.target.value.replace(/\D/g, '').slice(-1);
+          e.target.value = v;
+          e.target.classList.toggle('filled', v.length > 0);
+          if (v && idx < inputs.length - 1) inputs[idx + 1].focus();
+          if (idx === inputs.length - 1 && v) {
+            const allFilled = Array.from(inputs).every(i => i.value);
+            if (allFilled) verifyTwoFA();
+          }
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !e.target.value && idx > 0) inputs[idx - 1].focus();
+        });
+      });
+      setTimeout(() => inputs[0]?.focus(), 200);
+    }
+
+    function verifyTwoFA() {
+      const code = Array.from(document.querySelectorAll('.twofa-dot')).map(i => i.value).join('');
+      if (code.length < 8) { showToast('Entrez les 8 chiffres.', 'warning'); return; }
+      if (universalHash(SALT + code) === TARGET_HASH) {
+        sessionStorage.setItem('dp_admin_session_auth', 'AUTHENTICATED_MASTER');
+        document.getElementById('twofa-screen').style.display = 'none';
+        document.getElementById('pins-shell').style.display = 'flex';
+        showToast('Coffre déverrouillé', 'success');
+        bootVault();
+      } else {
+        showToast('Code incorrect', 'danger');
+        document.querySelectorAll('.twofa-dot').forEach(i => { i.value = ''; i.classList.remove('filled'); });
+        document.querySelector('.twofa-dot')?.focus();
+      }
+    }
+
+    function cancelTwoFA() {
+      auth.signOut().then(() => window.location.href = '../index.html');
+    }
+
+    let authResolved = false;
+    const AUTH_TIMEOUT = setTimeout(function() {
+      if (!authResolved) {
+        console.warn('[Pins] Auth timeout');
+        showTwoFAError();
+      }
+    }, 6000);
+
+    auth.onAuthStateChanged(user => {
+      authResolved = true;
+      clearTimeout(AUTH_TIMEOUT);
+
+      if (!user) { window.location.href = '../authentification/login.html'; return; }
+
+      if (user.email.toLowerCase() !== STRICT_ADMIN_EMAIL.toLowerCase()) {
+        showToast('Accès refusé', 'danger');
+        auth.signOut().then(() => setTimeout(() => window.location.href = '../index.html', 1200));
+        return;
+      }
+
+      STATE.user = user;
+
+      if (sessionStorage.getItem('dp_admin_session_auth') === 'AUTHENTICATED_MASTER') {
+        document.getElementById('twofa-screen').style.display = 'none';
+        document.getElementById('pins-shell').style.display = 'flex';
+        bootVault();
+      } else {
+        showTwoFAForm();
+      }
+    });
+
+    function bootVault() {
+      if (STATE.booted) return;
+      STATE.booted = true;
+      listenPins();
+    }
+
+    function listenPins() {
+      const unsub = db.collection('freefire_pins').onSnapshot(snap => {
+        STATE.allPins = [];
+        snap.forEach(doc => STATE.allPins.push({ ...doc.data(), _id: doc.id }));
+        STATE.allPins.sort((a, b) => extractTimestamp(b) - extractTimestamp(a));
+        updateStats();
+        renderStock();
+        renderFilters();
+        renderPins();
+      }, err => { console.warn('pins listen:', err.code); });
+      STATE.unsubs.push(unsub);
+    }
+
+    function updateStats() {
+      const total = STATE.allPins.length;
+      const available = STATE.allPins.filter(p => p.status === 'disponible').length;
+      const sold = total - available;
+      document.getElementById('stat-available').textContent = available;
+      document.getElementById('stat-sold').textContent = sold;
+      document.getElementById('tab-count-pins').textContent = available;
+      document.getElementById('cnt-all').textContent = total;
+      document.getElementById('cnt-available').textContent = available;
+      document.getElementById('cnt-sold').textContent = sold;
+    }
+
+    function renderStock() {
+      const counts = {};
+      Object.keys(PACKS_MAP).forEach(k => counts[k] = { available: 0, sold: 0 });
+      STATE.allPins.forEach(p => {
+        if (counts[p.packId]) {
+          if (p.status === 'disponible') counts[p.packId].available++;
+          else counts[p.packId].sold++;
+        }
+      });
+
+      const matrix = document.getElementById('stock-matrix');
+      matrix.innerHTML = Object.entries(PACKS_MAP).map(([id, meta]) => {
+        const c = counts[id];
+        const isActive = STATE.packFilter === id;
+        let badgeClass = 'empty';
+        if (c.available > 5) badgeClass = 'ok';
+        else if (c.available > 0) badgeClass = 'low';
+        return `
+          <button class="stock-chip ${isActive ? 'active' : ''}" onclick="togglePackFilter('${id}')">
+            <div class="stock-chip-info">
+              <div class="stock-chip-name">${meta.label}</div>
+              <div class="stock-chip-sub">${meta.sub}</div>
+            </div>
+            <span class="stock-chip-badge ${badgeClass}">${c.available}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function togglePackFilter(packId) {
+      STATE.packFilter = STATE.packFilter === packId ? 'all' : packId;
+      vibrate(5);
+      renderStock();
+      renderPins();
+    }
+
+    function setStatusFilter(status, btn) {
+      STATE.statusFilter = status;
+      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      vibrate(4);
+      renderPins();
+    }
+
+    function renderFilters() {}
+
+    function filterPins(q) {
+      clearTimeout(STATE.searchTimer);
+      STATE.searchTimer = setTimeout(() => {
+        STATE.searchQuery = (q || '').toLowerCase().trim();
+        renderPins();
+      }, 180);
+    }
+
+    function renderPins() {
+      const target = document.getElementById('pins-list');
+      if (!target) return;
+
+      let list = STATE.allPins;
+      if (STATE.statusFilter !== 'all') list = list.filter(p => p.status === STATE.statusFilter);
+      if (STATE.packFilter !== 'all') list = list.filter(p => p.packId === STATE.packFilter);
+      if (STATE.searchQuery) {
+        list = list.filter(p =>
+          (p.pinCode && p.pinCode.toLowerCase().includes(STATE.searchQuery)) ||
+          (p.orderId && p.orderId.toLowerCase().includes(STATE.searchQuery))
+        );
+      }
+
+      if (list.length === 0) {
+        target.innerHTML = `
+          <div class="empty-box">
+            <div class="empty-box-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+            <div class="empty-box-title">Aucun code PIN</div>
+            <div class="empty-box-sub">Aucun code ne correspond aux filtres actuels.</div>
+          </div>
+        `;
+        return;
+      }
+
+      target.innerHTML = list.map(pin => renderPinRow(pin)).join('');
+    }
+
+    function renderPinRow(pin) {
+      const meta = PACKS_MAP[pin.packId] || { label: pin.packId };
+      const isSold = pin.status === 'vendu';
+      const date = new Date(extractTimestamp(pin)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: '2-digit' });
+
+      return `
+        <div class="pin-row ${isSold ? 'sold' : ''}">
+          <div class="pin-info">
+            <div class="pin-code-text">${escapeHtml(pin.pinCode)}</div>
+            <div class="pin-meta">
+              <span class="pin-pack-tag">${escapeHtml(meta.label)}</span>
+              <span class="pin-status-tag ${isSold ? 'vendu' : 'disponible'}">${isSold ? 'Vendu' : 'Dispo'}</span>
+              <span>${escapeHtml(date)}</span>
+              ${pin.orderId ? `<span style="font-family:monospace;">${escapeHtml(pin.orderId)}</span>` : ''}
+            </div>
+          </div>
+          <div class="pin-actions">
+            <button class="btn-pin btn-pin-copy" onclick="copyPin('${escapeHtml(pin.pinCode)}')" title="Copier">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              <span>Copier</span>
+            </button>
+            <button class="btn-pin btn-pin-delete" onclick="promptDeletePin('${escapeHtml(pin._id)}', '${escapeHtml(pin.pinCode)}')" title="Supprimer">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function copyPin(code) {
+      copyToClipboard(code, 'Code PIN copié !');
+      vibrate(6);
+    }
+
+    function updateCodesCount() {
+      const raw = document.getElementById('codes-input').value.trim();
+      const count = raw ? raw.split('\n').map(l => l.trim()).filter(l => l.length > 3).length : 0;
+      document.getElementById('codes-count').textContent = count + (count === 1 ? ' code' : ' codes');
+    }
+
+    async function injectPins() {
+      const packId = document.getElementById('pack-select').value;
+      const raw = document.getElementById('codes-input').value.trim();
+      const btn = document.getElementById('btn-inject');
+
+      if (!raw) { showToast('Entrez au moins un code', 'danger'); return; }
+
+      const codes = raw.split('\n').map(l => l.trim()).filter(l => l.length > 3);
+      if (codes.length === 0) { showToast('Aucun code valide', 'danger'); return; }
+
+      btn.disabled = true;
+      btn.innerHTML = `<span>Injection de ${codes.length} code(s)...</span>`;
+
+      try {
+        const CHUNK_SIZE = 450;
+        let inserted = 0;
+
+        for (let i = 0; i < codes.length; i += CHUNK_SIZE) {
+          const chunk = codes.slice(i, i + CHUNK_SIZE);
+          const batch = db.batch();
+          chunk.forEach(code => {
+            const ref = db.collection('freefire_pins').doc();
+            batch.set(ref, {
+              packId,
+              pinCode: code,
+              status: 'disponible',
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          });
+          await batch.commit();
+          inserted += chunk.length;
+        }
+
+        document.getElementById('codes-input').value = '';
+        updateCodesCount();
+        vibrate(15);
+        showToast(`${inserted} PIN(s) injecté(s) avec succès`, 'success');
+      } catch (e) {
+        showToast('Erreur : ' + e.message, 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg><span>Injecter dans le coffre</span>`;
+      }
+    }
+
+    function promptDeletePin(pinId, pinCode) {
+      openModal({
+        title: 'Supprimer le PIN',
+        desc: 'Confirmez-vous la suppression définitive du code :',
+        codeText: pinCode,
+        confirmLabel: 'Supprimer',
+        danger: true,
+        onConfirm: async () => {
+          try {
+            await db.collection('freefire_pins').doc(pinId).delete();
+            vibrate(10);
+            showToast('Code PIN supprimé', 'success');
+          } catch (e) { showToast('Erreur : ' + e.message, 'danger'); }
+        }
+      });
+    }
+
+    function openModal(opts) {
+      document.getElementById('modal-title').textContent = opts.title || 'Confirmation';
+      document.getElementById('modal-desc').textContent = opts.desc || '';
+      const codeBox = document.getElementById('modal-code-box');
+      const codeText = document.getElementById('modal-code-text');
+      if (opts.codeText) { codeText.textContent = opts.codeText; codeBox.style.display = 'block'; }
+      else { codeBox.style.display = 'none'; }
+
+      const btn = document.getElementById('modal-confirm-btn');
+      btn.textContent = opts.confirmLabel || 'Confirmer';
+      btn.className = 'btn-modal ' + (opts.danger ? 'btn-modal-danger' : 'btn-modal-cancel');
+
+      const actions = document.getElementById('modal-actions');
+      actions.style.display = opts.showActions === false ? 'none' : 'flex';
+
+      STATE.confirmCallback = opts.onConfirm || null;
+      document.getElementById('modal-backdrop').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').classList.remove('active');
+      STATE.confirmCallback = null;
+    }
+
+    function confirmModal() {
+      if (typeof STATE.confirmCallback === 'function') {
+        try { STATE.confirmCallback(); } catch (e) { console.warn(e); }
+      }
+      closeModal();
+    }
+
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'modal-backdrop') closeModal();
+    });
+
+    function openSidebar() {
+      document.getElementById('sidebar-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar-overlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function performAdminSignOut() {
+      sessionStorage.removeItem('dp_admin_session_auth');
+      auth.signOut().then(() => window.location.href = '../index.html');
+    }
+
+    let scrollRaf = null;
+    function initScrollEffects() {
+      const header = document.getElementById('site-header');
+      if (!header) return;
+      window.addEventListener('scroll', () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => {
+          if (window.scrollY > 20) header.classList.add('scrolled');
+          else header.classList.remove('scrolled');
+          scrollRaf = null;
+        });
+      }, { passive: true });
+    }
+
+    function initRipple() {
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-primary-action, .icon-btn, .stock-chip, .twofa-btn');
+        if (btn && !btn.disabled) {
+          const rect = btn.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          const x = (e.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
+          const y = (e.clientY || rect.top + rect.height / 2) - rect.top - size / 2;
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = x + 'px';
+          ripple.style.top = y + 'px';
+          btn.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initScrollEffects();
+      initRipple();
+      updateCodesCount();
+    });
+
+    window.addEventListener('beforeunload', () => {
+      STATE.unsubs.forEach(u => { try { u(); } catch (e) {} });
+      if (STATE.searchTimer) clearTimeout(STATE.searchTimer);
+    });
+  </script>
+  <script src="/assets/js/design-system.js"></script>
+</body>
+</html>
