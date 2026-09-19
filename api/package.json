@@ -1,0 +1,9 @@
+{
+  "name": "digitalpay-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vercel Serverless Functions — DigitalPay Haiti",
+  "dependencies": {
+    "firebase-admin": "^12.6.0"
+  }
+}
