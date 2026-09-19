@@ -23,7 +23,6 @@
 
   <style>
     :root {
-      /* ===== DIGITALPAY HAÏTI v8 — Palette dérivée du logo (cyan → bleu profond) ===== */
       --bg-page: #F5F7FB; --bg-card: #FFFFFF; --bg-subtle: #F0F4F9; --bg-hover: #F8FAFC;
       --bg-glass: rgba(245, 247, 251, 0.72);
       --border-subtle: #EDF1F7; --border-default: #E1E8F0; --border-strong: #C7D2E0;
@@ -119,9 +118,9 @@
     .kpi-value.small { font-size: 18px; }
     .kpi-foot { font-size: 10.5px; font-weight: 700; color: rgba(255,255,255,0.75); margin-top: 6px; position: relative; z-index: 1; }
 
-    .op-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: 16px; box-shadow: var(--shadow-xs); margin-bottom: 12px; }
+    .op-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: 16px; box-shadow: var(--shadow-xs); margin-bottom: 12px; position: relative; }
     .op-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-    .op-title-group { flex: 1; min-width: 0; }
+    .op-title-group { flex: 1; min-width: 0; padding-right: 34px; }
     .op-title { font-size: 13.5px; font-weight: 800; color: var(--text-primary); line-height: 1.3; }
     .op-sub { font-size: 11px; color: var(--text-tertiary); font-weight: 600; margin-top: 3px; word-break: break-all; }
     .op-amount-group { text-align: right; flex-shrink: 0; }
@@ -156,6 +155,14 @@
     .search-input:focus { border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); }
     .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); pointer-events: none; }
     .search-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    .section-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .toolbar-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .toolbar-btn { height: 36px; padding: 0 12px; background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--r-sm); font-size: 11.5px; font-weight: 800; color: var(--text-primary); cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease; }
+    .toolbar-btn svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .toolbar-btn:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+    .toolbar-btn:active { transform: scale(0.97); }
+    .toolbar-btn.active { background: var(--blue-50); border-color: var(--blue-200); color: var(--blue-700); }
 
     .user-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 14px; box-shadow: var(--shadow-xs); margin-bottom: 10px; }
     .user-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
@@ -422,7 +429,51 @@
 
     .sidebar-nav-badge { margin-left: auto; background: #E11D48; color: #FFFFFF; font-size: 10.5px; font-weight: 800; min-width: 22px; height: 20px; padding: 0 7px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; box-shadow: 0 2px 6px rgba(225, 29, 72, 0.32); }
 
-    /* DARK MODE — Éléments spécifiques admin */
+    /* ═══ PHASE 5 — Favoris / Notes / Audit / Export ═══ */
+    .fav-star { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: all 0.2s ease; padding: 0; font-family: inherit; }
+    .fav-star svg { width: 14px; height: 14px; stroke: var(--text-tertiary); fill: none; stroke-width: 2; pointer-events: none; }
+    .fav-star:hover { transform: scale(1.08); background: #FEF3C7; border-color: #F59E0B; }
+    .fav-star.active { background: #FEF3C7; border-color: #F59E0B; }
+    .fav-star.active svg { fill: #F59E0B; stroke: #F59E0B; }
+
+    .admin-note-zone { margin-top: 10px; padding: 10px 12px; background: #FFFBEB; border: 1px dashed #F59E0B; border-radius: var(--r-md); }
+    .admin-note-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .admin-note-label { font-size: 10px; font-weight: 800; color: #92400E; text-transform: uppercase; letter-spacing: 0.4px; display: flex; align-items: center; gap: 5px; }
+    .admin-note-label svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .admin-note-edit-btn { background: none; border: none; color: var(--blue-600); font-size: 10.5px; font-weight: 800; cursor: pointer; font-family: inherit; margin-left: auto; padding: 0; }
+    .admin-note-text { font-size: 12.5px; color: var(--text-primary); line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+    .admin-note-empty { color: var(--text-tertiary); font-style: italic; font-weight: 500; }
+    .admin-note-textarea { width: 100%; min-height: 56px; background: #FFF; border: 1px solid #F59E0B; border-radius: var(--r-sm); padding: 8px 10px; font-size: 12.5px; font-family: inherit; color: var(--text-primary); resize: vertical; outline: none; margin-top: 4px; }
+    .admin-note-textarea:focus { border-color: var(--blue-600); box-shadow: 0 0 0 3px var(--blue-50); }
+    .admin-note-actions { display: flex; gap: 6px; margin-top: 6px; }
+    .admin-note-save { height: 30px; padding: 0 12px; background: #F59E0B; color: #FFF; border: none; border-radius: var(--r-sm); font-size: 11px; font-weight: 800; cursor: pointer; font-family: inherit; }
+    .admin-note-cancel { height: 30px; padding: 0 12px; background: var(--bg-subtle); color: var(--text-secondary); border: none; border-radius: var(--r-sm); font-size: 11px; font-weight: 800; cursor: pointer; font-family: inherit; }
+
+    .audit-filters { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; padding-bottom: 2px; }
+    .audit-filters::-webkit-scrollbar { display: none; }
+    .audit-filter { background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-secondary); padding: 7px 13px; border-radius: var(--r-full); font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
+    .audit-filter.active { background: var(--text-primary); border-color: var(--text-primary); color: #FFFFFF; }
+    .audit-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+    .audit-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .audit-icon.approve { background: var(--success-bg); color: var(--success); }
+    .audit-icon.reject { background: var(--danger-bg); color: var(--danger); }
+    .audit-icon.edit { background: var(--blue-50); color: var(--blue-600); }
+    .audit-icon.system { background: var(--warning-bg); color: var(--warning); }
+    .audit-icon svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .audit-body { flex: 1; min-width: 0; }
+    .audit-action { font-size: 12.5px; font-weight: 800; color: var(--text-primary); margin-bottom: 3px; }
+    .audit-target { font-size: 11.5px; color: var(--text-secondary); font-weight: 600; word-break: break-all; }
+    .audit-meta { font-size: 10px; color: var(--text-tertiary); font-weight: 600; margin-top: 4px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .audit-time { font-family: monospace; }
+
+    html[data-theme="dark"] .fav-star { background: var(--bg-subtle); border-color: var(--border-subtle); }
+    html[data-theme="dark"] .fav-star.active { background: #78350F; border-color: #F59E0B; }
+    html[data-theme="dark"] .admin-note-zone { background: #451A03; border-color: #92400E; }
+    html[data-theme="dark"] .admin-note-label { color: #FCD34D; }
+    html[data-theme="dark"] .admin-note-textarea { background: var(--bg-card); color: var(--text-primary); }
+    html[data-theme="dark"] .audit-item { background: var(--bg-card); border-color: var(--border-subtle); }
+
+    /* DARK MODE admin */
     html[data-theme="dark"] .sidebar-content { background: var(--bg-card); }
     html[data-theme="dark"] .sidebar-head { background: var(--bg-card); }
     html[data-theme="dark"] .sidebar-user-card { background: var(--bg-card); border-color: rgba(0, 180, 255, 0.35); }
@@ -500,6 +551,7 @@
         <button class="tab-pill" data-tab="chat" onclick="switchTab('chat')"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Chat</span><span class="tab-count" id="count-chat">0</span></button>
         <button class="tab-pill" data-tab="prices" onclick="switchTab('prices')"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg><span>Prix & Taux</span></button>
         <button class="tab-pill" data-tab="analytics" onclick="switchTab('analytics')"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6" stroke-linecap="round"/></svg><span>Analytics</span></button>
+        <button class="tab-pill" data-tab="audit" onclick="switchTab('audit')"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2" stroke-linecap="round"/><circle cx="12" cy="12" r="10"/></svg><span>Historique</span></button>
         <button class="tab-pill" data-tab="system" onclick="switchTab('system')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg><span>Système</span></button>
       </div>
     </header>
@@ -512,8 +564,28 @@
         <div class="kpi-card purple"><div class="kpi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="kpi-label">Stock PINs FF</div><div class="kpi-value" id="kpi-pins">0</div><div class="kpi-foot" id="kpi-pins-foot">Disponibles</div></div>
       </div>
 
-      <section class="admin-section active" id="section-deposits"><div id="deposits-list"><div class="empty-box"><div class="empty-box-title">Chargement...</div></div></div></section>
-      <section class="admin-section" id="section-orders"><div id="orders-list"><div class="empty-box"><div class="empty-box-title">Chargement...</div></div></div></section>
+      <section class="admin-section active" id="section-deposits">
+        <div class="section-toolbar">
+          <div class="toolbar-group">
+            <button class="toolbar-btn active" id="dep-filter-all" onclick="setDepFilter('all', this)"><span>Tout</span></button>
+            <button class="toolbar-btn" id="dep-filter-fav" onclick="setDepFilter('fav', this)"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Favoris</span></button>
+          </div>
+          <button class="toolbar-btn" onclick="exportDepositsCSV()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>CSV</span></button>
+        </div>
+        <div id="deposits-list"><div class="empty-box"><div class="empty-box-title">Chargement...</div></div></div>
+      </section>
+
+      <section class="admin-section" id="section-orders">
+        <div class="section-toolbar">
+          <div class="toolbar-group">
+            <button class="toolbar-btn active" id="ord-filter-all" onclick="setOrdFilter('all', this)"><span>Tout</span></button>
+            <button class="toolbar-btn" id="ord-filter-fav" onclick="setOrdFilter('fav', this)"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Favoris</span></button>
+          </div>
+          <button class="toolbar-btn" onclick="exportOrdersCSV()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>CSV</span></button>
+        </div>
+        <div id="orders-list"><div class="empty-box"><div class="empty-box-title">Chargement...</div></div></div>
+      </section>
+
       <section class="admin-section" id="section-users"><div class="search-wrap"><div class="search-icon"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div><input type="text" class="search-input" id="user-search" placeholder="Rechercher..." oninput="filterUsers(this.value)"></div><div id="users-list"><div class="empty-box"><div class="empty-box-title">Chargement...</div></div></div></section>
       <section class="admin-section" id="section-chat"><div class="chat-list" id="chat-list"><div class="empty-box"><div class="empty-box-title">Chargement...</div></div></div></section>
       <section class="admin-section" id="section-prices">
@@ -521,6 +593,7 @@
         <div id="subview-packs"><div class="search-wrap"><div class="search-icon"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div><input type="text" class="search-input" id="price-search" placeholder="Rechercher un pack..." oninput="filterPrices(this.value)"></div><div class="price-filter-bar" id="price-filter-bar"></div><div id="prices-list"></div></div>
         <div id="subview-rates" style="display:none;"><div style="background:var(--bg-subtle);border:1px solid var(--border-subtle);border-radius:var(--r-md);padding:12px;font-size:12px;color:var(--text-secondary);margin-bottom:14px;">Réglez le taux et les frais par service.</div><div id="rates-list"></div></div>
       </section>
+
       <section class="admin-section" id="section-analytics">
         <div class="analytics-grid">
           <div class="analytics-card"><div class="analytics-head"><div class="analytics-title"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg><span>CA 7 jours</span></div><span class="analytics-badge" id="analytics-revenue-7d">0 HTG</span></div><div class="bar-chart" id="bar-chart-7d"></div></div>
@@ -529,6 +602,20 @@
           <div class="analytics-card"><div class="analytics-head"><div class="analytics-title"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/></svg><span>Paiements</span></div></div><div class="doughnut-wrap"><svg class="doughnut-svg" viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--bg-subtle)" stroke-width="6"/><g id="doughnut-segments"></g><text x="21" y="22" text-anchor="middle" font-size="6" font-weight="900" fill="var(--text-primary)" id="doughnut-total">0</text></svg><div class="doughnut-legend" id="doughnut-legend"></div></div></div>
         </div>
       </section>
+
+      <section class="admin-section" id="section-audit">
+        <div class="section-toolbar">
+          <div class="toolbar-group">
+            <button class="toolbar-btn active" onclick="setAuditFilter('all', this)"><span>Tout</span></button>
+            <button class="toolbar-btn" onclick="setAuditFilter('approve', this)"><span>Validations</span></button>
+            <button class="toolbar-btn" onclick="setAuditFilter('reject', this)"><span>Rejets</span></button>
+            <button class="toolbar-btn" onclick="setAuditFilter('edit', this)"><span>Modifications</span></button>
+            <button class="toolbar-btn" onclick="setAuditFilter('system', this)"><span>Système</span></button>
+          </div>
+        </div>
+        <div id="audit-list"><div class="empty-box"><div class="empty-box-title">Chargement...</div></div></div>
+      </section>
+
       <section class="admin-section" id="section-system">
         <div class="system-card"><div class="system-title">Statut du site</div><div class="system-desc">Fermez le site pour suspendre les commandes.</div><div class="switch-row"><div class="switch-info"><div class="switch-status-title" id="site-status-title">Site actif</div><div class="switch-status-sub" id="site-status-sub">Commandes ouvertes</div></div><button class="btn-toggle open" id="btn-site-toggle" onclick="toggleSite()">OUVERT</button></div></div>
         <div class="system-card"><div class="system-title">Notification globale</div><div class="system-desc">Diffusez une annonce à tous.</div><label style="font-size:10.5px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;display:block;margin-bottom:6px;">Titre</label><input type="text" class="admin-input" id="notif-title" placeholder="Titre" maxlength="80"><label style="font-size:10.5px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;display:block;margin-bottom:6px;">Message</label><textarea class="admin-textarea" id="notif-message" placeholder="Message" maxlength="500"></textarea><button class="btn-primary-action" id="btn-publish-notif" onclick="publishNotification()" style="margin-bottom:8px;"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span>Diffuser</span></button><button class="btn-secondary-action" onclick="clearNotification()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg><span>Effacer</span></button></div>
@@ -598,6 +685,10 @@
                 <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
                 <span>Analytics</span>
               </button>
+              <button class="sidebar-nav-link" id="nav-audit" onclick="switchTab('audit'); closeSidebar();">
+                <svg viewBox="0 0 24 24"><path d="M12 8v4l3 2" stroke-linecap="round"/><circle cx="12" cy="12" r="10"/></svg>
+                <span>Historique</span>
+              </button>
               <a href="pins.html" class="sidebar-nav-link external">
                 <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                 <span>Coffre PINs</span>
@@ -639,7 +730,6 @@
   <script>
     document.body.style.opacity = '1';
     document.body.classList.add('ready');
-
     setInterval(function() {
       if (document.body.style.opacity === '0') document.body.style.opacity = '1';
     }, 2000);
@@ -694,12 +784,14 @@
     const STATE = {
       user: null, activeTab: 'deposits', activeSubTab: 'packs',
       priceCatFilter: 'all', priceSearch: '',
-      users: [], deposits: [], orders: [], pins: [], chats: [],
+      users: [], deposits: [], orders: [], pins: [], chats: [], auditLogs: [],
       currentChatId: null, currentChatMessages: [],
       customPrices: {}, customRates: {},
       siteOpen: true, confirmCallback: null, unsubs: [],
       chatUnsubMessages: null, booted: false,
-      timers: { userSearch: null, priceSearch: null }
+      timers: { userSearch: null, priceSearch: null },
+      filters: { dep: 'all', ord: 'all', audit: 'all' },
+      favorites: { deposits: [], orders: [] }
     };
 
     function showToast(message, type = 'success') {
@@ -758,6 +850,10 @@
     }
 
     function formatTime(ms) { return new Date(ms).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); }
+
+    function formatDateTime(ms) {
+      return new Date(ms).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+    }
 
     function showTwoFAForm() {
       document.getElementById('twofa-loader').classList.remove('visible');
@@ -856,6 +952,7 @@
       document.getElementById(`nav-${tab}`)?.classList.add('active');
       if (tab === 'analytics') renderAnalytics();
       if (tab === 'chat') renderChats();
+      if (tab === 'audit') renderAuditLogs();
     }
 
     function switchSubTab(sub) {
@@ -877,6 +974,8 @@
       listenRates();
       listenSiteStatus();
       listenPins();
+      listenAuditLogs();
+      listenFavorites();
     }
 
     function updateKPIs() {
@@ -1008,6 +1107,231 @@
       }).join('');
     }
 
+    /* ═══ PHASE 5 — FAVORIS ═══ */
+    function listenFavorites() {
+      const unsub = db.collection('admin_bookmarks').doc(STATE.user.uid).onSnapshot(doc => {
+        const data = doc.exists ? (doc.data() || {}) : {};
+        STATE.favorites.deposits = Array.isArray(data.deposits) ? data.deposits.slice() : [];
+        STATE.favorites.orders = Array.isArray(data.orders) ? data.orders.slice() : [];
+        renderDeposits();
+        renderOrders();
+      }, err => console.warn('favorites:', err.code));
+      STATE.unsubs.push(unsub);
+    }
+
+    function isFav(type, id) {
+      const arr = type === 'deposit' ? STATE.favorites.deposits : STATE.favorites.orders;
+      return arr.indexOf(id) !== -1;
+    }
+
+    async function toggleFav(type, id) {
+      const key = type === 'deposit' ? 'deposits' : 'orders';
+      const arr = STATE.favorites[key].slice();
+      const idx = arr.indexOf(id);
+      if (idx >= 0) arr.splice(idx, 1); else arr.push(id);
+      STATE.favorites[key] = arr;
+      try {
+        await db.collection('admin_bookmarks').doc(STATE.user.uid).set({ [key]: arr, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+      } catch (e) { showToast('Erreur favoris', 'danger'); }
+    }
+
+    function setDepFilter(f, btn) {
+      STATE.filters.dep = f;
+      document.querySelectorAll('#section-deposits .toolbar-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderDeposits();
+    }
+    function setOrdFilter(f, btn) {
+      STATE.filters.ord = f;
+      document.querySelectorAll('#section-orders .toolbar-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderOrders();
+    }
+    function setAuditFilter(f, btn) {
+      STATE.filters.audit = f;
+      document.querySelectorAll('#section-audit .toolbar-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderAuditLogs();
+    }
+
+    /* ═══ PHASE 5 — AUDIT LOG ═══ */
+    async function logAction(action, target, details) {
+      if (!STATE.user) return;
+      try {
+        await db.collection('audit_logs').add({
+          action, target: target || '', details: details || '',
+          adminId: STATE.user.uid, adminEmail: STATE.user.email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch (e) { console.warn('audit log fail', e); }
+    }
+
+    function listenAuditLogs() {
+      const unsub = db.collection('audit_logs')
+        .orderBy('createdAt', 'desc').limit(100)
+        .onSnapshot(snap => {
+          STATE.auditLogs = [];
+          snap.forEach(doc => STATE.auditLogs.push({ ...doc.data(), _id: doc.id }));
+          renderAuditLogs();
+        }, err => console.warn('audit:', err.code));
+      STATE.unsubs.push(unsub);
+    }
+
+    function auditCategory(action) {
+      if (!action) return 'system';
+      if (action.startsWith('approve') || action.includes('valide') || action.includes('livre')) return 'approve';
+      if (action.startsWith('reject') || action.includes('rejet')) return 'reject';
+      if (action.startsWith('edit') || action.includes('note') || action.includes('prix') || action.includes('taux')) return 'edit';
+      return 'system';
+    }
+
+    function auditIcon(cat) {
+      const icons = {
+        approve: '<path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>',
+        reject: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+        edit: '<path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+        system: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/>'
+      };
+      return icons[cat] || icons.system;
+    }
+
+    function renderAuditLogs() {
+      const target = document.getElementById('audit-list');
+      if (!target) return;
+      let list = STATE.auditLogs.slice();
+      if (STATE.filters.audit !== 'all') list = list.filter(l => auditCategory(l.action) === STATE.filters.audit);
+
+      if (list.length === 0) {
+        target.innerHTML = `<div class="empty-box"><div class="empty-box-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="10"/></svg></div><div class="empty-box-title">Aucune action enregistrée</div><div class="empty-box-sub">Les actions admin apparaîtront ici automatiquement.</div></div>`;
+        return;
+      }
+
+      target.innerHTML = list.map(l => {
+        const cat = auditCategory(l.action);
+        const time = formatDateTime(extractTimestamp(l));
+        return `<div class="audit-item"><div class="audit-icon ${cat}"><svg viewBox="0 0 24 24">${auditIcon(cat)}</svg></div><div class="audit-body"><div class="audit-action">${escapeHtml(l.action || '—')}</div>${l.target ? `<div class="audit-target">${escapeHtml(l.target)}</div>` : ''}${l.details ? `<div class="audit-target" style="margin-top:2px;color:var(--text-tertiary);">${escapeHtml(l.details)}</div>` : ''}<div class="audit-meta"><span class="audit-time">${escapeHtml(time)}</span><span>·</span><span>${escapeHtml(l.adminEmail || '')}</span></div></div></div>`;
+      }).join('');
+    }
+
+    /* ═══ EXPORT CSV ═══ */
+    function toCSV(rows, cols) {
+      const escapeCSV = (v) => {
+        if (v === null || v === undefined) return '';
+        const s = String(v).replace(/"/g, '""');
+        return /[",\n\r]/.test(s) ? `"${s}"` : s;
+      };
+      const header = cols.map(c => escapeCSV(c.label)).join(',');
+      const body = rows.map(r => cols.map(c => escapeCSV(typeof c.value === 'function' ? c.value(r) : r[c.key])).join(',')).join('\n');
+      return header + '\n' + body;
+    }
+
+    function downloadCSV(csv, filename) {
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function exportDepositsCSV() {
+      if (STATE.deposits.length === 0) { showToast('Aucun dépôt à exporter', 'warning'); return; }
+      const cols = [
+        { label: 'DepositID', value: d => d.depositId || d._id },
+        { label: 'Date', value: d => formatDateTime(extractTimestamp(d)) },
+        { label: 'Client', value: d => d.userName || '' },
+        { label: 'Email', value: d => d.userEmail || '' },
+        { label: 'UserID', value: d => d.userId || '' },
+        { label: 'Methode', value: d => (d.method || '').toUpperCase() },
+        { label: 'MontantDepose', value: d => d.depositedAmount || 0 },
+        { label: 'CreditHTG', value: d => d.creditHTG || 0 },
+        { label: 'TransactionID', value: d => d.transactionId || '' },
+        { label: 'Statut', value: d => d.status || '' }
+      ];
+      const csv = toCSV(STATE.deposits, cols);
+      const today = new Date().toISOString().slice(0, 10);
+      downloadCSV(csv, `digitalpay-depots-${today}.csv`);
+      logAction('export_csv', 'dépôts', `${STATE.deposits.length} lignes`);
+      showToast(`${STATE.deposits.length} dépôts exportés`, 'success');
+    }
+
+    function exportOrdersCSV() {
+      if (STATE.orders.length === 0) { showToast('Aucune commande à exporter', 'warning'); return; }
+      const cols = [
+        { label: 'OrderID', value: o => o.orderId || o._id },
+        { label: 'Date', value: o => formatDateTime(extractTimestamp(o)) },
+        { label: 'Client', value: o => o.userEmail || '' },
+        { label: 'UserID', value: o => o.userId || '' },
+        { label: 'Produit', value: o => (o.item && o.item.title) || '' },
+        { label: 'Offre', value: o => (o.item && o.item.offerName) || '' },
+        { label: 'Prix', value: o => (o.item && o.item.price) || 0 },
+        { label: 'Paiement', value: o => (o.paymentMethod || '').toUpperCase() },
+        { label: 'PIN', value: o => o.pinCode || '' },
+        { label: 'Statut', value: o => o.status || '' },
+        { label: 'NoteAdmin', value: o => o.adminNote || '' }
+      ];
+      const csv = toCSV(STATE.orders, cols);
+      const today = new Date().toISOString().slice(0, 10);
+      downloadCSV(csv, `digitalpay-commandes-${today}.csv`);
+      logAction('export_csv', 'commandes', `${STATE.orders.length} lignes`);
+      showToast(`${STATE.orders.length} commandes exportées`, 'success');
+    }
+
+    /* ═══ NOTES INTERNES ═══ */
+    function renderAdminNote(order) {
+      const note = order.adminNote || '';
+      const hasNote = note.length > 0;
+      return `<div class="admin-note-zone" data-note-order="${escapeHtml(order._id)}">
+        <div class="admin-note-head">
+          <div class="admin-note-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Note interne</div>
+          <button class="admin-note-edit-btn" onclick="editOrderNote('${escapeHtml(order._id)}')">${hasNote ? 'Modifier' : 'Ajouter'}</button>
+        </div>
+        <div class="admin-note-text ${hasNote ? '' : 'admin-note-empty'}">${hasNote ? escapeHtml(note) : 'Aucune note'}</div>
+      </div>`;
+    }
+
+    function editOrderNote(orderId) {
+      const zone = document.querySelector(`[data-note-order="${orderId}"]`);
+      if (!zone) return;
+      const ord = STATE.orders.find(o => o._id === orderId);
+      const current = ord && ord.adminNote ? ord.adminNote : '';
+      const existing = zone.querySelector('.admin-note-text');
+      if (existing) existing.style.display = 'none';
+      const editBtn = zone.querySelector('.admin-note-edit-btn');
+      if (editBtn) editBtn.style.display = 'none';
+      if (zone.querySelector('textarea')) return;
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = `<textarea class="admin-note-textarea" maxlength="500" placeholder="Ex: client VIP, à rappeler...">${escapeHtml(current)}</textarea><div class="admin-note-actions"><button class="admin-note-save" onclick="saveOrderNote('${escapeHtml(orderId)}')">Enregistrer</button><button class="admin-note-cancel" onclick="cancelOrderNote('${escapeHtml(orderId)}')">Annuler</button></div>`;
+      zone.appendChild(wrapper);
+    }
+
+    function cancelOrderNote(orderId) {
+      const zone = document.querySelector(`[data-note-order="${orderId}"]`);
+      if (!zone) return;
+      const wrapper = zone.querySelector('.admin-note-textarea');
+      if (wrapper) wrapper.parentElement.remove();
+      const existing = zone.querySelector('.admin-note-text');
+      if (existing) existing.style.display = '';
+      const editBtn = zone.querySelector('.admin-note-edit-btn');
+      if (editBtn) editBtn.style.display = '';
+    }
+
+    async function saveOrderNote(orderId) {
+      const zone = document.querySelector(`[data-note-order="${orderId}"]`);
+      if (!zone) return;
+      const ta = zone.querySelector('textarea');
+      const val = (ta ? ta.value : '').trim().slice(0, 500);
+      try {
+        await db.collection('orders').doc(orderId).update({ adminNote: val });
+        logAction('edit_note', 'commande ' + orderId, val ? 'Note mise à jour' : 'Note effacée');
+        showToast('Note enregistrée', 'success');
+      } catch (e) { showToast('Erreur : ' + e.message, 'danger'); }
+    }
+
+    /* ═══ RENDER — DÉPÔTS ═══ */
     function listenDeposits() {
       const unsub = db.collection('deposits').onSnapshot(snap => {
         STATE.deposits = [];
@@ -1021,12 +1345,24 @@
     function renderDeposits() {
       const t = document.getElementById('deposits-list');
       if (!t) return;
-      if (STATE.deposits.length === 0) { t.innerHTML = `<div class="empty-box"><div class="empty-box-icon"><svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div><div class="empty-box-title">Aucun dépôt</div></div>`; return; }
-      t.innerHTML = STATE.deposits.map(d => {
+      let list = STATE.deposits.slice();
+      if (STATE.filters.dep === 'fav') list = list.filter(d => isFav('deposit', d._id));
+      if (list.length === 0) {
+        const msg = STATE.filters.dep === 'fav' ? 'Aucun favori' : 'Aucun dépôt';
+        t.innerHTML = `<div class="empty-box"><div class="empty-box-icon"><svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div><div class="empty-box-title">${msg}</div></div>`;
+        return;
+      }
+      t.innerHTML = list.map(d => {
         const credit = Number(d.creditHTG || d.depositedAmount || 0);
-        const date = new Date(extractTimestamp(d)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+        const date = formatDateTime(extractTimestamp(d));
         const pending = d.status === 'en_attente';
-        return `<div class="op-card"><div class="op-head"><div class="op-title-group"><div class="op-title">${escapeHtml(d.userName || 'Client')}</div><div class="op-sub">${escapeHtml(d.userEmail || '')} • ${escapeHtml(date)}</div></div><div class="op-amount-group"><div class="op-amount positive">+${credit.toLocaleString()} HTG</div><span class="status-pill ${d.status || 'en_attente'}">${statusLabel(d.status)}</span></div></div><div class="op-details"><div class="op-detail-row"><span class="op-detail-key">Réf</span><span class="op-detail-val">${escapeHtml(d.depositId || d._id)}</span></div><div class="op-detail-row"><span class="op-detail-key">Moyen</span><span class="op-detail-val regular">${escapeHtml((d.method || '').toUpperCase())}</span></div><div class="op-detail-row"><span class="op-detail-key">Transaction</span><span class="op-detail-val">${escapeHtml(d.transactionId || '—')}</span></div>${d.proofDataUrl ? `<div class="op-detail-row"><span class="op-detail-key">Reçu</span><span class="op-detail-val"><button class="btn-view-receipt" onclick="viewReceipt('${escapeHtml(d._id)}')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Voir</button></span></div>` : ''}</div>${pending ? `<div class="op-actions"><button class="btn-action btn-approve" onclick="approveDeposit('${escapeHtml(d._id)}')"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Valider</button><button class="btn-action btn-reject" onclick="rejectDeposit('${escapeHtml(d._id)}')">Rejeter</button></div>` : ''}</div>`;
+        const fav = isFav('deposit', d._id);
+        return `<div class="op-card">
+          <button class="fav-star ${fav ? 'active' : ''}" onclick="toggleFav('deposit','${escapeHtml(d._id)}')" title="Favori"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+          <div class="op-head"><div class="op-title-group"><div class="op-title">${escapeHtml(d.userName || 'Client')}</div><div class="op-sub">${escapeHtml(d.userEmail || '')} • ${escapeHtml(date)}</div></div><div class="op-amount-group"><div class="op-amount positive">+${credit.toLocaleString()} HTG</div><span class="status-pill ${d.status || 'en_attente'}">${statusLabel(d.status)}</span></div></div>
+          <div class="op-details"><div class="op-detail-row"><span class="op-detail-key">Réf</span><span class="op-detail-val">${escapeHtml(d.depositId || d._id)}</span></div><div class="op-detail-row"><span class="op-detail-key">Moyen</span><span class="op-detail-val regular">${escapeHtml((d.method || '').toUpperCase())}</span></div><div class="op-detail-row"><span class="op-detail-key">Transaction</span><span class="op-detail-val">${escapeHtml(d.transactionId || '—')}</span></div>${d.proofDataUrl ? `<div class="op-detail-row"><span class="op-detail-key">Reçu</span><span class="op-detail-val"><button class="btn-view-receipt" onclick="viewReceipt('${escapeHtml(d._id)}')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Voir</button></span></div>` : ''}</div>
+          ${pending ? `<div class="op-actions"><button class="btn-action btn-approve" onclick="approveDeposit('${escapeHtml(d._id)}')"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Valider</button><button class="btn-action btn-reject" onclick="rejectDeposit('${escapeHtml(d._id)}')">Rejeter</button></div>` : ''}
+        </div>`;
       }).join('');
     }
 
@@ -1055,6 +1391,7 @@
           await db.collection('deposits').doc(id).update({ status: 'valide', validatedAt: firebase.firestore.FieldValue.serverTimestamp(), validatedBy: STATE.user.uid });
           await db.collection('users').doc(dep.userId).set({ walletBalance: firebase.firestore.FieldValue.increment(credit) }, { merge: true });
           await sendUserNotification(dep.userId, 'Dépôt validé', `+${credit.toLocaleString()} HTG crédités`, 'success');
+          logAction('approve_deposit', 'dépôt ' + (dep.depositId || id), `+${credit.toLocaleString()} HTG à ${dep.userEmail || ''}`);
           showToast('Crédité', 'success');
         } catch (e) { showToast('Erreur : ' + e.message, 'danger'); }
       }});
@@ -1065,12 +1402,16 @@
       openModal({ title: 'Rejeter le dépôt', desc: 'Confirmer ?', confirmLabel: 'Rejeter', danger: true, onConfirm: async () => {
         try {
           await db.collection('deposits').doc(id).update({ status: 'rejete', rejectedAt: firebase.firestore.FieldValue.serverTimestamp() });
-          if (dep) await sendUserNotification(dep.userId, 'Dépôt rejeté', 'Contactez le support', 'danger');
+          if (dep) {
+            await sendUserNotification(dep.userId, 'Dépôt rejeté', 'Contactez le support', 'danger');
+            logAction('reject_deposit', 'dépôt ' + (dep.depositId || id), `${dep.userEmail || ''}`);
+          }
           showToast('Rejeté', 'success');
         } catch (e) { showToast('Erreur', 'danger'); }
       }});
     }
 
+    /* ═══ RENDER — COMMANDES ═══ */
     function listenOrders() {
       const unsub = db.collection('orders').onSnapshot(snap => {
         STATE.orders = [];
@@ -1084,12 +1425,25 @@
     function renderOrders() {
       const t = document.getElementById('orders-list');
       if (!t) return;
-      if (STATE.orders.length === 0) { t.innerHTML = `<div class="empty-box"><div class="empty-box-title">Aucune commande</div></div>`; return; }
-      t.innerHTML = STATE.orders.map(o => {
+      let list = STATE.orders.slice();
+      if (STATE.filters.ord === 'fav') list = list.filter(o => isFav('order', o._id));
+      if (list.length === 0) {
+        const msg = STATE.filters.ord === 'fav' ? 'Aucun favori' : 'Aucune commande';
+        t.innerHTML = `<div class="empty-box"><div class="empty-box-title">${msg}</div></div>`;
+        return;
+      }
+      t.innerHTML = list.map(o => {
         const item = o.item || {};
-        const date = new Date(extractTimestamp(o)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+        const date = formatDateTime(extractTimestamp(o));
         const pending = o.status === 'en_attente' || o.status === 'en_attente_stock';
-        return `<div class="op-card"><div class="op-head"><div class="op-title-group"><div class="op-title">${escapeHtml(item.title || 'Service')} — ${escapeHtml(item.offerName || '')}</div><div class="op-sub">${escapeHtml(o.userEmail || '')} • ${escapeHtml(date)}</div></div><div class="op-amount-group"><div class="op-amount">${Number(item.price || 0).toLocaleString()} HTG</div><span class="status-pill ${o.status || 'en_attente'}">${statusLabel(o.status)}</span></div></div><div class="op-details"><div class="op-detail-row"><span class="op-detail-key">Réf</span><span class="op-detail-val">${escapeHtml(o.orderId || o._id)}</span></div><div class="op-detail-row"><span class="op-detail-key">Paiement</span><span class="op-detail-val regular">${escapeHtml((o.paymentMethod || 'wallet').toUpperCase())}</span></div>${o.pinCode ? `<div class="op-detail-row"><span class="op-detail-key">PIN</span><span class="op-detail-val success">${escapeHtml(o.pinCode)}</span></div>` : ''}</div>${pending ? `<div class="op-actions"><button class="btn-action btn-approve" onclick="fulfillOrder('${escapeHtml(o._id)}')"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Livrer</button><button class="btn-action btn-reject" onclick="rejectOrder('${escapeHtml(o._id)}')">Rejeter</button></div>` : ''}</div>`;
+        const fav = isFav('order', o._id);
+        return `<div class="op-card">
+          <button class="fav-star ${fav ? 'active' : ''}" onclick="toggleFav('order','${escapeHtml(o._id)}')" title="Favori"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+          <div class="op-head"><div class="op-title-group"><div class="op-title">${escapeHtml(item.title || 'Service')} — ${escapeHtml(item.offerName || '')}</div><div class="op-sub">${escapeHtml(o.userEmail || '')} • ${escapeHtml(date)}</div></div><div class="op-amount-group"><div class="op-amount">${Number(item.price || 0).toLocaleString()} HTG</div><span class="status-pill ${o.status || 'en_attente'}">${statusLabel(o.status)}</span></div></div>
+          <div class="op-details"><div class="op-detail-row"><span class="op-detail-key">Réf</span><span class="op-detail-val">${escapeHtml(o.orderId || o._id)}</span></div><div class="op-detail-row"><span class="op-detail-key">Paiement</span><span class="op-detail-val regular">${escapeHtml((o.paymentMethod || 'wallet').toUpperCase())}</span></div>${o.pinCode ? `<div class="op-detail-row"><span class="op-detail-key">PIN</span><span class="op-detail-val success">${escapeHtml(o.pinCode)}</span></div>` : ''}</div>
+          ${pending ? `<div class="op-actions"><button class="btn-action btn-approve" onclick="fulfillOrder('${escapeHtml(o._id)}')"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Livrer</button><button class="btn-action btn-reject" onclick="rejectOrder('${escapeHtml(o._id)}')">Rejeter</button></div>` : ''}
+          ${renderAdminNote(o)}
+        </div>`;
       }).join('');
     }
 
@@ -1098,7 +1452,10 @@
       openModal({ title: 'Marquer livré', desc: 'Confirmer ?', confirmLabel: 'Livrer', onConfirm: async () => {
         try {
           await db.collection('orders').doc(id).update({ status: 'livre', deliveredAt: firebase.firestore.FieldValue.serverTimestamp() });
-          if (ord) await sendUserNotification(ord.userId, 'Commande livrée', 'Votre commande est livrée', 'success');
+          if (ord) {
+            await sendUserNotification(ord.userId, 'Commande livrée', 'Votre commande est livrée', 'success');
+            logAction('approve_order', 'commande ' + (ord.orderId || id), `${(ord.item && ord.item.title) || ''} pour ${ord.userEmail || ''}`);
+          }
           showToast('Livré', 'success');
         } catch (e) { showToast('Erreur', 'danger'); }
       }});
@@ -1109,12 +1466,16 @@
       openModal({ title: 'Rejeter', desc: 'Confirmer ?', confirmLabel: 'Rejeter', danger: true, onConfirm: async () => {
         try {
           await db.collection('orders').doc(id).update({ status: 'rejete', rejectedAt: firebase.firestore.FieldValue.serverTimestamp() });
-          if (ord) await sendUserNotification(ord.userId, 'Commande rejetée', 'Contactez le support', 'danger');
+          if (ord) {
+            await sendUserNotification(ord.userId, 'Commande rejetée', 'Contactez le support', 'danger');
+            logAction('reject_order', 'commande ' + (ord.orderId || id), `${(ord.item && ord.item.title) || ''} pour ${ord.userEmail || ''}`);
+          }
           showToast('Rejeté', 'success');
         } catch (e) { showToast('Erreur', 'danger'); }
       }});
     }
 
+    /* ═══ UTILISATEURS ═══ */
     function listenUsers() {
       const unsub = db.collection('users').onSnapshot(snap => {
         STATE.users = [];
@@ -1144,16 +1505,26 @@
       openModal({ title: 'Modifier solde', desc: `Actuel : ${current.toLocaleString()} HTG`, showInput: true, inputType: 'number', inputValue: current, confirmLabel: 'Mettre à jour', onConfirm: async () => {
         const val = parseFloat(document.getElementById('modal-input').value);
         if (isNaN(val) || val < 0) { showToast('Invalide', 'danger'); return; }
-        try { await db.collection('users').doc(uid).update({ walletBalance: val }); showToast(`Solde : ${val.toLocaleString()}`, 'success'); } catch (e) { showToast('Erreur', 'danger'); }
+        try {
+          await db.collection('users').doc(uid).update({ walletBalance: val });
+          const u = STATE.users.find(x => x.uid === uid);
+          logAction('edit_balance', 'user ' + (u ? u.email : uid), `Ancien: ${current} → Nouveau: ${val} HTG`);
+          showToast(`Solde : ${val.toLocaleString()}`, 'success');
+        } catch (e) { showToast('Erreur', 'danger'); }
       }});
     }
 
     function deleteUser(uid, email) {
       openModal({ title: 'Supprimer', desc: `Supprimer ${email} ?`, confirmLabel: 'Supprimer', danger: true, onConfirm: async () => {
-        try { await db.collection('users').doc(uid).delete(); showToast('Supprimé', 'success'); } catch (e) { showToast('Erreur', 'danger'); }
+        try {
+          await db.collection('users').doc(uid).delete();
+          logAction('delete_user', 'user ' + email, `UID: ${uid}`);
+          showToast('Supprimé', 'success');
+        } catch (e) { showToast('Erreur', 'danger'); }
       }});
     }
 
+    /* ═══ CHAT ═══ */
     function listenChats() {
       const unsub = db.collection('chat_conversations').onSnapshot(snap => {
         STATE.chats = [];
@@ -1335,6 +1706,7 @@
       } catch (e) { showToast('Erreur', 'danger'); }
     }
 
+    /* ═══ PRIX & TAUX ═══ */
     function listenPrices() {
       const unsub = db.collection('system_config').doc('prices').onSnapshot(doc => {
         STATE.customPrices = doc.exists ? (doc.data() || {}) : {};
@@ -1371,7 +1743,12 @@
       const val = parseFloat(input.value);
       if (isNaN(val) || val <= 0) { showToast('Invalide', 'danger'); return; }
       btn.classList.add('saving'); btn.textContent = '...';
-      try { await db.collection('system_config').doc('prices').set({ [id]: val }, { merge: true }); showToast('OK', 'success'); }
+      try {
+        const old = STATE.customPrices[id] !== undefined ? STATE.customPrices[id] : (DEFAULT_PRICES.find(p => p.id === id)?.price || '—');
+        await db.collection('system_config').doc('prices').set({ [id]: val }, { merge: true });
+        logAction('edit_price', 'prix ' + id, `${old} → ${val} HTG`);
+        showToast('OK', 'success');
+      }
       catch (e) { showToast('Erreur', 'danger'); }
       btn.classList.remove('saving'); btn.textContent = 'OK';
     }
@@ -1402,7 +1779,11 @@
       const feePercent = parseFloat(document.getElementById(`feePercent-${id}`).value) || 0;
       if (isNaN(rate) || rate <= 0) { showToast('Taux invalide', 'danger'); return; }
       btn.classList.add('saving'); btn.textContent = '...';
-      try { await db.collection('system_config').doc('rates').set({ [id]: { rate, feeFixed, feePercent } }, { merge: true }); showToast('OK', 'success'); }
+      try {
+        await db.collection('system_config').doc('rates').set({ [id]: { rate, feeFixed, feePercent } }, { merge: true });
+        logAction('edit_rate', 'taux ' + id, `1$ = ${rate} HTG (frais: ${feePercent}% + $${feeFixed})`);
+        showToast('OK', 'success');
+      }
       catch (e) { showToast('Erreur', 'danger'); }
       btn.classList.remove('saving'); btn.textContent = 'OK';
     }
@@ -1442,7 +1823,11 @@
     function toggleSite() {
       const next = !STATE.siteOpen;
       openModal({ title: next ? 'Réouvrir' : 'Fermer', desc: next ? 'Réouvrir le site ?' : 'Fermer le site ?', confirmLabel: next ? 'Réouvrir' : 'Fermer', danger: !next, onConfirm: async () => {
-        try { await db.collection('system_config').doc('status').set({ isSiteOpen: next, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); showToast(next ? 'Ouvert' : 'Fermé', 'success'); } catch (e) { showToast('Erreur', 'danger'); }
+        try {
+          await db.collection('system_config').doc('status').set({ isSiteOpen: next, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+          logAction('toggle_site', 'statut site', next ? 'Ouvert' : 'Fermé');
+          showToast(next ? 'Ouvert' : 'Fermé', 'success');
+        } catch (e) { showToast('Erreur', 'danger'); }
       }});
     }
 
@@ -1468,16 +1853,24 @@
           });
           await batch.commit(); sent += Math.min(CHUNK, uids.length - i);
         }
+        logAction('broadcast', 'notification', `${title} → ${sent} users`);
         showToast(`Envoyé à ${sent} utilisateur(s)`, 'success');
       } catch (e) { showToast('Erreur', 'danger'); }
       finally { btn.disabled = false; btn.innerHTML = orig; }
     }
 
     async function clearNotification() {
-      try { await db.collection('system_config').doc('notifications').set({ active: false, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); document.getElementById('notif-title').value = ''; document.getElementById('notif-message').value = ''; showToast('Effacé', 'success'); }
+      try {
+        await db.collection('system_config').doc('notifications').set({ active: false, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+        document.getElementById('notif-title').value = '';
+        document.getElementById('notif-message').value = '';
+        logAction('clear_broadcast', 'notification', 'effacée');
+        showToast('Effacé', 'success');
+      }
       catch (e) { showToast('Erreur', 'danger'); }
     }
 
+    /* ═══ MODAL ═══ */
     function openModal(opts) {
       document.getElementById('modal-title').textContent = opts.title || 'Confirmation';
       document.getElementById('modal-desc').textContent = opts.desc || '';
@@ -1556,7 +1949,7 @@
 
     function initRipple() {
       document.addEventListener('click', e => {
-        const btn = e.target.closest('.btn-action, .btn-primary-action, .btn-secondary-action, .icon-btn, .tab-pill, .twofa-btn');
+        const btn = e.target.closest('.btn-action, .btn-primary-action, .btn-secondary-action, .icon-btn, .tab-pill, .twofa-btn, .toolbar-btn');
         if (btn && !btn.disabled) {
           const rect = btn.getBoundingClientRect(), size = Math.max(rect.width, rect.height);
           const x = (e.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
