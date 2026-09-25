@@ -34,7 +34,6 @@
       --danger: #DC2626; --danger-bg: #FEF2F2; --danger-border: #FECACA;
       --warning: #D97706; --warning-bg: #FFFBEB;
       --gold: #F59E0B;
-      /* Catégories */
       --cat-gaming: #0055FF; --cat-gaming-soft: rgba(0, 85, 255, 0.08); --cat-gaming-glow: rgba(0, 85, 255, 0.22);
       --cat-streaming: #DC2626; --cat-streaming-soft: rgba(220, 38, 38, 0.08); --cat-streaming-glow: rgba(220, 38, 38, 0.22);
       --cat-finance: #059669; --cat-finance-soft: rgba(5, 150, 105, 0.08); --cat-finance-glow: rgba(5, 150, 105, 0.22);
@@ -79,12 +78,10 @@
     .icon-btn:active { transform: scale(0.9); }
     .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
     .icon-btn.has-dot::after { content: ''; position: absolute; top: 9px; right: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--blue-600); box-shadow: 0 0 0 2px var(--bg-card); display: none; }
-    .icon-btn.has-dot.active::after { display: block; animation: pulse-notif 2s infinite; }
-    @keyframes pulse-notif { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+    .icon-btn.has-dot.active::after { display: block; }
 
     .cart-badge { position: absolute; top: -3px; right: -3px; background: var(--blue-gradient); color: #FFFFFF; font-size: 10px; font-weight: 800; min-width: 19px; height: 19px; padding: 0 5px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px var(--bg-page); line-height: 1; }
-    .cart-badge.visible { display: flex; animation: badge-bounce 0.4s var(--ease-spring); }
-    @keyframes badge-bounce { 0% { transform: scale(0.6); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    .cart-badge.visible { display: flex; }
 
     .search-wrapper { margin-top: 14px; position: relative; display: flex; align-items: center; }
     .search-input { width: 100%; height: 48px; background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--r-md); padding: 0 44px 0 46px; font-size: 14px; font-weight: 500; color: var(--text-primary); outline: none; font-family: inherit; transition: all 0.25s var(--ease-out); box-shadow: var(--shadow-2xs); }
@@ -106,12 +103,12 @@
     .cat-pill.active { background: var(--text-primary); border-color: var(--text-primary); color: #FFFFFF; box-shadow: 0 6px 16px rgba(10, 22, 51, 0.22); }
 
     .hero-carousel { margin: 20px 18px 0; border-radius: var(--r-xl); overflow: hidden; position: relative; height: 152px; box-shadow: var(--shadow-lg); }
-    .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 24px 22px 24px 26px; opacity: 0; transform: translateX(30px) scale(0.98); transition: all 0.8s var(--ease-out); pointer-events: none; }
+    .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 24px 22px 24px 26px; opacity: 0; transform: translateX(30px) scale(0.98); transition: all 0.7s var(--ease-out); pointer-events: none; }
     .hero-slide.active { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
     .hero-slide.bg-blue { background: linear-gradient(135deg, #0055FF 0%, #00B4FF 55%, #38BDF8 100%); }
     .hero-slide.bg-dark { background: linear-gradient(135deg, #0A1633 0%, #1E3A8A 100%); }
     .hero-slide.bg-green { background: linear-gradient(135deg, #065F46 0%, #059669 100%); }
-    .hero-slide.bg-purple { background: linear-gradient(135deg, #0A1633 0%, #0055FF 100%); }
+    .hero-slide.bg-purple { background: linear-gradient(135deg, #0A1633 0%, #7C3AED 100%); }
     .hero-slide::after { content: ''; position: absolute; top: -50%; right: -20%; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%); pointer-events: none; }
     .hero-slide::before { content: ''; position: absolute; bottom: -30px; left: 30%; width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); pointer-events: none; }
     .hero-content { position: relative; z-index: 1; flex: 1; }
@@ -131,6 +128,41 @@
     .trust-icon svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.2; fill: none; }
     .trust-text { font-size: 10.5px; font-weight: 700; color: var(--text-secondary); letter-spacing: -0.1px; text-align: center; }
 
+    .payment-strip { margin: 12px 18px 0; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .payment-strip-label { font-size: 10px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.6px; margin-right: 4px; }
+    .payment-pill { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--r-full); padding: 5px 11px 5px 6px; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-2xs); transition: all 0.2s ease; }
+    .payment-pill:hover { border-color: var(--blue-200); box-shadow: var(--shadow-xs); }
+    .payment-pill-logo { width: 20px; height: 20px; border-radius: 6px; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 8.5px; font-weight: 900; color: var(--text-secondary); flex-shrink: 0; }
+    .payment-pill-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .payment-pill-name { font-size: 10.5px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.1px; }
+
+    .best-seller-section { margin: 26px 18px 0; }
+    .best-seller-card { position: relative; border-radius: var(--r-2xl); overflow: hidden; box-shadow: var(--shadow-xl); cursor: pointer; transition: all 0.3s var(--ease-out); }
+    .best-seller-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2xl); }
+    .best-seller-bg { position: absolute; inset: 0; }
+    .best-seller-bg[data-cat="gaming"] { background: linear-gradient(135deg, #003BCC 0%, #0055FF 60%, #00B4FF 100%); }
+    .best-seller-bg[data-cat="streaming"] { background: linear-gradient(135deg, #7F1D1D 0%, #DC2626 60%, #F87171 100%); }
+    .best-seller-bg[data-cat="finance"] { background: linear-gradient(135deg, #064E3B 0%, #059669 60%, #34D399 100%); }
+    .best-seller-bg[data-cat="giftcard"] { background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 60%, #A78BFA 100%); }
+    .best-seller-bg::after { content: ''; position: absolute; top: -80px; right: -60px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%); pointer-events: none; }
+    .best-seller-bg::before { content: ''; position: absolute; bottom: -60px; left: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none; }
+    .best-seller-content { position: relative; z-index: 1; display: flex; gap: 16px; padding: 20px; align-items: center; }
+    .best-seller-visual { width: 96px; height: 96px; border-radius: 20px; overflow: hidden; background: rgba(255,255,255,0.18); backdrop-filter: blur(12px); flex-shrink: 0; border: 1px solid rgba(255,255,255,0.25); position: relative; }
+    .best-seller-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .best-seller-visual-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 28px; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; opacity: 0.85; }
+    .best-seller-info { flex: 1; min-width: 0; color: #FFFFFF; }
+    .best-seller-tag { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.22); backdrop-filter: blur(6px); color: #FFFFFF; font-size: 9.5px; font-weight: 900; padding: 4px 10px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.2); }
+    .best-seller-tag svg { width: 11px; height: 11px; stroke: #FFFFFF; stroke-width: 2.6; fill: none; }
+    .best-seller-title { font-size: 19px; font-weight: 900; letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 6px; }
+    .best-seller-desc { font-size: 12px; color: rgba(255,255,255,0.85); margin-bottom: 12px; line-height: 1.4; }
+    .best-seller-price-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .best-seller-price { font-size: 22px; font-weight: 900; letter-spacing: -0.8px; line-height: 1; }
+    .best-seller-price-unit { font-size: 12px; font-weight: 800; opacity: 0.85; }
+    .best-seller-ref { font-size: 12px; font-weight: 700; opacity: 0.65; text-decoration: line-through; }
+    .best-seller-cta { position: absolute; bottom: 16px; right: 20px; z-index: 2; width: 40px; height: 40px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.25); transition: all 0.2s ease; }
+    .best-seller-card:hover .best-seller-cta { transform: scale(1.08); }
+    .best-seller-cta svg { width: 16px; height: 16px; stroke: var(--blue-700); stroke-width: 2.6; fill: none; }
+
     .trending-section { margin-top: 28px; }
     .trending-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 4px 18px 12px; margin: 0 -18px; scrollbar-width: none; scroll-snap-type: x mandatory; }
     .trending-scroll::-webkit-scrollbar { display: none; }
@@ -144,19 +176,29 @@
     .trending-visual { width: 100%; aspect-ratio: 1 / 1; border-radius: var(--r-md); overflow: hidden; background: linear-gradient(160deg, var(--cat-soft) 0%, var(--bg-subtle) 100%); border: 1px solid var(--border-subtle); margin-bottom: 10px; position: relative; }
     .trending-visual img { width: 100%; height: 100%; object-fit: cover; }
     .trending-rank { position: absolute; top: 6px; left: 6px; background: rgba(10, 22, 51, 0.9); color: #FFFFFF; font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: var(--r-full); backdrop-filter: blur(6px); letter-spacing: -0.2px; border: 1px solid rgba(255,255,255,0.12); }
-    .trending-cat-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--cat); box-shadow: 0 0 0 3px rgba(255,255,255,0.9), 0 0 8px var(--cat-glow); }
     .trending-name { font-size: 12.5px; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; letter-spacing: -0.2px; }
     .trending-price { font-size: 12px; font-weight: 800; color: var(--cat); letter-spacing: -0.1px; }
+
+    .new-section { margin-top: 28px; }
+    .new-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 4px 18px 12px; margin: 0 -18px; scrollbar-width: none; scroll-snap-type: x mandatory; }
+    .new-scroll::-webkit-scrollbar { display: none; }
+    .new-card { flex-shrink: 0; width: 148px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 10px; cursor: pointer; scroll-snap-align: start; transition: all 0.3s var(--ease-out); box-shadow: var(--shadow-xs); position: relative; }
+    .new-card:active { transform: scale(0.96); }
+    .new-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--blue-200); }
+    .new-card[data-cat="gaming"] { --cat: var(--cat-gaming); --cat-soft: var(--cat-gaming-soft); --cat-glow: var(--cat-gaming-glow); }
+    .new-card[data-cat="streaming"] { --cat: var(--cat-streaming); --cat-soft: var(--cat-streaming-soft); --cat-glow: var(--cat-streaming-glow); }
+    .new-card[data-cat="finance"] { --cat: var(--cat-finance); --cat-soft: var(--cat-finance-soft); --cat-glow: var(--cat-finance-glow); }
+    .new-card[data-cat="giftcard"] { --cat: var(--cat-giftcard); --cat-soft: var(--cat-giftcard-soft); --cat-glow: var(--cat-giftcard-glow); }
+    .new-visual { width: 100%; aspect-ratio: 1 / 1; border-radius: var(--r-md); overflow: hidden; background: linear-gradient(160deg, var(--cat-soft) 0%, var(--bg-subtle) 100%); border: 1px solid var(--border-subtle); margin-bottom: 10px; position: relative; }
+    .new-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .new-badge { position: absolute; top: 6px; right: 6px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #FFFFFF; font-size: 9px; font-weight: 900; padding: 4px 8px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 10px rgba(217, 119, 6, 0.5); z-index: 2; line-height: 1; }
+    .new-name { font-size: 12.5px; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; letter-spacing: -0.2px; }
+    .new-price { font-size: 12px; font-weight: 800; color: var(--cat); letter-spacing: -0.1px; }
 
     .main-body { padding: 0 18px 24px; flex: 1; }
     .section-block { margin-bottom: 34px; }
     .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; }
-    .section-title-group { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .section-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-600); box-shadow: 0 0 0 3px var(--blue-50); flex-shrink: 0; }
-    .section-block[data-cat="gaming"] .section-dot { background: var(--cat-gaming); box-shadow: 0 0 0 3px var(--cat-gaming-soft); }
-    .section-block[data-cat="streaming"] .section-dot { background: var(--cat-streaming); box-shadow: 0 0 0 3px var(--cat-streaming-soft); }
-    .section-block[data-cat="finance"] .section-dot { background: var(--cat-finance); box-shadow: 0 0 0 3px var(--cat-finance-soft); }
-    .section-block[data-cat="giftcard"] .section-dot { background: var(--cat-giftcard); box-shadow: 0 0 0 3px var(--cat-giftcard-soft); }
+    .section-title-group { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
     .section-title { font-size: 18px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.2; }
     .section-count { font-size: 11px; font-weight: 700; color: var(--text-tertiary); background: var(--bg-subtle); padding: 2px 8px; border-radius: var(--r-full); }
     .btn-see-all { font-size: 13px; font-weight: 700; color: var(--blue-600); background: none; border: none; cursor: pointer; font-family: inherit; padding: 6px 4px; display: flex; align-items: center; gap: 2px; transition: opacity 0.15s ease; white-space: nowrap; }
@@ -165,9 +207,6 @@
 
     .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 
-    /* ═══════════════════════════════════════════════════
-       PRODUCT CARD v2 — Premium, coloré par catégorie
-       ═══════════════════════════════════════════════════ */
     .product-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
@@ -222,9 +261,7 @@
       margin-bottom: 12px;
       transition: all 0.3s ease;
     }
-    .product-card:hover .product-visual {
-      border-color: var(--cat);
-    }
+    .product-card:hover .product-visual { border-color: var(--cat); }
     .product-visual img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s var(--ease-out); }
     .product-card:hover .product-visual img { transform: scale(1.08); }
     .product-visual::after {
@@ -265,51 +302,6 @@
     }
     .product-cat-badge svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 2.6; fill: none; }
 
-    .product-micro-badge {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: var(--blue-gradient);
-      color: #FFFFFF;
-      font-size: 8.5px;
-      font-weight: 900;
-      padding: 4px 8px;
-      border-radius: var(--r-full);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 10px rgba(0, 85, 255, 0.5);
-      z-index: 2;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .product-micro-badge.fire { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); box-shadow: 0 2px 10px rgba(217, 119, 6, 0.5); }
-    .product-micro-badge.fire svg { width: 9px; height: 9px; stroke: #FFF; stroke-width: 2.6; fill: none; }
-
-    .product-stock-pill {
-      position: absolute;
-      bottom: 8px;
-      left: 8px;
-      background: rgba(5, 150, 105, 0.95);
-      backdrop-filter: blur(6px);
-      color: #FFFFFF;
-      font-size: 8.5px;
-      font-weight: 900;
-      padding: 3px 8px;
-      border-radius: var(--r-full);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35);
-      z-index: 2;
-      line-height: 1;
-    }
-    .product-stock-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 0 2px rgba(255,255,255,0.35); animation: stock-pulse 2s infinite; }
-    @keyframes stock-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
     .product-name { font-size: 13.5px; font-weight: 800; color: var(--text-primary); line-height: 1.3; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; letter-spacing: -0.25px; }
 
     .product-price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; min-height: 20px; flex-wrap: wrap; }
@@ -332,8 +324,6 @@
       pointer-events: none;
       letter-spacing: 0.1px;
       transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
     }
     .product-cta svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.6; fill: none; transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
     .product-card:hover .product-cta {
@@ -342,6 +332,59 @@
       box-shadow: 0 6px 16px var(--cat-glow);
     }
     .product-card:hover .product-cta svg { transform: translateX(3px); }
+
+    .topseller-section { margin-top: 28px; }
+    .topseller-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .topseller-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      box-shadow: var(--shadow-xs);
+      position: relative;
+    }
+    .topseller-card[data-cat="gaming"] { --cat: var(--cat-gaming); --cat-soft: var(--cat-gaming-soft); --cat-glow: var(--cat-gaming-glow); }
+    .topseller-card[data-cat="streaming"] { --cat: var(--cat-streaming); --cat-soft: var(--cat-streaming-soft); --cat-glow: var(--cat-streaming-glow); }
+    .topseller-card[data-cat="finance"] { --cat: var(--cat-finance); --cat-soft: var(--cat-finance-soft); --cat-glow: var(--cat-finance-glow); }
+    .topseller-card[data-cat="giftcard"] { --cat: var(--cat-giftcard); --cat-soft: var(--cat-giftcard-soft); --cat-glow: var(--cat-giftcard-glow); }
+    .topseller-card:hover { transform: translateY(-3px); border-color: var(--cat); box-shadow: 0 10px 26px var(--cat-glow); }
+    .topseller-card:active { transform: translateY(-1px) scale(0.985); }
+    .topseller-medal {
+      position: absolute;
+      top: -8px;
+      right: 10px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: #FFFFFF;
+      z-index: 3;
+      border: 2px solid var(--bg-card);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    .topseller-medal.gold { background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%); text-shadow: 0 1px 2px rgba(120, 53, 15, 0.4); }
+    .topseller-medal.silver { background: linear-gradient(135deg, #E5E7EB 0%, #94A3B8 100%); text-shadow: 0 1px 2px rgba(30, 41, 59, 0.4); }
+    .topseller-medal.bronze { background: linear-gradient(135deg, #FB923C 0%, #B45309 100%); text-shadow: 0 1px 2px rgba(120, 53, 15, 0.4); }
+    .topseller-visual {
+      width: 100%;
+      aspect-ratio: 1.2 / 1;
+      border-radius: var(--r-md);
+      overflow: hidden;
+      background: linear-gradient(160deg, var(--cat-soft) 0%, var(--bg-subtle) 100%);
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .topseller-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .topseller-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 22px; color: var(--cat); letter-spacing: -1.2px; text-transform: uppercase; opacity: 0.45; }
+    .topseller-name { font-size: 13px; font-weight: 800; color: var(--text-primary); line-height: 1.25; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.2px; }
+    .topseller-price { font-size: 12.5px; font-weight: 800; color: var(--cat); letter-spacing: -0.2px; }
 
     .empty-state { text-align: center; padding: 60px 24px; }
     .empty-state-icon { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; }
@@ -355,6 +398,48 @@
     .skeleton-line-sm { height: 10px; width: 60%; }
     .skeleton-btn { height: 38px; border-radius: var(--r-sm); margin-top: 4px; }
     @keyframes skeleton-load { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .howto-section { margin-top: 34px; }
+    .howto-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .howto-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: 16px 14px;
+      box-shadow: var(--shadow-2xs);
+      transition: all 0.25s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .howto-step:hover { border-color: var(--blue-200); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+    .howto-step-num {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--blue-50);
+      letter-spacing: -2px;
+      line-height: 1;
+      z-index: 0;
+    }
+    .howto-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--blue-gradient);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0, 85, 255, 0.28);
+      position: relative;
+      z-index: 1;
+    }
+    .howto-icon svg { width: 18px; height: 18px; stroke: #FFFFFF; stroke-width: 2.4; fill: none; }
+    .howto-title { font-size: 13px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -0.2px; line-height: 1.25; position: relative; z-index: 1; }
+    .howto-desc { font-size: 11px; font-weight: 600; color: var(--text-tertiary); line-height: 1.45; position: relative; z-index: 1; }
 
     .wa-card { background: linear-gradient(135deg, #0A1633 0%, #1E293B 100%); border-radius: var(--r-xl); padding: 20px; margin: 34px 0 30px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
     .wa-card::after { content: ''; position: absolute; top: -50px; right: -50px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(0, 85, 255, 0.3) 0%, transparent 70%); pointer-events: none; }
@@ -378,6 +463,45 @@
     .review-stars svg { width: 11px; height: 11px; fill: var(--gold); stroke: none; }
     .review-text { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
 
+    .guides-section { margin-top: 34px; }
+    .guides-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .guide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: 14px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: var(--shadow-2xs);
+      transition: all 0.25s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      width: 100%;
+    }
+    .guide-card:hover { transform: translateY(-2px); border-color: var(--blue-200); box-shadow: var(--shadow-md); }
+    .guide-card:active { transform: translateY(0) scale(0.985); }
+    .guide-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .guide-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .guide-title { font-size: 12.5px; font-weight: 800; color: var(--text-primary); line-height: 1.3; letter-spacing: -0.2px; }
+    .guide-arrow { position: absolute; bottom: 12px; right: 12px; color: var(--blue-600); opacity: 0; transition: all 0.25s ease; }
+    .guide-card:hover .guide-arrow { opacity: 1; transform: translateX(2px); }
+    .guide-arrow svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.6; fill: none; }
+
     .faq-stack { display: flex; flex-direction: column; gap: 8px; }
     .faq-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); overflow: hidden; transition: all 0.25s var(--ease-out); }
     .faq-item.open { border-color: var(--blue-300); box-shadow: 0 0 0 3px var(--blue-50); }
@@ -386,6 +510,27 @@
     .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--blue-600); }
     .faq-body { padding: 0 16px 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.55; display: none; }
     .faq-item.open .faq-body { display: block; }
+
+    .final-cta-card {
+      margin: 34px 0 24px;
+      background: linear-gradient(135deg, #0A1633 0%, #1E3A8A 55%, #0055FF 100%);
+      border-radius: var(--r-2xl);
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-blue-lg);
+    }
+    .final-cta-card::after { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(0, 180, 255, 0.3) 0%, transparent 70%); pointer-events: none; }
+    .final-cta-card::before { content: ''; position: absolute; bottom: -40px; left: -30px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); pointer-events: none; }
+    .final-cta-icon { width: 56px; height: 56px; border-radius: 18px; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; position: relative; z-index: 1; border: 1px solid rgba(255,255,255,0.2); }
+    .final-cta-icon svg { width: 26px; height: 26px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+    .final-cta-title { font-size: 22px; font-weight: 900; color: #FFFFFF; letter-spacing: -0.5px; margin-bottom: 8px; position: relative; z-index: 1; line-height: 1.2; }
+    .final-cta-desc { font-size: 13px; color: rgba(255,255,255,0.82); line-height: 1.55; margin-bottom: 20px; max-width: 320px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+    .final-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; color: var(--blue-700); padding: 14px 26px; border-radius: var(--r-md); font-size: 13.5px; font-weight: 800; text-decoration: none; border: none; cursor: pointer; font-family: inherit; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); transition: all 0.2s var(--ease-out); position: relative; z-index: 1; letter-spacing: -0.1px; }
+    .final-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); }
+    .final-cta-btn:active { transform: scale(0.98); }
+    .final-cta-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; }
 
     .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.94); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-top: 1px solid var(--border-subtle); padding: 8px 10px 12px; z-index: 55; box-shadow: 0 -2px 16px rgba(10, 22, 51, 0.04); }
     .nav-track { position: relative; display: flex; align-items: center; justify-content: space-around; }
@@ -404,8 +549,7 @@
     .site-footer { background: var(--bg-card); border-top: 1px solid var(--border-subtle); padding: 20px 18px; margin-top: 20px; }
     .footer-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--text-tertiary); gap: 12px; }
     .footer-status { display: flex; align-items: center; gap: 6px; color: var(--success); font-weight: 700; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); } 50% { box-shadow: 0 0 0 6px rgba(5, 150, 105, 0.05); } }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
 
     #toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 400; width: calc(100% - 32px); max-width: 400px; pointer-events: none; }
     .toast { background: var(--text-primary); color: #FFFFFF; padding: 14px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); transform: translateY(-20px); opacity: 0; transition: all 0.35s var(--ease-spring); overflow: hidden; position: relative; }
@@ -427,65 +571,66 @@
     .toast.info .toast-icon svg { stroke: #93C5FD; }
     .toast-msg { flex: 1; line-height: 1.35; }
 
+    /* ═══ SIDEBAR ULTRA-COMPACTE ═══ */
     .sidebar-overlay { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); }
     .sidebar-overlay.active { opacity: 1; visibility: visible; }
-    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(85vw, 360px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
+    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(80vw, 310px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
     .sidebar-overlay.active .sidebar-drawer { transform: translateX(0); }
     .sidebar-content { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-    .sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 20px 18px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-card); }
-    .sidebar-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .sidebar-logo-wrap { width: 72px; height: 72px; border-radius: 18px; background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 100%); border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 85, 255, 0.1); }
-    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
-    .sidebar-brand-name { font-size: 18px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; line-height: 1.1; text-transform: uppercase; }
-    .sidebar-brand-sub { font-size: 11.5px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 4px; }
-    .sidebar-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid transparent; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all 0.18s var(--ease-out); flex-shrink: 0; }
+    .sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px 10px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-card); }
+    .sidebar-brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .sidebar-logo-wrap { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 100%); border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+    .sidebar-brand-name { font-size: 12.5px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; line-height: 1.1; text-transform: uppercase; }
+    .sidebar-brand-sub { font-size: 8px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 2px; }
+    .sidebar-close { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid transparent; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all 0.18s var(--ease-out); flex-shrink: 0; }
     .sidebar-close:hover { background: var(--bg-hover); border-color: var(--border-default); color: var(--text-primary); }
     .sidebar-close:active { transform: scale(0.92); }
-    .sidebar-close svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .sidebar-close svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none; }
 
-    .sidebar-user-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; margin: 16px 14px 10px; background: var(--bg-card); border: 1.5px solid var(--blue-200); border-radius: 18px; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0, 85, 255, 0.06); }
-    .sidebar-user-avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: -0.3px; flex-shrink: 0; box-shadow: 0 3px 12px rgba(0, 85, 255, 0.3); border: 2px solid #FFFFFF; }
+    .sidebar-user-card { display: flex; align-items: center; gap: 9px; padding: 8px 10px; margin: 10px 10px 6px; background: var(--bg-card); border: 1.5px solid var(--blue-200); border-radius: 12px; flex-shrink: 0; box-shadow: 0 1px 6px rgba(0, 85, 255, 0.06); }
+    .sidebar-user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 11px; font-weight: 800; letter-spacing: -0.3px; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 85, 255, 0.28); border: 1.5px solid #FFFFFF; }
     .sidebar-user-info { flex: 1; min-width: 0; }
-    .sidebar-user-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--blue-600); margin-bottom: 4px; }
-    .sidebar-user-email { font-size: 13px; font-weight: 700; color: var(--text-primary); word-break: break-all; line-height: 1.35; letter-spacing: -0.2px; }
-    .sidebar-user-card.guest { background: var(--bg-card); border-color: var(--border-default); box-shadow: 0 2px 10px rgba(10, 22, 51, 0.04); }
-    .sidebar-user-card.guest .sidebar-user-avatar { background: linear-gradient(135deg, #94A3B8 0%, #64748B 100%); box-shadow: 0 3px 12px rgba(100, 116, 139, 0.25); }
+    .sidebar-user-label { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--blue-600); margin-bottom: 1px; }
+    .sidebar-user-email { font-size: 10.5px; font-weight: 700; color: var(--text-primary); word-break: break-all; line-height: 1.3; letter-spacing: -0.2px; }
+    .sidebar-user-card.guest { background: var(--bg-card); border-color: var(--border-default); box-shadow: 0 1px 6px rgba(10, 22, 51, 0.04); }
+    .sidebar-user-card.guest .sidebar-user-avatar { background: linear-gradient(135deg, #94A3B8 0%, #64748B 100%); box-shadow: 0 2px 8px rgba(100, 116, 139, 0.25); }
     .sidebar-user-card.guest .sidebar-user-label { color: var(--text-tertiary); }
-    .sidebar-user-card.guest .sidebar-user-email { color: var(--text-secondary); font-weight: 600; font-size: 12.5px; }
+    .sidebar-user-card.guest .sidebar-user-email { color: var(--text-secondary); font-weight: 600; font-size: 10px; }
 
-    .sidebar-label { display: flex; align-items: center; gap: 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-tertiary); margin: 20px 18px 10px; flex-shrink: 0; }
+    .sidebar-label { display: flex; align-items: center; gap: 8px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-tertiary); margin: 10px 12px 4px; flex-shrink: 0; }
     .sidebar-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%); }
 
-    .sidebar-body { padding: 0 14px 24px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
-    .sidebar-body::-webkit-scrollbar { width: 4px; }
+    .sidebar-body { padding: 0 8px 12px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .sidebar-body::-webkit-scrollbar { width: 3px; }
 
-    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .lang-pill { background: var(--bg-card); border: 1px solid var(--border-default); padding: 10px 12px; border-radius: 12px; display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; color: var(--text-primary); cursor: pointer; transition: all 0.18s var(--ease-out); box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); }
+    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    .lang-pill { background: var(--bg-card); border: 1px solid var(--border-default); padding: 5px 8px; border-radius: 8px; display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--text-primary); cursor: pointer; transition: all 0.18s var(--ease-out); box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); }
     .lang-pill:hover { background: var(--bg-hover); border-color: var(--border-strong); }
     .lang-pill:active { transform: scale(0.98); }
     .lang-pill.active { background: var(--blue-50); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500); }
-    .lang-pill .flag { font-size: 15px; line-height: 1; flex-shrink: 0; }
+    .lang-pill .flag { font-size: 11px; line-height: 1; flex-shrink: 0; }
 
-    .sidebar-nav { display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
 
-    .sidebar-nav-link { position: relative; display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; background: var(--bg-card); border: 1.5px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; font-size: 14.5px; font-weight: 700; width: 100%; text-align: left; cursor: pointer; transition: all 0.18s var(--ease-out); letter-spacing: -0.2px; box-shadow: 0 1px 3px rgba(10, 22, 51, 0.04); }
-    .sidebar-nav-link:hover { border-color: var(--border-default); box-shadow: 0 3px 10px rgba(10, 22, 51, 0.07); transform: translateY(-1px); }
+    .sidebar-nav-link { position: relative; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 10px; background: var(--bg-card); border: 1.5px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; font-size: 12px; font-weight: 700; width: 100%; text-align: left; cursor: pointer; transition: all 0.18s var(--ease-out); letter-spacing: -0.15px; box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); font-family: inherit; }
+    .sidebar-nav-link:hover { border-color: var(--border-default); box-shadow: 0 2px 6px rgba(10, 22, 51, 0.06); transform: translateY(-1px); }
     .sidebar-nav-link:active { transform: translateY(0) scale(0.99); }
-    .sidebar-nav-link svg { width: 20px; height: 20px; stroke: var(--blue-600); stroke-width: 2; fill: none; flex-shrink: 0; padding: 11px; background: var(--blue-50); border-radius: 12px; box-sizing: content-box; transition: all 0.2s var(--ease-out); }
+    .sidebar-nav-link svg { width: 14px; height: 14px; stroke: var(--blue-600); stroke-width: 2; fill: none; flex-shrink: 0; padding: 6px; background: var(--blue-50); border-radius: 8px; box-sizing: content-box; transition: all 0.2s var(--ease-out); }
     .sidebar-nav-link:hover svg { background: var(--blue-100); transform: scale(1.04); }
-    .sidebar-nav-link.active { background: var(--bg-card); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500), 0 4px 14px rgba(0, 85, 255, 0.12); }
+    .sidebar-nav-link.active { background: var(--bg-card); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500), 0 3px 10px rgba(0, 85, 255, 0.12); }
     .sidebar-nav-link.active svg { background: var(--blue-100); stroke: var(--blue-700); stroke-width: 2.2; }
-    .sidebar-nav-link.active::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--blue-600); margin-left: auto; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.15); }
+    .sidebar-nav-link.active::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--blue-600); margin-left: auto; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.15); }
 
-    .sidebar-nav-link.danger { color: var(--danger); margin-top: 8px; border-color: var(--danger-border); }
-    .sidebar-nav-link.danger::before { content: ''; position: absolute; top: -12px; left: 8px; right: 8px; height: 1px; background: var(--border-subtle); }
+    .sidebar-nav-link.danger { color: var(--danger); margin-top: 4px; border-color: var(--danger-border); }
+    .sidebar-nav-link.danger::before { content: ''; position: absolute; top: -7px; left: 6px; right: 6px; height: 1px; background: var(--border-subtle); }
     .sidebar-nav-link.danger svg { stroke: var(--danger); background: var(--danger-bg); }
-    .sidebar-nav-link.danger:hover { background: var(--danger-bg); border-color: var(--danger); box-shadow: 0 3px 10px rgba(220, 38, 38, 0.15); }
+    .sidebar-nav-link.danger:hover { background: var(--danger-bg); border-color: var(--danger); box-shadow: 0 2px 6px rgba(220, 38, 38, 0.15); }
     .sidebar-nav-link.danger:hover svg { background: #FEE2E2; }
 
-    .sidebar-nav-link.sidebar-login-btn { background: var(--blue-gradient); color: #FFFFFF !important; border-color: transparent; justify-content: center; font-weight: 800; box-shadow: 0 4px 14px rgba(0, 85, 255, 0.28); margin-top: 8px; }
-    .sidebar-nav-link.sidebar-login-btn svg { background: rgba(255, 255, 255, 0.2); stroke: #FFFFFF; padding: 8px; }
-    .sidebar-nav-link.sidebar-login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0, 85, 255, 0.35); }
+    .sidebar-nav-link.sidebar-login-btn { background: var(--blue-gradient); color: #FFFFFF !important; border-color: transparent; justify-content: center; font-weight: 800; box-shadow: 0 3px 10px rgba(0, 85, 255, 0.28); margin-top: 4px; }
+    .sidebar-nav-link.sidebar-login-btn svg { background: rgba(255, 255, 255, 0.2); stroke: #FFFFFF; padding: 5px; }
+    .sidebar-nav-link.sidebar-login-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(0, 85, 255, 0.35); }
 
     .sidebar-nav-link.sidebar-register-btn { background: var(--bg-card); justify-content: center; font-weight: 700; border-color: var(--border-default); }
     .sidebar-nav-link.sidebar-register-btn svg { background: var(--bg-subtle); stroke: var(--text-secondary); }
@@ -503,22 +648,10 @@
     .sheet-subtitle { font-size: 12px; color: var(--text-tertiary); font-weight: 500; }
     .sheet-close { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; flex-shrink: 0; font-family: inherit; }
     .sheet-close svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .sheet-body { padding: 0 0 0; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .sheet-body { padding: 0; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
     .sheet-body-inner { padding: 18px 20px; }
 
-    /* ═══ MODAL HERO — Bannière colorée ═══ */
-    .modal-hero {
-      position: relative;
-      margin: 0 20px 16px;
-      border-radius: 20px;
-      overflow: hidden;
-      aspect-ratio: 16 / 10;
-      background: linear-gradient(135deg, var(--cat) 0%, var(--cat-soft) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 24px var(--cat-glow);
-    }
+    .modal-hero { position: relative; margin: 0 20px 16px; border-radius: 20px; overflow: hidden; aspect-ratio: 16 / 10; background: linear-gradient(135deg, var(--cat) 0%, var(--cat-soft) 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px var(--cat-glow); }
     .modal-hero[data-cat="gaming"] { --cat: var(--cat-gaming); --cat-soft: var(--cat-gaming-soft); --cat-glow: var(--cat-gaming-glow); }
     .modal-hero[data-cat="streaming"] { --cat: var(--cat-streaming); --cat-soft: var(--cat-streaming-soft); --cat-glow: var(--cat-streaming-glow); }
     .modal-hero[data-cat="finance"] { --cat: var(--cat-finance); --cat-soft: var(--cat-finance-soft); --cat-glow: var(--cat-finance-glow); }
@@ -528,180 +661,43 @@
     .modal-hero-content { position: relative; z-index: 1; text-align: center; padding: 16px; }
     .modal-hero-logo { width: 90px; height: 90px; border-radius: 20px; object-fit: contain; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 10px; border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
     .modal-hero-fallback { width: 90px; height: 90px; border-radius: 20px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 32px; color: #FFFFFF; letter-spacing: -1.5px; text-transform: uppercase; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-    .modal-hero-badge {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: rgba(5, 150, 105, 0.95);
-      backdrop-filter: blur(6px);
-      color: #FFFFFF;
-      font-size: 10px;
-      font-weight: 900;
-      padding: 5px 10px;
-      border-radius: var(--r-full);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 0 2px 10px rgba(5, 150, 105, 0.4);
-      z-index: 2;
-      line-height: 1;
-    }
+    .modal-hero-badge { position: absolute; top: 12px; left: 12px; background: rgba(5, 150, 105, 0.95); backdrop-filter: blur(6px); color: #FFFFFF; font-size: 10px; font-weight: 900; padding: 5px 10px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 10px rgba(5, 150, 105, 0.4); z-index: 2; line-height: 1; }
     .modal-hero-badge svg { width: 11px; height: 11px; stroke: #FFFFFF; stroke-width: 2.6; fill: none; }
 
-    /* ═══ MODAL INFO STRIP ═══ */
-    .modal-info-strip {
-      margin: 0 20px 20px;
-      padding: 12px 14px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
+    .modal-info-strip { margin: 0 20px 20px; padding: 12px 14px; background: var(--bg-subtle); border: 1px solid var(--border-subtle); border-radius: 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 12.5px; font-weight: 600; color: var(--text-secondary); line-height: 1.5; }
     .modal-info-strip svg { width: 16px; height: 16px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; flex-shrink: 0; margin-top: 1px; }
     .modal-info-strip strong { color: var(--text-primary); font-weight: 800; }
 
-    /* ═══ PACK SECTION ═══ */
     .pack-section { margin-bottom: 22px; }
     .pack-section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 20px; }
-    .pack-section-title { font-size: 11px; font-weight: 900; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 8px; }
-    .pack-section-title::before { content: ''; width: 3px; height: 12px; border-radius: 2px; background: var(--blue-gradient); }
-    .pack-section-title.other::before { background: linear-gradient(135deg, #94A3B8 0%, #64748B 100%); }
+    .pack-section-title { font-size: 11px; font-weight: 900; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.8px; }
 
     .offers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 20px; }
 
-    /* ═══ OFFER CHIP v2 ═══ */
-    .offer-chip {
-      position: relative;
-      background: var(--bg-card);
-      border: 1.5px solid var(--border-default);
-      border-radius: 16px;
-      padding: 16px 12px 12px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      font-family: inherit;
-      overflow: visible;
-      text-align: left;
-    }
-    .offer-chip:hover {
-      border-color: var(--blue-200);
-      box-shadow: var(--shadow-sm);
-      transform: translateY(-1px);
-    }
+    .offer-chip { position: relative; background: var(--bg-card); border: 1.5px solid var(--border-default); border-radius: 16px; padding: 16px 12px 12px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1); font-family: inherit; overflow: visible; text-align: left; }
+    .offer-chip:hover { border-color: var(--blue-200); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
     .offer-chip:active { transform: scale(0.97); }
-    .offer-chip.selected {
-      background: linear-gradient(135deg, #0055FF 0%, #00B4FF 100%);
-      border-color: transparent;
-      box-shadow: 0 10px 26px rgba(0, 85, 255, 0.35);
-      transform: translateY(-2px);
-    }
+    .offer-chip.selected { background: linear-gradient(135deg, #0055FF 0%, #00B4FF 100%); border-color: transparent; box-shadow: 0 10px 26px rgba(0, 85, 255, 0.35); transform: translateY(-2px); }
     .offer-chip.selected .offer-chip-name { color: #FFFFFF; }
     .offer-chip.selected .offer-chip-price { color: #FFFFFF; }
     .offer-chip.selected .offer-chip-ref { color: rgba(255,255,255,0.65); text-decoration-color: rgba(255,255,255,0.5); }
     .offer-chip.selected .offer-chip-unit { color: rgba(255,255,255,0.75); }
 
-    .offer-chip-check {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.98);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-      animation: check-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    @keyframes check-pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+    .offer-chip-check { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; background: rgba(255, 255, 255, 0.98); display: none; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); }
     .offer-chip-check svg { width: 13px; height: 13px; stroke: var(--blue-600); stroke-width: 3; fill: none; }
     .offer-chip.selected .offer-chip-check { display: flex; }
 
-    .offer-chip-promo {
-      position: absolute;
-      top: -8px;
-      left: 10px;
-      background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
-      color: #FFFFFF;
-      font-size: 9px;
-      font-weight: 900;
-      padding: 3px 8px;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      box-shadow: 0 3px 10px rgba(220, 38, 38, 0.4);
-      z-index: 3;
-      line-height: 1;
-    }
-    .offer-chip-promo.auto {
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-      box-shadow: 0 3px 10px rgba(217, 119, 6, 0.4);
-    }
+    .offer-chip-promo { position: absolute; top: -8px; left: 10px; background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%); color: #FFFFFF; font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.4px; box-shadow: 0 3px 10px rgba(220, 38, 38, 0.4); z-index: 3; line-height: 1; }
+    .offer-chip-promo.auto { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); box-shadow: 0 3px 10px rgba(217, 119, 6, 0.4); }
 
-    .offer-chip-name {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: var(--text-primary);
-      line-height: 1.25;
-      letter-spacing: -0.2px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding-right: 26px;
-      min-height: 34px;
-    }
-    .offer-chip-icon {
-      display: inline-flex;
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
-      vertical-align: middle;
-    }
+    .offer-chip-name { font-size: 13.5px; font-weight: 800; color: var(--text-primary); line-height: 1.25; letter-spacing: -0.2px; display: flex; align-items: center; gap: 4px; padding-right: 26px; min-height: 34px; }
+    .offer-chip-icon { display: inline-flex; width: 15px; height: 15px; flex-shrink: 0; vertical-align: middle; }
 
-    .offer-chip-prices {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 2px;
-    }
-    .offer-chip-ref {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-tertiary);
-      text-decoration: line-through;
-      text-decoration-thickness: 1.5px;
-      text-decoration-color: var(--text-quaternary);
-    }
-    .offer-chip-price {
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--blue-600);
-      letter-spacing: -0.5px;
-      line-height: 1;
-    }
-    .offer-chip-unit {
-      font-size: 9px;
-      font-weight: 800;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-left: 2px;
-    }
+    .offer-chip-prices { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+    .offer-chip-ref { font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-decoration: line-through; text-decoration-thickness: 1.5px; text-decoration-color: var(--text-quaternary); }
+    .offer-chip-price { font-size: 16px; font-weight: 900; color: var(--blue-600); letter-spacing: -0.5px; line-height: 1; }
+    .offer-chip-unit { font-size: 9px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.3px; margin-left: 2px; }
 
-    /* ═══ MODAL SECTIONS (accordion) ═══ */
     .modal-section { margin: 0 20px 10px; border: 1px solid var(--border-subtle); border-radius: var(--r-md); overflow: hidden; }
     .modal-section-head { width: 100%; padding: 12px 14px; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: space-between; font-family: inherit; font-size: 12.5px; font-weight: 800; color: var(--text-primary); cursor: pointer; text-transform: uppercase; letter-spacing: 0.4px; }
     .modal-section-head svg { width: 14px; height: 14px; stroke: var(--text-tertiary); stroke-width: 2.4; fill: none; transition: transform 0.3s ease; }
@@ -709,7 +705,6 @@
     .modal-section-body { padding: 14px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; display: none; background: var(--bg-card); }
     .modal-section.open .modal-section-body { display: block; }
 
-    /* ═══ DYNAMIC CALC (finance) ═══ */
     .calc-box { background: var(--bg-subtle); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: 16px; margin: 0 20px 16px; }
     .calc-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
     .calc-label { font-size: 11px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -722,7 +717,6 @@
     .calc-input:focus { border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); }
     .calc-hint { font-size: 11.5px; color: var(--text-tertiary); margin-top: 8px; font-weight: 600; }
 
-    /* ═══ DELIVERY FIELDS ═══ */
     .delivery-zone { margin: 0 20px 16px; padding-top: 18px; border-top: 1px solid var(--border-subtle); }
     .delivery-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
     .delivery-title svg { width: 16px; height: 16px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; }
@@ -754,6 +748,31 @@
     .notif-message { color: var(--text-secondary); line-height: 1.5; font-weight: 500; }
 
     .confetti-piece { position: fixed; width: 8px; height: 8px; pointer-events: none; z-index: 500; border-radius: 2px; }
+
+    /* ═══ GUIDE MODAL ═══ */
+    .guide-modal-backdrop { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 300; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); display: flex; align-items: flex-end; justify-content: center; }
+    .guide-modal-backdrop.active { opacity: 1; visibility: visible; }
+    .guide-modal { width: 100%; max-width: 480px; max-height: 88vh; background: var(--bg-card); border-radius: var(--r-3xl) var(--r-3xl) 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.42s var(--ease-out); overflow: hidden; box-shadow: var(--shadow-2xl); }
+    .guide-modal-backdrop.active .guide-modal { transform: translateY(0); }
+    .guide-modal-head { padding: 20px 20px 16px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
+    .guide-modal-head-text { min-width: 0; flex: 1; }
+    .guide-modal-title { font-size: 17px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; line-height: 1.25; }
+    .guide-modal-subtitle { font-size: 12px; color: var(--text-tertiary); font-weight: 600; margin-top: 3px; }
+    .guide-modal-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; font-family: inherit; flex-shrink: 0; }
+    .guide-modal-close svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .guide-modal-body { padding: 20px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .guide-modal-body h4 { font-size: 13.5px; font-weight: 800; color: var(--text-primary); margin: 16px 0 8px; letter-spacing: -0.2px; }
+    .guide-modal-body h4:first-child { margin-top: 0; }
+    .guide-modal-body p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 12px; }
+    .guide-modal-body ol, .guide-modal-body ul { padding-left: 20px; margin-bottom: 12px; }
+    .guide-modal-body li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px; }
+    .guide-modal-body strong { color: var(--text-primary); font-weight: 800; }
+    .guide-modal-body code { background: var(--bg-subtle); color: var(--blue-600); padding: 2px 7px; border-radius: 6px; font-family: monospace; font-size: 11.5px; font-weight: 800; }
+    .guide-modal-body .guide-tip { background: var(--blue-50); border-left: 3px solid var(--blue-600); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; color: var(--blue-700); line-height: 1.55; margin: 14px 0; font-weight: 600; }
+    .guide-modal-foot { padding: 14px 20px 20px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
+    .guide-modal-cta { width: 100%; height: 46px; background: var(--blue-gradient); color: #FFFFFF; border: none; border-radius: var(--r-md); font-size: 13.5px; font-weight: 800; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-blue); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .guide-modal-cta:active { transform: scale(0.98); }
+    .guide-modal-cta svg { width: 16px; height: 16px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
   </style>
 
   <link rel="stylesheet" href="/assets/css/design-system.css">
@@ -828,7 +847,7 @@
     </div>
 
     <div class="hero-carousel" id="hero-carousel">
-      <div class="hero-slide bg-blue active">
+      <div class="hero-slide bg-blue active" data-cat="gaming">
         <div class="hero-content">
           <span class="hero-tag" data-i18n="heroTag1">Populaire</span>
           <h3 class="hero-title" data-i18n="heroTitle1">Recharges instantanées</h3>
@@ -836,15 +855,15 @@
         </div>
         <div class="hero-icon-zone"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
-      <div class="hero-slide bg-dark">
+      <div class="hero-slide bg-dark" data-cat="streaming">
         <div class="hero-content">
           <span class="hero-tag" data-i18n="heroTag2">Nouveau</span>
-          <h3 class="hero-title" data-i18n="heroTitle2">Gift Cards USA</h3>
-          <p class="hero-sub" data-i18n="heroSub2">Apple, Steam, Google Play et plus.</p>
+          <h3 class="hero-title" data-i18n="heroTitle2">Abonnements Premium</h3>
+          <p class="hero-sub" data-i18n="heroSub2">Netflix, Disney+, Prime et plus.</p>
         </div>
-        <div class="hero-icon-zone"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 010-5A4.5 4.5 0 0112 8a4.5 4.5 0 014.5-5 2.5 2.5 0 010 5"/></svg></div>
+        <div class="hero-icon-zone"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
-      <div class="hero-slide bg-green">
+      <div class="hero-slide bg-green" data-cat="finance">
         <div class="hero-content">
           <span class="hero-tag" data-i18n="heroTag3">Sécurisé</span>
           <h3 class="hero-title" data-i18n="heroTitle3">Transferts Finance</h3>
@@ -852,13 +871,13 @@
         </div>
         <div class="hero-icon-zone"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
-      <div class="hero-slide bg-purple">
+      <div class="hero-slide bg-purple" data-cat="giftcard">
         <div class="hero-content">
-          <span class="hero-tag" data-i18n="heroTag4">Support</span>
-          <h3 class="hero-title" data-i18n="heroTitle4">Assistance 24/7</h3>
-          <p class="hero-sub" data-i18n="heroSub4">Une équipe réactive à votre écoute.</p>
+          <span class="hero-tag" data-i18n="heroTag4">Cadeau</span>
+          <h3 class="hero-title" data-i18n="heroTitle4">Gift Cards USA</h3>
+          <p class="hero-sub" data-i18n="heroSub4">Apple, Steam, Google Play et plus.</p>
         </div>
-        <div class="hero-icon-zone"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <div class="hero-icon-zone"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7"/></svg></div>
       </div>
       <div class="hero-dots" id="hero-dots"></div>
     </div>
@@ -878,11 +897,41 @@
       </div>
     </div>
 
+    <div class="payment-strip">
+      <span class="payment-strip-label" data-i18n="paymentLabel">Paiements</span>
+      <div class="payment-pill">
+        <div class="payment-pill-logo"><img src="assets/moncash-logo.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='MC';"></div>
+        <span class="payment-pill-name">MonCash</span>
+      </div>
+      <div class="payment-pill">
+        <div class="payment-pill-logo"><img src="assets/natcash-logo.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='NC';"></div>
+        <span class="payment-pill-name">NatCash</span>
+      </div>
+      <div class="payment-pill">
+        <div class="payment-pill-logo"><img src="assets/meru.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='M';"></div>
+        <span class="payment-pill-name">Meru</span>
+      </div>
+      <div class="payment-pill">
+        <div class="payment-pill-logo" style="background:var(--blue-gradient);">
+          <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#FFF;stroke-width:2.4;fill:none;"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg>
+        </div>
+        <span class="payment-pill-name">Wallet</span>
+      </div>
+    </div>
+
+    <div class="best-seller-section">
+      <div class="section-head">
+        <div class="section-title-group">
+          <h3 class="section-title" data-i18n="bestSellerTitle">Best-seller du mois</h3>
+        </div>
+      </div>
+      <div id="best-seller-container"></div>
+    </div>
+
     <div class="trending-section">
       <div class="main-body" style="padding-bottom: 0;">
         <div class="section-head">
           <div class="section-title-group">
-            <span class="section-dot"></span>
             <h3 class="section-title" data-i18n="trendingTitle">Tendances</h3>
           </div>
           <button class="btn-see-all" onclick="navigateToCategory('gaming')">
@@ -892,6 +941,17 @@
         </div>
       </div>
       <div class="trending-scroll" id="trending-scroll"></div>
+    </div>
+
+    <div class="new-section">
+      <div class="main-body" style="padding-bottom: 0;">
+        <div class="section-head">
+          <div class="section-title-group">
+            <h3 class="section-title" data-i18n="newArrivalsTitle">Nouveautés</h3>
+          </div>
+        </div>
+      </div>
+      <div class="new-scroll" id="new-scroll"></div>
     </div>
 
     <main class="main-body">
@@ -913,6 +973,45 @@
               <div class="skeleton-block skeleton-line-sm"></div>
               <div class="skeleton-block skeleton-btn"></div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="topseller-section">
+        <div class="section-head">
+          <div class="section-title-group">
+            <h3 class="section-title" data-i18n="topSellerTitle">Top ventes</h3>
+          </div>
+        </div>
+        <div class="topseller-grid" id="topseller-grid"></div>
+      </div>
+
+      <div class="howto-section">
+        <h3 class="block-title" data-i18n="howtoTitle">Comment commander</h3>
+        <div class="howto-grid">
+          <div class="howto-step">
+            <div class="howto-step-num">1</div>
+            <div class="howto-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+            <div class="howto-title" data-i18n="howtoStep1Title">Choisir</div>
+            <div class="howto-desc" data-i18n="howtoStep1Desc">Sélectionnez votre pack dans la boutique.</div>
+          </div>
+          <div class="howto-step">
+            <div class="howto-step-num">2</div>
+            <div class="howto-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+            <div class="howto-title" data-i18n="howtoStep2Title">Payer</div>
+            <div class="howto-desc" data-i18n="howtoStep2Desc">MonCash, NatCash, Meru ou Wallet.</div>
+          </div>
+          <div class="howto-step">
+            <div class="howto-step-num">3</div>
+            <div class="howto-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="howto-title" data-i18n="howtoStep3Title">Confirmer</div>
+            <div class="howto-desc" data-i18n="howtoStep3Desc">Validez avec votre ID ou contact.</div>
+          </div>
+          <div class="howto-step">
+            <div class="howto-step-num">4</div>
+            <div class="howto-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="howto-title" data-i18n="howtoStep4Title">Recevoir</div>
+            <div class="howto-desc" data-i18n="howtoStep4Desc">Livraison automatique ou manuelle rapide.</div>
           </div>
         </div>
       </div>
@@ -964,6 +1063,32 @@
         </div>
       </div>
 
+      <div class="guides-section">
+        <h3 class="block-title" data-i18n="guidesTitle">Guides & Astuces</h3>
+        <div class="guides-grid">
+          <button type="button" class="guide-card" onclick="openGuide('freefire')">
+            <div class="guide-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+            <div class="guide-title" data-i18n="guide1">Activer un PIN Free Fire</div>
+            <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="guide-card" onclick="openGuide('wise')">
+            <div class="guide-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div class="guide-title" data-i18n="guide2">Utiliser Wise depuis Haïti</div>
+            <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="guide-card" onclick="openGuide('netflix')">
+            <div class="guide-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="guide-title" data-i18n="guide3">Netflix sans carte bancaire</div>
+            <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="guide-card" onclick="openGuide('rates')">
+            <div class="guide-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6" stroke-linecap="round"/></svg></div>
+            <div class="guide-title" data-i18n="guide4">Comprendre taux USD/HTG</div>
+            <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+        </div>
+      </div>
+
       <h3 class="block-title" style="margin-top:34px;" data-i18n="faqTitle">Questions Fréquentes</h3>
       <div class="faq-stack">
         <div class="faq-item">
@@ -980,6 +1105,18 @@
           </button>
           <div class="faq-body" data-i18n="faqA2">Nous acceptons MonCash, NatCash, Meru, ainsi que le solde direct de votre Portefeuille DigitalPay.</div>
         </div>
+      </div>
+
+      <div class="final-cta-card">
+        <div class="final-cta-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="final-cta-title" data-i18n="ctaTitle">Prêt à recharger ?</div>
+        <div class="final-cta-desc" data-i18n="ctaDesc">Rejoignez des milliers de clients satisfaits. Livraison rapide et support 24/7.</div>
+        <button class="final-cta-btn" onclick="scrollToTop()">
+          <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="ctaBtn">Explorer la boutique</span>
+        </button>
       </div>
     </main>
 
@@ -1099,6 +1236,25 @@
       </div>
     </div>
 
+    <div class="guide-modal-backdrop" id="guide-modal-backdrop" onclick="closeGuide()">
+      <div class="guide-modal" onclick="event.stopPropagation()">
+        <div class="guide-modal-head">
+          <div class="guide-modal-head-text">
+            <div class="guide-modal-title" id="guide-modal-title">Guide</div>
+            <div class="guide-modal-subtitle" id="guide-modal-subtitle">DigitalPay · 2 min de lecture</div>
+          </div>
+          <button class="guide-modal-close" onclick="closeGuide()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+        </div>
+        <div class="guide-modal-body" id="guide-modal-body"></div>
+        <div class="guide-modal-foot">
+          <button class="guide-modal-cta" onclick="closeGuide()">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-i18n="guideUnderstood">Compris, merci !</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -1114,8 +1270,10 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
+    const FEATURED_PRODUCT_ID = 'freefire';
+
     const PRODUCTS = [
-      { id: "freefire", title: "Free Fire", category: "gaming", logo: "assets/freefire-logo.png", minPrice: 157, req: "email_pass_wa", badge: "Populaire", trending: 1, offers: [
+      { id: "freefire", title: "Free Fire", category: "gaming", logo: "assets/freefire-logo.png", minPrice: 157, req: "email_pass_wa", badge: "Populaire", trending: 1, topSale: 1, isNew: false, offers: [
         { id: "ff_110", name: "110 + 10 Diamants", price: 157, isPin: true },
         { id: "ff_310", name: "310 + 31 Diamants", price: 471, isPin: true },
         { id: "ff_520", name: "520 + 52 Diamants", price: 775, isPin: true },
@@ -1127,7 +1285,7 @@
         { id: "ff_week", name: "Abonnement Semaine", price: 325, req: "email_pass_wa", isOther: true },
         { id: "ff_month", name: "Abonnement Mois", price: 1600, req: "email_pass_wa", isOther: true }
       ]},
-      { id: "callofduty", title: "Call of Duty", category: "gaming", logo: "assets/callofduty.png", minPrice: 180, req: "email_pass_wa", offers: [
+      { id: "callofduty", title: "Call of Duty", category: "gaming", logo: "assets/callofduty.png", minPrice: 180, req: "email_pass_wa", topSale: 4, offers: [
         { id: "cod_80", name: "80 + 8 CP", price: 180 },
         { id: "cod_400", name: "400 + 60 CP", price: 925 },
         { id: "cod_800", name: "800 + 160 CP", price: 1850 },
@@ -1179,7 +1337,7 @@
         { id: "ef_3250", name: "3,250 Pièces", price: 4675 },
         { id: "ef_12800", name: "12,800 Pièces", price: 16230 }
       ]},
-      { id: "pubg", title: "PUBG Mobile", category: "gaming", logo: "assets/pubgmobile-logo.png", minPrice: 180, req: "id_wa", offers: [
+      { id: "pubg", title: "PUBG Mobile", category: "gaming", logo: "assets/pubgmobile-logo.png", minPrice: 180, req: "id_wa", topSale: 3, offers: [
         { id: "pubg_60", name: "60 UC", price: 180 },
         { id: "pubg_300", name: "300 + 25 UC", price: 891 },
         { id: "pubg_600", name: "600 + 60 UC", price: 1780 },
@@ -1193,7 +1351,7 @@
         { id: "mc_3800", name: "3,800 Minecoins", price: 3100 },
         { id: "mc_9600", name: "9,600 Minecoins", price: 7700 }
       ]},
-      { id: "roblox", title: "Roblox", category: "gaming", logo: "assets/roblox-logo.png", minPrice: 750, req: "user_pass", offers: [
+      { id: "roblox", title: "Roblox", category: "gaming", logo: "assets/roblox-logo.png", minPrice: 750, req: "user_pass", isNew: true, offers: [
         { id: "rbx_500", name: "500 Robux", price: 750 },
         { id: "rbx_1000", name: "1,000 Robux", price: 1460 },
         { id: "rbx_2000", name: "2,000 Robux", price: 2950 },
@@ -1212,7 +1370,7 @@
         { id: "lm_9999", name: "9,999 Diamants", price: 18000 },
         { id: "lm_29999", name: "29,999 Diamants", price: 54000 }
       ]},
-      { id: "flexcity", title: "Flex City", category: "gaming", logo: "assets/flexcity.png", minPrice: 195, req: "email_pass_wa", offers: [
+      { id: "flexcity", title: "Flex City", category: "gaming", logo: "assets/flexcity.png", minPrice: 195, req: "email_pass_wa", isNew: true, offers: [
         { id: "fcx_d100", name: "100 Diamants", price: 215 },
         { id: "fcx_d310", name: "310 Diamants", price: 628 },
         { id: "fcx_d520", name: "520 Diamants", price: 1100 },
@@ -1226,7 +1384,7 @@
         { id: "fcx_g40000", name: "40,000 Gold", price: 10000 },
         { id: "fcx_g77500", name: "77,500 Gold", price: 18000 }
       ]},
-      { id: "onestate", title: "One State", category: "gaming", logo: "assets/onestate.png", minPrice: 450, req: "email_pass_wa", offers: [
+      { id: "onestate", title: "One State", category: "gaming", logo: "assets/onestate.png", minPrice: 450, req: "email_pass_wa", isNew: true, offers: [
         { id: "os_deb", name: "Pack Débutant", price: 450 },
         { id: "os_av", name: "Pack Avancé", price: 1200 }
       ]},
@@ -1234,7 +1392,7 @@
         { id: "ml_50", name: "50 Diamants", price: 150 },
         { id: "ml_250", name: "250 Diamants", price: 700 }
       ]},
-      { id: "netflix", title: "Netflix", category: "streaming", logo: "assets/netflix.png", minPrice: 400, req: "none", badge: ".", trending: 3, offers: [
+      { id: "netflix", title: "Netflix", category: "streaming", logo: "assets/netflix.png", minPrice: 400, req: "none", badge: "Populaire", trending: 3, topSale: 2, offers: [
         { id: "netflix_1m", name: "1 mois", price: 400 },
         { id: "netflix_2m", name: "2 mois", price: 850 },
         { id: "netflix_3m", name: "3 mois", price: 1300 }
@@ -1260,11 +1418,11 @@
         { id: "meru_card", name: "Activation Carte Meru", price: 1500 }
       ]},
       { id: "binance", title: "Binance", category: "finance", logo: "assets/binance.png", isDynamic: true, rate: 142, min: 5, max: 250, feePercent: 0, req: "crypto_addr", trending: 4 },
-      { id: "apple", title: "Apple Gift Card", category: "giftcard", logo: "assets/applegc.png", isDynamic: true, rate: 160, min: 5, max: 500, feePercent: 0, req: "whatsapp_only" },
+      { id: "apple", title: "Apple Gift Card", category: "giftcard", logo: "assets/applegc.png", isDynamic: true, rate: 160, min: 5, max: 500, feePercent: 0, req: "whatsapp_only", isNew: true },
       { id: "steam", title: "Steam Gift Card", category: "giftcard", logo: "assets/steam.png", isDynamic: true, rate: 160, min: 5, max: 500, feePercent: 0, req: "whatsapp_only" },
       { id: "playstation", title: "PlayStation GC", category: "giftcard", logo: "assets/playstationgc.png", isDynamic: true, rate: 160, min: 5, max: 500, feePercent: 0, req: "whatsapp_only" },
       { id: "nintendo", title: "Nintendo eShop", category: "giftcard", logo: "assets/nintendogc.png", isDynamic: true, rate: 160, min: 5, max: 500, feePercent: 0, req: "whatsapp_only" },
-      { id: "googleplay", title: "Google Play", category: "giftcard", logo: "assets/googleplaycard.png", isDynamic: true, rate: 160, min: 5, max: 500, feePercent: 0, req: "whatsapp_only" },
+      { id: "googleplay", title: "Google Play", category: "giftcard", logo: "assets/googleplaycard.png", isDynamic: true, rate: 160, min: 5, max: 500, feePercent: 0, req: "whatsapp_only", isNew: true },
       { id: "netflixgc", title: "Netflix Gift Card", category: "giftcard", logo: "assets/netflixgc.png", isDynamic: true, rate: 160, min: 10, max: 250, feePercent: 0, req: "whatsapp_only" }
     ];
 
@@ -1277,7 +1435,6 @@
       giftcard: { fr: "Gift Cards", ht: "Kat Kado", en: "Gift Cards", es: "Tarjetas Regalo" }
     };
 
-    /* Icônes SVG inline des catégories (pour la pastille sur cartes) */
     const CATEGORY_ICONS = {
       gaming: '<svg viewBox="0 0 24 24"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 00-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 003 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 019.828 16h4.344a2 2 0 011.414.586L17 18c.5.5 1 1 2 1a3 3 0 003-3c0-1.545-.604-6.584-.685-7.258A4 4 0 0017.32 5z"/></svg>',
       streaming: '<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -1285,7 +1442,6 @@
       giftcard: '<svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7"/></svg>'
     };
 
-    /* Icônes produits inline (petites, dans les packs) */
     const PRODUCT_INLINE_ICONS = {
       freefire: '<svg viewBox="0 0 24 24" fill="currentColor" style="color:#38BDF8"><path d="M6 2l6 4 6-4v6l4 4-4 4v6l-6-4-6 4v-6l-4-4 4-4z" opacity="0.9"/></svg>',
       callofduty: '<svg viewBox="0 0 24 24" fill="currentColor" style="color:#94A3B8"><circle cx="12" cy="12" r="9" opacity="0.85"/></svg>',
@@ -1299,15 +1455,10 @@
       return PRODUCT_INLINE_ICONS[prodId] || PRODUCT_INLINE_ICONS.default;
     }
 
-    /* ═══ REFERENCE PRICE (pour affichage "prix barré") ═══
-       Calcul : price × 1.15 arrondi au multiple de 5 le plus proche.
-       NOTE : Ceci est un affichage de référence marketing.
-       Le vrai prix reste celui affiché en gros. ═══ */
     function getReferencePrice(price) {
       if (!price || price <= 0) return null;
       const raw = price * 1.15;
       const rounded = Math.round(raw / 5) * 5;
-      // Ne pas afficher si l'écart est trop petit (< 3% ou < 5 HTG)
       if (rounded - price < 5) return null;
       return rounded;
     }
@@ -1315,7 +1466,8 @@
     const STATE = {
       user: null, filter: 'all', selectedProduct: null, selectedOffer: null, selectedPrice: 0,
       lang: 'fr', siteOpen: true, customPrices: {}, customRates: {},
-      heroIndex: 0, heroInterval: null, liveUnsubs: [], revealObserver: null, searchDebounce: null
+      heroIndex: 0, heroInterval: null, heroPaused: false, heroResumeTimer: null, heroGoTo: null,
+      liveUnsubs: [], revealObserver: null, searchDebounce: null
     };
 
     const VALIDATION = {
@@ -1342,7 +1494,18 @@
         searchPlaceholder: "Rechercher Free Fire, Netflix, Meru...",
         catAll: "Tout", catGaming: "Jeux", catStreaming: "Abonnement", catFinance: "Finance", catGiftcard: "Gift Card",
         seeMore: "Voir plus", seeAll: "Tout voir", viewOffers: "Voir les packs", fromPrice: "Dès",
-        trendingTitle: "Tendances", trust1: "100% Sécurisé", trust2: "Livraison Rapide", trust3: "Support 24/7",
+        trendingTitle: "Tendances", bestSellerTitle: "Best-seller du mois", newArrivalsTitle: "Nouveautés", topSellerTitle: "Top ventes",
+        howtoTitle: "Comment commander", howtoStep1Title: "Choisir", howtoStep1Desc: "Sélectionnez votre pack dans la boutique.",
+        howtoStep2Title: "Payer", howtoStep2Desc: "MonCash, NatCash, Meru ou Wallet.",
+        howtoStep3Title: "Confirmer", howtoStep3Desc: "Validez avec votre ID ou contact.",
+        howtoStep4Title: "Recevoir", howtoStep4Desc: "Livraison automatique ou manuelle rapide.",
+        guidesTitle: "Guides & Astuces",
+        guide1: "Activer un PIN Free Fire", guide2: "Utiliser Wise depuis Haïti",
+        guide3: "Netflix sans carte bancaire", guide4: "Comprendre taux USD/HTG",
+        guideUnderstood: "Compris, merci !",
+        paymentLabel: "Paiements",
+        ctaTitle: "Prêt à recharger ?", ctaDesc: "Rejoignez des milliers de clients satisfaits. Livraison rapide et support 24/7.", ctaBtn: "Explorer la boutique",
+        trust1: "100% Sécurisé", trust2: "Livraison Rapide", trust3: "Support 24/7",
         waTitle: "Assistance WhatsApp 24/7", waSub: "Un problème ? Réponse en quelques secondes.", waBtn: "Discuter",
         reviewsTitle: "Avis des Clients", faqTitle: "Questions Fréquentes",
         faqQ1: "Comment sont livrées les recharges Free Fire ?", faqA1: "Les packs de diamants sont livrés automatiquement par code PIN, à réclamer sur redeem.hype.games.",
@@ -1357,9 +1520,9 @@
         maintenanceText: "Plateforme en maintenance. Les commandes sont suspendues.",
         langLabel: "Langue / Language", navLabel: "Navigation", connectedAs: "Connecté",
         heroTag1: "Populaire", heroTitle1: "Recharges instantanées", heroSub1: "Livraison en moins de 30 secondes.",
-        heroTag2: "Nouveau", heroTitle2: "Gift Cards USA", heroSub2: "Apple, Steam, Google Play et plus.",
+        heroTag2: "Nouveau", heroTitle2: "Abonnements Premium", heroSub2: "Netflix, Disney+, Prime et plus.",
         heroTag3: "Sécurisé", heroTitle3: "Transferts Finance", heroSub3: "Wise, Meru, Binance au meilleur taux.",
-        heroTag4: "Support", heroTitle4: "Assistance 24/7", heroSub4: "Une équipe réactive à votre écoute.",
+        heroTag4: "Cadeau", heroTitle4: "Gift Cards USA", heroSub4: "Apple, Steam, Google Play et plus.",
         deliveryLabelWhatsApp: "Numéro WhatsApp", deliveryLabelEmail: "Email du compte", deliveryLabelPassword: "Mot de passe",
         deliveryLabelUID: "ID Joueur (UID)", deliveryLabelUsername: "Nom d'utilisateur",
         deliveryLabelEmailDest: "Email destinataire", deliveryLabelMeruTag: "Tag ou Numéro Meru", deliveryLabelCrypto: "Adresse TRC-20",
@@ -1372,20 +1535,29 @@
         invalidUid: "UID invalide (6 à 15 chiffres).", invalidUsername: "Nom d'utilisateur invalide (3-20 caractères).",
         invalidPassword: "Mot de passe invalide (6 caractères minimum).",
         invalidMeruTag: "Tag Meru invalide.", invalidCrypto: "Adresse TRC-20 invalide.",
-        cartEmpty: "Votre panier est vide",
-        instantBadge: "Livraison instantanée (0-30s)",
+        cartEmpty: "Votre panier est vide", instantBadge: "Livraison instantanée (0-30s)",
         modalInfoLine: "Diamants envoyés directement sur ton compte après paiement.",
-        packSectionMain: "Choisis ton pack",
-        packSectionOther: "Autres produits",
-        modalPromo: "PROMO",
-        modalAuto: "AUTO"
+        packSectionMain: "Choisis ton pack", packSectionOther: "Autres produits",
+        modalPromo: "PROMO", modalAuto: "AUTO",
+        bestSellerTag: "Best-seller ce mois", bestSellerCta: "Acheter maintenant"
       },
       ht: {
         toastLang: "Lang : Kreyòl Ayisyen", authRequired: "Tanpri konekte pou w kontinye", missingDelivery: "Ranpli tout chan livrezon yo",
         searchPlaceholder: "Chèche Free Fire, Netflix, Meru...",
         catAll: "Tout", catGaming: "Jwèt", catStreaming: "Abònman", catFinance: "Finans", catGiftcard: "Kat Kado",
         seeMore: "Wè plis", seeAll: "Wè tout", viewOffers: "Wè pakèt yo", fromPrice: "Soti nan",
-        trendingTitle: "Tandans", trust1: "100% Sekirize", trust2: "Livrezon Rapid", trust3: "Sipò 24/7",
+        trendingTitle: "Tandans", bestSellerTitle: "Pi byen vann mwa sa", newArrivalsTitle: "Nouvo", topSellerTitle: "Top lavant",
+        howtoTitle: "Kijan pou kòmande", howtoStep1Title: "Chwazi", howtoStep1Desc: "Chwazi pakèt ou nan boutik la.",
+        howtoStep2Title: "Peye", howtoStep2Desc: "MonCash, NatCash, Meru oswa Bous.",
+        howtoStep3Title: "Konfime", howtoStep3Desc: "Validé ak ID oswa kontak ou.",
+        howtoStep4Title: "Resevwa", howtoStep4Desc: "Livrezon otomatik oswa manyèl rapid.",
+        guidesTitle: "Gid ak Konsèy",
+        guide1: "Aktive yon PIN Free Fire", guide2: "Itilize Wise soti Ayiti",
+        guide3: "Netflix san kat bankè", guide4: "Konprann to USD/HTG",
+        guideUnderstood: "Konpran, mèsi !",
+        paymentLabel: "Peman",
+        ctaTitle: "Pare pou rechaje ?", ctaDesc: "Rejwenn plizyè milye kliyan satisfè. Livrezon rapid ak sipò 24/7.", ctaBtn: "Eksplore boutik la",
+        trust1: "100% Sekirize", trust2: "Livrezon Rapid", trust3: "Sipò 24/7",
         waTitle: "Asistans WhatsApp 24/7", waSub: "Yon pwoblèm ? Nou reponn rapid.", waBtn: "Pale",
         reviewsTitle: "Avi Kliyan Nou Yo", faqTitle: "Kesyon yo poze souvan",
         faqQ1: "Kijan rechaj Free Fire yo livre ?", faqA1: "Pakèt dyaman yo livre otomatikman ak kòd PIN sou redeem.hype.games.",
@@ -1399,9 +1571,9 @@
         notifTitle: "Anons", footerStatus: "Sistèm 24/7", maintenanceText: "Platfòm nan antretyen.",
         langLabel: "Lang / Language", navLabel: "Navigasyon", connectedAs: "Konekte",
         heroTag1: "Popilè", heroTitle1: "Rechaj enstantane", heroSub1: "Livrezon an mwens pase 30 segonn.",
-        heroTag2: "Nouvo", heroTitle2: "Kat Kado USA", heroSub2: "Apple, Steam, Google Play ak plis.",
+        heroTag2: "Nouvo", heroTitle2: "Abònman Premium", heroSub2: "Netflix, Disney+, Prime ak plis.",
         heroTag3: "Sekirize", heroTitle3: "Transfè Finans", heroSub3: "Wise, Meru, Binance nan pi bon to.",
-        heroTag4: "Sipò", heroTitle4: "Asistans 24/7", heroSub4: "Yon ekip reyaktif.",
+        heroTag4: "Kado", heroTitle4: "Kat Kado USA", heroSub4: "Apple, Steam, Google Play ak plis.",
         deliveryLabelWhatsApp: "Nimewo WhatsApp", deliveryLabelEmail: "Imel kont lan", deliveryLabelPassword: "Modpas",
         deliveryLabelUID: "ID Jwè (UID)", deliveryLabelUsername: "Non itilizatè",
         deliveryLabelEmailDest: "Imel destinatè", deliveryLabelMeruTag: "Tag oswa Nimewo Meru", deliveryLabelCrypto: "Adrès TRC-20",
@@ -1414,20 +1586,29 @@
         invalidUid: "UID pa valid (6 a 15 chif).", invalidUsername: "Non itilizatè pa valid (3-20 karaktè).",
         invalidPassword: "Modpas pa valid (6 karaktè min).",
         invalidMeruTag: "Tag Meru pa valid.", invalidCrypto: "Adrès TRC-20 pa valid.",
-        cartEmpty: "Panyen ou vid",
-        instantBadge: "Livrezon enstantane (0-30s)",
+        cartEmpty: "Panyen ou vid", instantBadge: "Livrezon enstantane (0-30s)",
         modalInfoLine: "Dyaman voye dirèkteman sou kont ou apre peman.",
-        packSectionMain: "Chwazi pakèt ou",
-        packSectionOther: "Lòt pwodwi",
-        modalPromo: "PROMO",
-        modalAuto: "AUTO"
+        packSectionMain: "Chwazi pakèt ou", packSectionOther: "Lòt pwodwi",
+        modalPromo: "PROMO", modalAuto: "AUTO",
+        bestSellerTag: "Pi byen vann mwa sa", bestSellerCta: "Achte kounye a"
       },
       en: {
         toastLang: "Language: English", authRequired: "Please sign in to continue", missingDelivery: "Please complete all delivery fields",
         searchPlaceholder: "Search Free Fire, Netflix, Meru...",
         catAll: "All", catGaming: "Games", catStreaming: "Subscription", catFinance: "Finance", catGiftcard: "Gift Cards",
         seeMore: "See more", seeAll: "See all", viewOffers: "View packs", fromPrice: "From",
-        trendingTitle: "Trending", trust1: "100% Secure", trust2: "Fast Delivery", trust3: "24/7 Support",
+        trendingTitle: "Trending", bestSellerTitle: "Best-seller this month", newArrivalsTitle: "New arrivals", topSellerTitle: "Top sales",
+        howtoTitle: "How to order", howtoStep1Title: "Choose", howtoStep1Desc: "Select your pack from the shop.",
+        howtoStep2Title: "Pay", howtoStep2Desc: "MonCash, NatCash, Meru or Wallet.",
+        howtoStep3Title: "Confirm", howtoStep3Desc: "Validate with your ID or contact.",
+        howtoStep4Title: "Receive", howtoStep4Desc: "Fast automatic or manual delivery.",
+        guidesTitle: "Guides & Tips",
+        guide1: "Activate a Free Fire PIN", guide2: "Use Wise from Haiti",
+        guide3: "Netflix without a bank card", guide4: "Understand USD/HTG rates",
+        guideUnderstood: "Got it, thanks!",
+        paymentLabel: "Payments",
+        ctaTitle: "Ready to top up?", ctaDesc: "Join thousands of satisfied customers. Fast delivery and 24/7 support.", ctaBtn: "Explore the shop",
+        trust1: "100% Secure", trust2: "Fast Delivery", trust3: "24/7 Support",
         waTitle: "24/7 WhatsApp Support", waSub: "Need help? We reply in seconds.", waBtn: "Chat",
         reviewsTitle: "Customer Reviews", faqTitle: "FAQ",
         faqQ1: "How are Free Fire top-ups delivered?", faqA1: "Diamond packs are delivered with PIN codes for redeem.hype.games.",
@@ -1441,9 +1622,9 @@
         notifTitle: "Announcements", footerStatus: "24/7 System", maintenanceText: "Platform in maintenance.",
         langLabel: "Language / Langue", navLabel: "Navigation", connectedAs: "Signed in",
         heroTag1: "Popular", heroTitle1: "Instant top-ups", heroSub1: "Delivered in under 30 seconds.",
-        heroTag2: "New", heroTitle2: "USA Gift Cards", heroSub2: "Apple, Steam, Google Play and more.",
+        heroTag2: "New", heroTitle2: "Premium Subscriptions", heroSub2: "Netflix, Disney+, Prime and more.",
         heroTag3: "Secure", heroTitle3: "Finance Transfers", heroSub3: "Wise, Meru, Binance at best rate.",
-        heroTag4: "Support", heroTitle4: "24/7 Assistance", heroSub4: "A reactive team ready to help.",
+        heroTag4: "Gift", heroTitle4: "USA Gift Cards", heroSub4: "Apple, Steam, Google Play and more.",
         deliveryLabelWhatsApp: "WhatsApp number", deliveryLabelEmail: "Account email", deliveryLabelPassword: "Password",
         deliveryLabelUID: "Player ID (UID)", deliveryLabelUsername: "Username",
         deliveryLabelEmailDest: "Recipient email", deliveryLabelMeruTag: "Meru Tag or Number", deliveryLabelCrypto: "TRC-20 Address",
@@ -1456,20 +1637,29 @@
         invalidUid: "Invalid UID (6-15 digits).", invalidUsername: "Invalid username (3-20 characters).",
         invalidPassword: "Invalid password (6 characters min).",
         invalidMeruTag: "Invalid Meru tag.", invalidCrypto: "Invalid TRC-20 address.",
-        cartEmpty: "Cart is empty",
-        instantBadge: "Instant delivery (0-30s)",
+        cartEmpty: "Cart is empty", instantBadge: "Instant delivery (0-30s)",
         modalInfoLine: "Diamonds sent directly to your account after payment.",
-        packSectionMain: "Choose your pack",
-        packSectionOther: "Other products",
-        modalPromo: "PROMO",
-        modalAuto: "AUTO"
+        packSectionMain: "Choose your pack", packSectionOther: "Other products",
+        modalPromo: "PROMO", modalAuto: "AUTO",
+        bestSellerTag: "Best-seller this month", bestSellerCta: "Buy now"
       },
       es: {
         toastLang: "Idioma: Español", authRequired: "Inicie sesión para continuar", missingDelivery: "Complete todos los campos",
         searchPlaceholder: "Buscar Free Fire, Netflix, Meru...",
         catAll: "Todo", catGaming: "Juegos", catStreaming: "Suscripción", catFinance: "Finanzas", catGiftcard: "Tarjetas",
         seeMore: "Ver más", seeAll: "Ver todo", viewOffers: "Ver paquetes", fromPrice: "Desde",
-        trendingTitle: "Tendencias", trust1: "100% Seguro", trust2: "Entrega Rápida", trust3: "Soporte 24/7",
+        trendingTitle: "Tendencias", bestSellerTitle: "Más vendido este mes", newArrivalsTitle: "Novedades", topSellerTitle: "Top ventas",
+        howtoTitle: "Cómo pedir", howtoStep1Title: "Elegir", howtoStep1Desc: "Seleccione su paquete en la tienda.",
+        howtoStep2Title: "Pagar", howtoStep2Desc: "MonCash, NatCash, Meru o Billetera.",
+        howtoStep3Title: "Confirmar", howtoStep3Desc: "Valide con su ID o contacto.",
+        howtoStep4Title: "Recibir", howtoStep4Desc: "Entrega automática o manual rápida.",
+        guidesTitle: "Guías y Consejos",
+        guide1: "Activar un PIN Free Fire", guide2: "Usar Wise desde Haití",
+        guide3: "Netflix sin tarjeta bancaria", guide4: "Entender tasas USD/HTG",
+        guideUnderstood: "¡Entendido, gracias!",
+        paymentLabel: "Pagos",
+        ctaTitle: "¿Listo para recargar?", ctaDesc: "Únase a miles de clientes satisfechos. Entrega rápida y soporte 24/7.", ctaBtn: "Explorar la tienda",
+        trust1: "100% Seguro", trust2: "Entrega Rápida", trust3: "Soporte 24/7",
         waTitle: "Soporte WhatsApp 24/7", waSub: "¿Ayuda? Respondemos al instante.", waBtn: "Chatear",
         reviewsTitle: "Opiniones", faqTitle: "Preguntas Frecuentes",
         faqQ1: "¿Cómo se entregan las recargas de Free Fire?", faqA1: "Los paquetes se entregan con códigos PIN en redeem.hype.games.",
@@ -1483,9 +1673,9 @@
         notifTitle: "Anuncios", footerStatus: "Sistema 24/7", maintenanceText: "Plataforma en mantenimiento.",
         langLabel: "Idioma / Language", navLabel: "Navegación", connectedAs: "Conectado",
         heroTag1: "Popular", heroTitle1: "Recargas instantáneas", heroSub1: "Entrega en menos de 30 segundos.",
-        heroTag2: "Nuevo", heroTitle2: "Gift Cards USA", heroSub2: "Apple, Steam, Google Play y más.",
+        heroTag2: "Nuevo", heroTitle2: "Suscripciones Premium", heroSub2: "Netflix, Disney+, Prime y más.",
         heroTag3: "Seguro", heroTitle3: "Transferencias", heroSub3: "Wise, Meru, Binance al mejor tipo.",
-        heroTag4: "Soporte", heroTitle4: "Asistencia 24/7", heroSub4: "Equipo reactivo a su servicio.",
+        heroTag4: "Regalo", heroTitle4: "Gift Cards USA", heroSub4: "Apple, Steam, Google Play y más.",
         deliveryLabelWhatsApp: "Número de WhatsApp", deliveryLabelEmail: "Email de la cuenta", deliveryLabelPassword: "Contraseña",
         deliveryLabelUID: "ID de Jugador (UID)", deliveryLabelUsername: "Nombre de usuario",
         deliveryLabelEmailDest: "Email destinatario", deliveryLabelMeruTag: "Etiqueta o Número Meru", deliveryLabelCrypto: "Dirección TRC-20",
@@ -1498,13 +1688,11 @@
         invalidUid: "UID inválido (6-15 dígitos).", invalidUsername: "Usuario inválido (3-20 caracteres).",
         invalidPassword: "Contraseña inválida (mínimo 6 caracteres).",
         invalidMeruTag: "Etiqueta Meru inválida.", invalidCrypto: "Dirección TRC-20 inválida.",
-        cartEmpty: "Carrito vacío",
-        instantBadge: "Entrega instantánea (0-30s)",
+        cartEmpty: "Carrito vacío", instantBadge: "Entrega instantánea (0-30s)",
         modalInfoLine: "Diamantes enviados directamente a tu cuenta tras el pago.",
-        packSectionMain: "Elige tu paquete",
-        packSectionOther: "Otros productos",
-        modalPromo: "PROMO",
-        modalAuto: "AUTO"
+        packSectionMain: "Elige tu paquete", packSectionOther: "Otros productos",
+        modalPromo: "PROMO", modalAuto: "AUTO",
+        bestSellerTag: "Más vendido este mes", bestSellerCta: "Comprar ahora"
       }
     };
 
@@ -1583,6 +1771,10 @@
 
     function handleCartClick(e) { e.stopPropagation(); protectLink('cart.html'); }
 
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function applyTranslations() {
       document.documentElement.setAttribute('lang', STATE.lang);
       document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1604,6 +1796,9 @@
       updateSidebarAuthUI();
       renderCatalog();
       renderTrending();
+      renderNewArrivals();
+      renderBestSeller();
+      renderTopSellers();
       if (STATE.selectedProduct && document.getElementById('sheet-backdrop').classList.contains('active')) {
         openProductModal(STATE.selectedProduct.id, true);
       }
@@ -1618,7 +1813,7 @@
       slides.forEach((_, i) => {
         const dot = document.createElement('div');
         dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
-        dot.onclick = () => goTo(i);
+        dot.onclick = () => { STATE.heroGoTo(i); pauseHero(); };
         dotsContainer.appendChild(dot);
       });
       const dots = dotsContainer.querySelectorAll('.hero-dot');
@@ -1627,7 +1822,30 @@
         dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         STATE.heroIndex = idx;
       }
-      STATE.heroInterval = setInterval(() => { goTo((STATE.heroIndex + 1) % slides.length); }, 4500);
+      STATE.heroGoTo = goTo;
+      STATE.heroInterval = setInterval(() => {
+        if (STATE.heroPaused) return;
+        goTo((STATE.heroIndex + 1) % slides.length);
+      }, 5000);
+    }
+
+    function pauseHero() {
+      STATE.heroPaused = true;
+      clearTimeout(STATE.heroResumeTimer);
+      STATE.heroResumeTimer = setTimeout(() => { STATE.heroPaused = false; }, 12000);
+    }
+
+    function syncHeroToCategory(cat) {
+      if (!STATE.heroGoTo) return;
+      const slides = document.querySelectorAll('.hero-slide');
+      let targetIdx = -1;
+      slides.forEach((s, i) => {
+        if (s.dataset.cat === cat) targetIdx = i;
+      });
+      if (targetIdx >= 0 && STATE.heroIndex !== targetIdx) {
+        STATE.heroGoTo(targetIdx);
+        pauseHero();
+      }
     }
 
     function listenPrices() {
@@ -1638,6 +1856,9 @@
           Object.keys(data).forEach(k => { if (k !== 'createdAt' && typeof data[k] === 'number') STATE.customPrices[k] = data[k]; });
           applyCustomPrices();
           renderCatalog();
+          renderNewArrivals();
+          renderTopSellers();
+          renderBestSeller();
           if (STATE.selectedProduct && document.getElementById('sheet-backdrop').classList.contains('active')) openProductModal(STATE.selectedProduct.id, true);
         }
       });
@@ -1651,6 +1872,8 @@
           Object.keys(data).forEach(k => { if (k !== 'createdAt' && data[k] && typeof data[k] === 'object') STATE.customRates[k] = data[k]; });
           applyCustomRates();
           renderCatalog();
+          renderNewArrivals();
+          renderTopSellers();
         }
       });
       STATE.liveUnsubs.push(unsub);
@@ -1697,9 +1920,49 @@
       });
     }
 
-    /* ═══════════════════════════════════════════════════
-       TRENDING — v2 (harmonisé)
-       ═══════════════════════════════════════════════════ */
+    function renderBestSeller() {
+      const target = document.getElementById('best-seller-container');
+      if (!target) return;
+      const prod = PRODUCTS.find(p => p.id === FEATURED_PRODUCT_ID);
+      if (!prod) { target.innerHTML = ''; return; }
+
+      let price = prod.minPrice || 0;
+      let refPrice = getReferencePrice(price);
+      const initials = prod.title.substring(0, 2).toUpperCase();
+      const catLabel = (CATEGORY_KEYS[prod.category] && CATEGORY_KEYS[prod.category][STATE.lang]) || prod.category;
+
+      const tagText = t('bestSellerTag');
+      const ctaText = t('bestSellerCta');
+
+      target.innerHTML = `
+        <div class="best-seller-card" onclick="openProductModal('${prod.id}')">
+          <div class="best-seller-bg" data-cat="${escapeHtml(prod.category)}"></div>
+          <div class="best-seller-content">
+            <div class="best-seller-visual">
+              <div class="best-seller-visual-fallback">${escapeHtml(initials)}</div>
+              <img src="${escapeHtml(prod.logo)}" alt="${escapeHtml(prod.title)}" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';">
+            </div>
+            <div class="best-seller-info">
+              <span class="best-seller-tag">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                ${escapeHtml(tagText)}
+              </span>
+              <div class="best-seller-title">${escapeHtml(prod.title)}</div>
+              <div class="best-seller-desc">${escapeHtml(catLabel)} · ${escapeHtml(t('fromPrice'))} ${price.toLocaleString()} HTG</div>
+              <div class="best-seller-price-row">
+                ${refPrice ? `<span class="best-seller-ref">${refPrice.toLocaleString()}</span>` : ''}
+                <span class="best-seller-price">${price.toLocaleString()}</span>
+                <span class="best-seller-price-unit">HTG</span>
+              </div>
+            </div>
+          </div>
+          <div class="best-seller-cta">
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      `;
+    }
+
     function renderTrending() {
       const target = document.getElementById('trending-scroll');
       if (!target) return;
@@ -1712,7 +1975,6 @@
               <div class="product-fallback" style="font-size:18px;">${escapeHtml(prod.title.substring(0,2).toUpperCase())}</div>
               <img src="${escapeHtml(prod.logo)}" alt="${escapeHtml(prod.title)}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';">
               <span class="trending-rank">#${idx + 1}</span>
-              <span class="trending-cat-dot"></span>
             </div>
             <div class="trending-name">${escapeHtml(prod.title)}</div>
             <div class="trending-price">${escapeHtml(priceText)}</div>
@@ -1721,9 +1983,54 @@
       }).join('');
     }
 
-    /* ═══════════════════════════════════════════════════
-       CATALOG — v2
-       ═══════════════════════════════════════════════════ */
+    function renderNewArrivals() {
+      const target = document.getElementById('new-scroll');
+      if (!target) return;
+      const news = PRODUCTS.filter(p => p.isNew);
+      if (news.length === 0) { target.parentElement.style.display = 'none'; return; }
+      target.parentElement.style.display = '';
+      target.innerHTML = news.map(prod => {
+        const priceText = prod.isDynamic ? `1$ = ${prod.rate}` : `${t('fromPrice')} ${Number(prod.minPrice).toLocaleString()}`;
+        return `
+          <div class="new-card" data-cat="${escapeHtml(prod.category)}" onclick="openProductModal('${prod.id}')">
+            <div class="new-visual">
+              <div class="product-fallback" style="font-size:18px;">${escapeHtml(prod.title.substring(0,2).toUpperCase())}</div>
+              <img src="${escapeHtml(prod.logo)}" alt="${escapeHtml(prod.title)}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';">
+              <span class="new-badge">NEW</span>
+            </div>
+            <div class="new-name">${escapeHtml(prod.title)}</div>
+            <div class="new-price">${escapeHtml(priceText)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderTopSellers() {
+      const target = document.getElementById('topseller-grid');
+      if (!target) return;
+      const tops = PRODUCTS.filter(p => p.topSale).sort((a, b) => a.topSale - b.topSale).slice(0, 4);
+      target.innerHTML = tops.map(prod => {
+        const rank = prod.topSale;
+        let medalClass = '';
+        if (rank === 1) medalClass = 'gold';
+        else if (rank === 2) medalClass = 'silver';
+        else if (rank === 3) medalClass = 'bronze';
+        const priceText = prod.isDynamic ? `1$ = ${prod.rate}` : `${t('fromPrice')} ${Number(prod.minPrice).toLocaleString()} HTG`;
+        const medalHtml = rank <= 3 ? `<span class="topseller-medal ${medalClass}">#${rank}</span>` : '';
+        return `
+          <div class="topseller-card" data-cat="${escapeHtml(prod.category)}" onclick="openProductModal('${prod.id}')">
+            ${medalHtml}
+            <div class="topseller-visual">
+              <div class="topseller-fallback">${escapeHtml(prod.title.substring(0,2).toUpperCase())}</div>
+              <img src="${escapeHtml(prod.logo)}" alt="${escapeHtml(prod.title)}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';">
+            </div>
+            <div class="topseller-name">${escapeHtml(prod.title)}</div>
+            <div class="topseller-price">${escapeHtml(priceText)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function renderCatalog() {
       const container = document.getElementById('catalog-container');
       container.innerHTML = '';
@@ -1750,7 +2057,6 @@
       head.className = 'section-head';
       head.innerHTML = `
         <div class="section-title-group">
-          <span class="section-dot"></span>
           <h3 class="section-title">${escapeHtml(label)}</h3>
           <span class="section-count">${prods.length}</span>
         </div>
@@ -1764,7 +2070,6 @@
       return section;
     }
 
-    /* ═══ PRODUCT CARD v2 ═══ */
     function buildProductCard(prod) {
       const card = document.createElement('div');
       card.className = 'product-card';
@@ -1775,6 +2080,8 @@
       const initials = prod.title.substring(0, 2).toUpperCase();
       const catLabel = (CATEGORY_KEYS[prod.category] && CATEGORY_KEYS[prod.category][STATE.lang]) || prod.category;
       const catIcon = CATEGORY_ICONS[prod.category] || '';
+      /* Finance : on masque le badge catégorie */
+      const showCatBadge = prod.category !== 'finance';
 
       let priceText = '';
       let priceUSD = '';
@@ -1785,12 +2092,8 @@
         priceUSD = `≈ ${formatUSD(prod.minPrice)}`;
       }
 
-      let microBadgeHtml = '';
-      if (prod.badge === 'Populaire') {
-        microBadgeHtml = `<span class="product-micro-badge">${escapeHtml(prod.badge)}</span>`;
-      }
-
-      const stockPill = (prod.id === 'freefire') ? '<span class="product-stock-pill">Stock OK</span>' : '';
+      /* Badge "Populaire" supprimé — n'est plus affiché */
+      const microBadgeHtml = '';
 
       card.innerHTML = `
         <div class="product-visual">
@@ -1798,9 +2101,8 @@
           <img src="${escapeHtml(prod.logo)}" alt="${escapeHtml(prod.title)}" loading="lazy"
                onload="this.previousElementSibling.style.display='none'"
                onerror="this.style.display='none';">
-          <span class="product-cat-badge">${catIcon}${escapeHtml(catLabel)}</span>
+          ${showCatBadge ? `<span class="product-cat-badge">${catIcon}${escapeHtml(catLabel)}</span>` : ''}
           ${microBadgeHtml}
-          ${stockPill}
         </div>
         <div class="product-name">${escapeHtml(prod.title)}</div>
         <div class="product-price-row">
@@ -1830,7 +2132,7 @@
 
     function navigateToCategory(catId) {
       const pill = document.querySelector(`.cat-pill[data-cat="${catId}"]`);
-      if (pill) { selectCategory(pill, catId); window.scrollTo({ top: 220, behavior: 'smooth' }); }
+      if (pill) { selectCategory(pill, catId); window.scrollTo({ top: 300, behavior: 'smooth' }); }
     }
 
     function selectCategory(btn, cat) {
@@ -1839,6 +2141,7 @@
       STATE.filter = cat;
       renderCatalog();
       vibrate(5);
+      syncHeroToCategory(cat);
     }
 
     function handleSearchDebounced(value) {
@@ -1874,9 +2177,6 @@
       setupRevealObserver();
     }
 
-    /* ═══════════════════════════════════════════════════
-       PRODUCT MODAL — v2 (hero + pack sections)
-       ═══════════════════════════════════════════════════ */
     function openProductModal(prodId, silent = false) {
       const prod = PRODUCTS.find(p => p.id === prodId);
       if (!prod) return;
@@ -1897,20 +2197,15 @@
       btnOrder.disabled = false;
       document.getElementById('modal-total-price').textContent = '0 HTG';
 
-      // 1. Hero banner
       renderModalHero(prod, bodyContent);
-
-      // 2. Info strip
       renderModalInfoStrip(prod, bodyContent);
 
-      // 3. Contenu principal
       if (prod.isDynamic) {
         renderDynamicForm(prod, bodyContent);
       } else {
         renderOffersGrid(prod, bodyContent);
       }
 
-      // 4. Sections accordion (Description, Livraison, Garantie)
       renderInfoSections(prod, bodyContent);
 
       if (!silent) {
@@ -1920,7 +2215,6 @@
       }
     }
 
-    /* ═══ MODAL HERO ═══ */
     function renderModalHero(prod, container) {
       const initials = prod.title.substring(0, 2).toUpperCase();
       const hero = document.createElement('div');
@@ -1939,7 +2233,6 @@
       container.appendChild(hero);
     }
 
-    /* ═══ MODAL INFO STRIP ═══ */
     function renderModalInfoStrip(prod, container) {
       let msg = t('modalInfoLine');
       if (prod.category === 'streaming') msg = STATE.lang === 'fr' ? 'Activation immédiate sur votre compte après paiement.' : msg;
@@ -1954,12 +2247,11 @@
       container.appendChild(strip);
     }
 
-    /* ═══ MODAL SECTIONS (accordion) ═══ */
     function renderInfoSections(prod, container) {
-      const desc = STATE.lang === 'fr' ? `Profitez de ${prod.title} avec une livraison rapide et sécurisée. Notre équipe traite votre commande en quelques minutes.`
-        : (STATE.lang === 'ht' ? `Jwi ${prod.title} ak yon livrezon rapid ak sekirize. Ekip nou an trete kòmand ou nan kèk minit.`
-        : (STATE.lang === 'en' ? `Enjoy ${prod.title} with fast and secure delivery. Our team processes your order within minutes.`
-        : `Disfrute de ${prod.title} con entrega rápida y segura. Nuestro equipo procesa su pedido en minutos.`));
+      const desc = STATE.lang === 'fr' ? `Profitez de ${prod.title} avec une livraison rapide et sécurisée.`
+        : (STATE.lang === 'ht' ? `Jwi ${prod.title} ak yon livrezon rapid ak sekirize.`
+        : (STATE.lang === 'en' ? `Enjoy ${prod.title} with fast and secure delivery.`
+        : `Disfrute de ${prod.title} con entrega rápida y segura.`));
       const deliveryInfo = STATE.lang === 'fr' ? 'Livraison sous 5 à 20 minutes selon le service.'
         : (STATE.lang === 'ht' ? 'Livrezon nan 5 a 20 minit selon sèvis la.'
         : (STATE.lang === 'en' ? 'Delivery within 5-20 minutes depending on service.'
@@ -1989,12 +2281,10 @@
 
     function toggleModalSection(btn) { btn.parentElement.classList.toggle('open'); }
 
-    /* ═══ OFFERS GRID v2 — Sections principales + autres ═══ */
     function renderOffersGrid(prod, container) {
       const mainOffers = prod.offers.filter(o => !o.isOther);
       const otherOffers = prod.offers.filter(o => o.isOther);
 
-      // Section principale
       if (mainOffers.length > 0) {
         const sec = document.createElement('div');
         sec.className = 'pack-section';
@@ -2008,18 +2298,16 @@
         sec.appendChild(grid);
         container.appendChild(sec);
 
-        // Auto-select first
         STATE.selectedOffer = mainOffers[0];
         STATE.selectedPrice = mainOffers[0].price;
         document.getElementById('modal-total-price').textContent = formatHTG(STATE.selectedPrice);
         renderDeliveryFieldsInto(container, getDeliveryReq(prod, mainOffers[0]));
       }
 
-      // Section "Autres produits"
       if (otherOffers.length > 0) {
         const sec = document.createElement('div');
         sec.className = 'pack-section';
-        sec.innerHTML = `<div class="pack-section-head"><span class="pack-section-title other">${escapeHtml(t('packSectionOther'))}</span></div>`;
+        sec.innerHTML = `<div class="pack-section-head"><span class="pack-section-title">${escapeHtml(t('packSectionOther'))}</span></div>`;
         const grid = document.createElement('div');
         grid.className = 'offers-grid';
         otherOffers.forEach((offer) => {
@@ -2030,7 +2318,6 @@
       }
     }
 
-    /* ═══ BUILD OFFER CHIP ═══ */
     function buildOfferChip(prod, offer, isSelected) {
       const chip = document.createElement('button');
       chip.type = 'button';
@@ -2076,7 +2363,6 @@
       document.getElementById('modal-total-price').textContent = formatHTG(STATE.selectedPrice);
       vibrate(5);
 
-      // Re-render delivery fields
       const bodyContent = document.getElementById('modal-body-content');
       const existing = bodyContent.querySelector('.delivery-zone');
       if (existing) existing.remove();
@@ -2132,7 +2418,6 @@
       STATE.selectedOffer = { id: prod.id, name: `${prod.title} $${usd} USD`, price: STATE.selectedPrice, usdAmount: usd };
     }
 
-    /* ═══ DELIVERY FIELDS ═══ */
     function renderDeliveryFieldsInto(container, reqType) {
       if (reqType === 'none') {
         const zone = document.createElement('div');
@@ -2321,6 +2606,355 @@
       auth.signOut().then(() => { showToast(STATE.lang === 'fr' ? 'Déconnexion réussie' : 'Signed out', 'info'); closeSidebar(); });
     }
 
+    /* ═══ GUIDES (#15) ═══ */
+    const GUIDES = {
+      freefire: {
+        fr: {
+          title: 'Comment activer un PIN Free Fire',
+          subtitle: 'DigitalPay · 2 min de lecture',
+          body: `
+            <h4>1. Acheter votre pack</h4>
+            <p>Choisissez votre pack de diamants Free Fire dans la boutique. Le paiement peut se faire via <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> ou votre <strong>Wallet DigitalPay</strong>.</p>
+            <h4>2. Recevoir votre PIN</h4>
+            <p>Pour les 6 packs auto-livrés (110, 310, 520, 1 060, 2 180, 5 600), le code PIN apparaît <strong>instantanément</strong> sur la page Historique dès la confirmation de la commande.</p>
+            <h4>3. Copier le PIN</h4>
+            <p>Rendez-vous sur <code>commande.html</code> → trouvez votre commande → cliquez sur <strong>Copier</strong> pour copier le code PIN.</p>
+            <h4>4. Réclamer vos diamants</h4>
+            <ol>
+              <li>Ouvrez <code>redeem.hype.games</code></li>
+              <li>Connectez-vous avec votre compte Free Fire</li>
+              <li>Collez votre code PIN</li>
+              <li>Validez — vos diamants sont crédités en moins de 30 secondes !</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Astuce :</strong> vérifiez bien que votre ID de joueur Free Fire est correct avant toute réclamation. Une fois utilisé, un PIN ne peut plus être réutilisé.</div>
+          `
+        },
+        ht: {
+          title: 'Kijan pou aktive yon PIN Free Fire',
+          subtitle: 'DigitalPay · 2 min lekti',
+          body: `
+            <h4>1. Achte pakèt ou</h4>
+            <p>Chwazi pakèt dyaman Free Fire ou nan boutik la. Peman an fèt ak <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> oswa <strong>Bous DigitalPay</strong> ou.</p>
+            <h4>2. Resevwa PIN ou</h4>
+            <p>Pou 6 pakèt yo oto-livre, kòd PIN nan parèt <strong>enstanteman</strong> nan paj Istorik la.</p>
+            <h4>3. Kopye PIN nan</h4>
+            <p>Ale sou <code>commande.html</code> → jwenn kòmand ou → klike <strong>Kopye</strong>.</p>
+            <h4>4. Reklame dyaman ou</h4>
+            <ol>
+              <li>Louvri <code>redeem.hype.games</code></li>
+              <li>Konekte ak kont Free Fire ou</li>
+              <li>Kole kòd PIN nan</li>
+              <li>Valide — dyaman ou kredite nan mwens pase 30 segonn !</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> verifye ID jwè Free Fire ou anvan ou reklame.</div>
+          `
+        },
+        en: {
+          title: 'How to activate a Free Fire PIN',
+          subtitle: 'DigitalPay · 2 min read',
+          body: `
+            <h4>1. Buy your pack</h4>
+            <p>Choose your Free Fire diamond pack from the shop. Payment via <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> or your <strong>DigitalPay Wallet</strong>.</p>
+            <h4>2. Receive your PIN</h4>
+            <p>For the 6 auto-delivered packs, the PIN code appears <strong>instantly</strong> on the History page.</p>
+            <h4>3. Copy the PIN</h4>
+            <p>Go to <code>commande.html</code> → find your order → click <strong>Copy</strong>.</p>
+            <h4>4. Redeem your diamonds</h4>
+            <ol>
+              <li>Open <code>redeem.hype.games</code></li>
+              <li>Log in with your Free Fire account</li>
+              <li>Paste your PIN code</li>
+              <li>Validate — diamonds credited in under 30 seconds!</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Tip:</strong> verify your Free Fire player ID is correct before redeeming.</div>
+          `
+        },
+        es: {
+          title: 'Cómo activar un PIN de Free Fire',
+          subtitle: 'DigitalPay · 2 min de lectura',
+          body: `
+            <h4>1. Compre su paquete</h4>
+            <p>Elija su paquete de diamantes Free Fire. Pago con <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> o su <strong>Billetera DigitalPay</strong>.</p>
+            <h4>2. Reciba su PIN</h4>
+            <p>Para los 6 paquetes auto-entregados, el código PIN aparece <strong>al instante</strong> en el Historial.</p>
+            <h4>3. Copie el PIN</h4>
+            <p>Vaya a <code>commande.html</code> → busque su pedido → haga clic en <strong>Copiar</strong>.</p>
+            <h4>4. Reclame sus diamantes</h4>
+            <ol>
+              <li>Abra <code>redeem.hype.games</code></li>
+              <li>Inicie sesión con su cuenta Free Fire</li>
+              <li>Pegue su código PIN</li>
+              <li>¡Valide — diamantes acreditados en menos de 30 segundos!</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> verifique su ID de jugador Free Fire antes de reclamar.</div>
+          `
+        }
+      },
+      wise: {
+        fr: {
+          title: 'Utiliser Wise depuis Haïti',
+          subtitle: 'DigitalPay · 3 min de lecture',
+          body: `
+            <h4>Pourquoi Wise ?</h4>
+            <p>Wise permet d'envoyer des USD partout dans le monde à faible coût. DigitalPay vous permet d'envoyer des fonds vers <strong>n'importe quel compte Wise</strong> en quelques minutes.</p>
+            <h4>Comment ça marche sur DigitalPay</h4>
+            <ol>
+              <li>Choisissez le montant en USD (min $5, max $250)</li>
+              <li>Entrez l'<strong>email du destinataire Wise</strong></li>
+              <li>Payez via MonCash, NatCash ou Wallet</li>
+              <li>Nous transférons sous 5-15 minutes</li>
+            </ol>
+            <h4>Nos frais</h4>
+            <p><strong>Taux :</strong> 1 USD = 145 HTG · <strong>Frais :</strong> 5% du montant · <strong>Aucun autre frais caché</strong></p>
+            <div class="guide-tip">💡 <strong>Conseil :</strong> vérifiez bien l'email du destinataire. Un mauvais email entraîne un délai supplémentaire de traitement.</div>
+          `
+        },
+        ht: {
+          title: 'Itilize Wise soti Ayiti',
+          subtitle: 'DigitalPay · 3 min lekti',
+          body: `
+            <h4>Poukisa Wise ?</h4>
+            <p>Wise pèmèt ou voye USD toupatou ak bon mache. DigitalPay pèmèt ou voye lajan nan <strong>nenpòt kont Wise</strong>.</p>
+            <h4>Kijan sa fonksyone</h4>
+            <ol>
+              <li>Chwazi kantite USD ($5 min, $250 max)</li>
+              <li>Antre <strong>imel destinatè Wise</strong></li>
+              <li>Peye ak MonCash, NatCash oswa Bous</li>
+              <li>Nou transfere nan 5-15 minit</li>
+            </ol>
+            <h4>Frè nou</h4>
+            <p><strong>To :</strong> 1 USD = 145 HTG · <strong>Frè :</strong> 5% · <strong>Pa gen lòt frè kache</strong></p>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> verifye imel destinatè a byen.</div>
+          `
+        },
+        en: {
+          title: 'Use Wise from Haiti',
+          subtitle: 'DigitalPay · 3 min read',
+          body: `
+            <h4>Why Wise?</h4>
+            <p>Wise lets you send USD worldwide at low cost. DigitalPay allows you to send funds to <strong>any Wise account</strong>.</p>
+            <h4>How it works</h4>
+            <ol>
+              <li>Choose USD amount (min $5, max $250)</li>
+              <li>Enter the <strong>Wise recipient email</strong></li>
+              <li>Pay via MonCash, NatCash or Wallet</li>
+              <li>We transfer within 5-15 minutes</li>
+            </ol>
+            <h4>Our fees</h4>
+            <p><strong>Rate:</strong> 1 USD = 145 HTG · <strong>Fees:</strong> 5% · <strong>No hidden charges</strong></p>
+            <div class="guide-tip">💡 <strong>Tip:</strong> double-check the recipient email.</div>
+          `
+        },
+        es: {
+          title: 'Usar Wise desde Haití',
+          subtitle: 'DigitalPay · 3 min de lectura',
+          body: `
+            <h4>¿Por qué Wise?</h4>
+            <p>Wise permite enviar USD a todo el mundo a bajo costo. DigitalPay le permite enviar fondos a <strong>cualquier cuenta Wise</strong>.</p>
+            <h4>Cómo funciona</h4>
+            <ol>
+              <li>Elija monto USD (min $5, max $250)</li>
+              <li>Ingrese el <strong>email del destinatario Wise</strong></li>
+              <li>Pague con MonCash, NatCash o Billetera</li>
+              <li>Transferimos en 5-15 minutos</li>
+            </ol>
+            <h4>Nuestras tarifas</h4>
+            <p><strong>Tasa:</strong> 1 USD = 145 HTG · <strong>Comisión:</strong> 5%</p>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> verifique el email del destinatario.</div>
+          `
+        }
+      },
+      netflix: {
+        fr: {
+          title: 'Netflix sans carte bancaire',
+          subtitle: 'DigitalPay · 2 min de lecture',
+          body: `
+            <h4>Le problème</h4>
+            <p>Netflix demande une carte bancaire internationale pour s'abonner. En Haïti, peu de gens en possèdent une.</p>
+            <h4>La solution DigitalPay</h4>
+            <p>Nous activons votre compte Netflix directement, <strong>sans carte bancaire</strong>. Vous n'avez qu'à payer en gourdes via MonCash, NatCash ou Wallet.</p>
+            <h4>Comment procéder</h4>
+            <ol>
+              <li>Choisissez Netflix → 1, 2 ou 3 mois</li>
+              <li>Payez avec votre méthode préférée</li>
+              <li>Nous activons votre compte sous 5-15 minutes</li>
+              <li>Recevez vos identifiants par WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Astuce :</strong> vous pouvez aussi acheter une <strong>Netflix Gift Card</strong> et l'utiliser vous-même.</div>
+          `
+        },
+        ht: {
+          title: 'Netflix san kat bankè',
+          subtitle: 'DigitalPay · 2 min lekti',
+          body: `
+            <h4>Pwoblèm nan</h4>
+            <p>Netflix mande yon kat bankè entènasyonal. Ann Ayiti, pa anpil moun ki genyen.</p>
+            <h4>Solisyon DigitalPay</h4>
+            <p>Nou aktive kont Netflix ou <strong>san kat bankè</strong>. Ou peye an goud ak MonCash, NatCash oswa Bous.</p>
+            <h4>Kijan pou fè</h4>
+            <ol>
+              <li>Chwazi Netflix → 1, 2 oswa 3 mwa</li>
+              <li>Peye ak metòd ou</li>
+              <li>Nou aktive kont ou nan 5-15 minit</li>
+              <li>Resevwa idantifyan ou sou WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> ou ka achte yon <strong>Kat Kado Netflix</strong> tou.</div>
+          `
+        },
+        en: {
+          title: 'Netflix without a bank card',
+          subtitle: 'DigitalPay · 2 min read',
+          body: `
+            <h4>The problem</h4>
+            <p>Netflix requires an international bank card to subscribe. In Haiti, few people own one.</p>
+            <h4>The DigitalPay solution</h4>
+            <p>We activate your Netflix account directly, <strong>no bank card needed</strong>. Pay in gourdes via MonCash, NatCash or Wallet.</p>
+            <h4>How to proceed</h4>
+            <ol>
+              <li>Choose Netflix → 1, 2 or 3 months</li>
+              <li>Pay with your preferred method</li>
+              <li>We activate your account within 5-15 minutes</li>
+              <li>Receive your credentials via WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Tip:</strong> you can also buy a <strong>Netflix Gift Card</strong> and use it yourself.</div>
+          `
+        },
+        es: {
+          title: 'Netflix sin tarjeta bancaria',
+          subtitle: 'DigitalPay · 2 min de lectura',
+          body: `
+            <h4>El problema</h4>
+            <p>Netflix requiere una tarjeta bancaria internacional. En Haití, pocos la tienen.</p>
+            <h4>La solución DigitalPay</h4>
+            <p>Activamos su cuenta Netflix directamente, <strong>sin tarjeta bancaria</strong>.</p>
+            <h4>Cómo proceder</h4>
+            <ol>
+              <li>Elija Netflix → 1, 2 o 3 meses</li>
+              <li>Pague con su método preferido</li>
+              <li>Activamos su cuenta en 5-15 minutos</li>
+              <li>Reciba sus credenciales por WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> también puede comprar una <strong>Netflix Gift Card</strong>.</div>
+          `
+        }
+      },
+      rates: {
+        fr: {
+          title: 'Comprendre les taux USD/HTG',
+          subtitle: 'DigitalPay · 3 min de lecture',
+          body: `
+            <h4>Pourquoi des taux différents ?</h4>
+            <p>Chaque service a son propre taux car les frais bancaires, la liquidité et les partenaires diffèrent.</p>
+            <h4>Nos taux actuels</h4>
+            <ul>
+              <li><strong>Wise :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance :</strong> 1 USD = 142 HTG (frais réduits)</li>
+              <li><strong>Gift Cards :</strong> 1 USD = 160 HTG (marge produit)</li>
+              <li><strong>Dépôt wallet Meru :</strong> 1 USD = 150 HTG</li>
+            </ul>
+            <h4>Exemple concret</h4>
+            <p>Vous voulez envoyer <strong>$50</strong> via Wise :</p>
+            <ul>
+              <li>Montant USD : $50</li>
+              <li>Conversion : 50 × 145 = 7 250 HTG</li>
+              <li>Frais 5% : 362 HTG</li>
+              <li><strong>Total à payer :</strong> 7 612 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Astuce :</strong> pour les montants élevés, Binance offre les frais les plus bas (0%).</div>
+          `
+        },
+        ht: {
+          title: 'Konprann to USD/HTG',
+          subtitle: 'DigitalPay · 3 min lekti',
+          body: `
+            <h4>Poukisa diferan to ?</h4>
+            <p>Chak sèvis gen pwòp to li paske frè bankè, lajan ak patnè yo diferan.</p>
+            <h4>To nou kounye a</h4>
+            <ul>
+              <li><strong>Wise :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance :</strong> 1 USD = 142 HTG</li>
+              <li><strong>Kat Kado :</strong> 1 USD = 160 HTG</li>
+              <li><strong>Depo Meru :</strong> 1 USD = 150 HTG</li>
+            </ul>
+            <h4>Egzanp</h4>
+            <p>Ou vle voye <strong>$50</strong> ak Wise :</p>
+            <ul>
+              <li>50 × 145 = 7 250 HTG</li>
+              <li>Frè 5% : 362 HTG</li>
+              <li><strong>Total :</strong> 7 612 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> pou gwo montan, Binance gen pi ba frè (0%).</div>
+          `
+        },
+        en: {
+          title: 'Understand USD/HTG rates',
+          subtitle: 'DigitalPay · 3 min read',
+          body: `
+            <h4>Why different rates?</h4>
+            <p>Each service has its own rate because banking fees, liquidity and partners differ.</p>
+            <h4>Our current rates</h4>
+            <ul>
+              <li><strong>Wise:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance:</strong> 1 USD = 142 HTG</li>
+              <li><strong>Gift Cards:</strong> 1 USD = 160 HTG</li>
+              <li><strong>Meru deposit:</strong> 1 USD = 150 HTG</li>
+            </ul>
+            <h4>Example</h4>
+            <p>Send <strong>$50</strong> via Wise:</p>
+            <ul>
+              <li>$50 × 145 = 7,250 HTG</li>
+              <li>5% fee: 362 HTG</li>
+              <li><strong>Total:</strong> 7,612 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Tip:</strong> for large amounts, Binance offers the lowest fees (0%).</div>
+          `
+        },
+        es: {
+          title: 'Entender las tasas USD/HTG',
+          subtitle: 'DigitalPay · 3 min de lectura',
+          body: `
+            <h4>¿Por qué diferentes tasas?</h4>
+            <p>Cada servicio tiene su propia tasa porque las comisiones bancarias, liquidez y socios difieren.</p>
+            <h4>Nuestras tasas actuales</h4>
+            <ul>
+              <li><strong>Wise:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance:</strong> 1 USD = 142 HTG</li>
+              <li><strong>Gift Cards:</strong> 1 USD = 160 HTG</li>
+            </ul>
+            <h4>Ejemplo</h4>
+            <p>Enviar <strong>$50</strong> vía Wise:</p>
+            <ul>
+              <li>$50 × 145 = 7,250 HTG</li>
+              <li>Comisión 5%: 362 HTG</li>
+              <li><strong>Total:</strong> 7,612 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> para montos altos, Binance ofrece las comisiones más bajas.</div>
+          `
+        }
+      }
+    };
+
+    function openGuide(guideId) {
+      const guide = GUIDES[guideId];
+      if (!guide) return;
+      const data = guide[STATE.lang] || guide.fr;
+      document.getElementById('guide-modal-title').textContent = data.title;
+      document.getElementById('guide-modal-subtitle').textContent = data.subtitle;
+      document.getElementById('guide-modal-body').innerHTML = data.body;
+      document.getElementById('guide-modal-backdrop').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      vibrate(5);
+    }
+
+    function closeGuide() {
+      document.getElementById('guide-modal-backdrop').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
     auth.onAuthStateChanged(user => { STATE.user = user; updateSidebarAuthUI(); });
 
     let scrollRaf = null;
@@ -2352,7 +2986,7 @@
 
     function initRipple() {
       document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.btn-add-cart, .icon-btn, .cat-pill, .nav-item, .btn-see-all, .offer-chip');
+        const btn = e.target.closest('.btn-add-cart, .icon-btn, .cat-pill, .nav-item, .btn-see-all, .offer-chip, .final-cta-btn, .guide-card');
         if (btn && !btn.disabled) createRipple(e, btn);
       });
     }
@@ -2368,6 +3002,9 @@
       applyTranslations();
       renderCatalog();
       renderTrending();
+      renderNewArrivals();
+      renderBestSeller();
+      renderTopSellers();
       updateCartUI();
       updateSidebarAuthUI();
       initHeroCarousel();
@@ -2387,6 +3024,7 @@
     window.addEventListener('beforeunload', () => {
       STATE.liveUnsubs.forEach(u => { try { u(); } catch (e) {} });
       if (STATE.heroInterval) clearInterval(STATE.heroInterval);
+      if (STATE.heroResumeTimer) clearTimeout(STATE.heroResumeTimer);
       if (STATE.searchDebounce) clearTimeout(STATE.searchDebounce);
     });
   </script>
