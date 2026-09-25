@@ -14,6 +14,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
   <link rel="icon" href="/assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
@@ -22,7 +23,6 @@
 
   <style>
     :root {
-      /* Palette v8 — dérivée du logo 2026 (cyan → bleu profond) */
       --bg-page: #F5F7FB; --bg-card: #FFFFFF; --bg-subtle: #F0F4F9; --bg-hover: #F8FAFC;
       --bg-glass: rgba(245, 247, 251, 0.72);
       --border-subtle: #EDF1F7; --border-default: #E1E8F0; --border-strong: #C7D2E0;
@@ -57,7 +57,6 @@
     ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
 
     .app-shell { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg-page); position: relative; display: flex; flex-direction: column; border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
-    .icon-svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; display: inline-block; vertical-align: middle; }
 
     .site-header { position: sticky; top: 0; z-index: 40; background: var(--bg-glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-bottom: 1px solid transparent; padding: 14px 18px; transition: all 0.3s var(--ease-out); }
     .site-header.scrolled { border-bottom-color: var(--border-subtle); padding: 10px 18px; box-shadow: var(--shadow-xs); }
@@ -72,134 +71,226 @@
     .cart-badge { position: absolute; top: -3px; right: -3px; background: var(--blue-gradient); color: #FFFFFF; font-size: 10px; font-weight: 800; min-width: 19px; height: 19px; padding: 0 5px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px var(--bg-page); line-height: 1; }
     .cart-badge.visible { display: flex; }
 
-    .wallet-main { padding: 22px 18px 24px; flex: 1; }
+    .wallet-main { padding: 20px 18px 24px; flex: 1; }
 
-    .balance-card { background: var(--blue-gradient-hero); color: #FFFFFF; border-radius: var(--r-2xl); padding: 26px 24px; margin-bottom: 20px; box-shadow: var(--shadow-blue-lg); position: relative; overflow: hidden; }
-    .balance-card::after { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%); pointer-events: none; }
-    .balance-card::before { content: ''; position: absolute; bottom: -50px; left: -30px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); pointer-events: none; }
-    .balance-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; position: relative; z-index: 1; }
-    .balance-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3); animation: pulse-balance 2s infinite; }
-    @keyframes pulse-balance { 0%, 100% { box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3); } 50% { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.1); } }
-    .balance-amount { display: flex; align-items: baseline; gap: 8px; margin-bottom: 18px; position: relative; z-index: 1; }
-    .balance-value { font-size: 40px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; }
+    /* ═══ BALANCE CARD PREMIUM ═══ */
+    .balance-card {
+      position: relative;
+      background: linear-gradient(135deg, #003BCC 0%, #0055FF 40%, #00B4FF 100%);
+      color: #FFFFFF;
+      border-radius: var(--r-2xl);
+      padding: 24px 22px 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 32px rgba(0, 85, 255, 0.32), 0 4px 12px rgba(0, 85, 255, 0.2);
+      overflow: hidden;
+    }
+    .balance-card::after { content: ''; position: absolute; top: -70px; right: -70px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%); pointer-events: none; }
+    .balance-card::before { content: ''; position: absolute; bottom: -60px; left: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); pointer-events: none; }
+    .balance-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; position: relative; z-index: 1; }
+    .balance-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; display: flex; align-items: center; gap: 8px; }
+    .balance-eye { background: rgba(255,255,255,0.16); border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(6px); transition: all 0.2s ease; padding: 0; }
+    .balance-eye:active { transform: scale(0.9); }
+    .balance-eye svg { width: 15px; height: 15px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+    .balance-amount { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; position: relative; z-index: 1; transition: all 0.3s ease; }
+    .balance-value { font-size: 42px; font-weight: 900; letter-spacing: -1.8px; line-height: 1; font-variant-numeric: tabular-nums; }
     .balance-currency { font-size: 18px; font-weight: 800; opacity: 0.85; letter-spacing: -0.3px; }
-    .balance-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.18); font-size: 12px; font-weight: 600; opacity: 0.92; position: relative; z-index: 1; gap: 12px; }
-    .balance-footer-item { display: flex; align-items: center; gap: 6px; }
-    .balance-footer-item svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .balance-value.blurred { filter: blur(9px); user-select: none; }
 
-    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
-    .qa-btn { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 16px 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-family: inherit; transition: all 0.2s var(--ease-out); box-shadow: var(--shadow-xs); text-align: left; text-decoration: none; }
-    .qa-btn:hover { border-color: var(--blue-200); box-shadow: var(--shadow-md); transform: translateY(-1px); }
-    .qa-btn:active { transform: scale(0.98); }
+    .balance-sparkline { position: relative; z-index: 1; height: 40px; margin-bottom: 14px; }
+    .balance-sparkline svg { width: 100%; height: 100%; display: block; }
+    .sparkline-path { fill: none; stroke: rgba(255,255,255,0.85); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .sparkline-area { fill: url(#sparkGradient); opacity: 0.5; }
+    .sparkline-dot { fill: #FFFFFF; stroke: rgba(0, 85, 255, 0.4); stroke-width: 2; }
+
+    .balance-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.18); font-size: 11.5px; font-weight: 600; position: relative; z-index: 1; gap: 12px; }
+    .balance-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .balance-stat-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; }
+    .balance-stat-value { font-size: 13px; font-weight: 800; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ═══ QUICK ACTIONS 4 ═══ */
+    .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+    .qa-btn { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-family: inherit; transition: all 0.2s var(--ease-out); box-shadow: var(--shadow-xs); text-decoration: none; position: relative; }
+    .qa-btn:hover { border-color: var(--blue-200); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .qa-btn:active { transform: translateY(0) scale(0.97); }
     .qa-btn.primary { background: var(--blue-gradient); border-color: transparent; box-shadow: var(--shadow-blue); }
-    .qa-icon { width: 38px; height: 38px; border-radius: var(--r-md); background: var(--blue-50); color: var(--blue-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .qa-btn.primary .qa-icon { background: rgba(255,255,255,0.2); color: #FFFFFF; }
-    .qa-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.2; fill: none; }
-    .qa-text { min-width: 0; }
-    .qa-title { font-size: 13px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.2px; }
+    .qa-icon { width: 34px; height: 34px; border-radius: 11px; background: var(--blue-50); color: var(--blue-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .qa-btn.primary .qa-icon { background: rgba(255,255,255,0.22); color: #FFFFFF; }
+    .qa-icon svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .qa-title { font-size: 10.5px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.15px; text-align: center; line-height: 1.15; }
     .qa-btn.primary .qa-title { color: #FFFFFF; }
-    .qa-sub { font-size: 11px; font-weight: 600; color: var(--text-tertiary); margin-top: 2px; }
-    .qa-btn.primary .qa-sub { color: rgba(255,255,255,0.75); }
 
-    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-    .section-title { font-size: 17px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; }
+    /* ═══ SECTION TITLE ═══ */
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .section-title { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; }
     .section-count { font-size: 11px; font-weight: 800; color: var(--blue-600); background: var(--blue-50); padding: 3px 9px; border-radius: var(--r-full); }
 
+    /* ═══ PAYMENT METHODS STRIP ═══ */
+    .pay-methods-strip { display: flex; gap: 6px; margin-bottom: 22px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+    .pay-methods-strip::-webkit-scrollbar { display: none; }
+    .pay-pill-mini { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-full); padding: 5px 11px 5px 6px; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-2xs); flex-shrink: 0; }
+    .pay-pill-mini-logo { width: 20px; height: 20px; border-radius: 6px; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 8px; font-weight: 900; color: var(--text-secondary); flex-shrink: 0; }
+    .pay-pill-mini-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .pay-pill-mini-name { font-size: 10.5px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.1px; }
+
+    /* ═══ FILTERS ═══ */
     .filter-pills { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
     .filter-pills::-webkit-scrollbar { display: none; }
     .filter-pill { background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-secondary); padding: 7px 14px; border-radius: var(--r-full); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; transition: all 0.2s var(--ease-out); flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
     .filter-pill:active { transform: scale(0.96); }
     .filter-pill.active { background: var(--text-primary); border-color: var(--text-primary); color: #FFFFFF; }
     .filter-pill svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .filter-pill-count { background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: var(--r-full); font-size: 9.5px; font-weight: 800; min-width: 16px; text-align: center; }
+    .filter-pill.active .filter-pill-count { background: var(--blue-600); color: #FFFFFF; }
 
-    .tx-list { display: flex; flex-direction: column; gap: 10px; }
-    .tx-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 14px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xs); transition: all 0.2s ease; }
-    .tx-item:hover { border-color: var(--border-default); box-shadow: var(--shadow-sm); }
-    .tx-icon { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    /* ═══ TX GROUP ═══ */
+    .tx-group { margin-bottom: 18px; }
+    .tx-group-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-tertiary); margin: 0 0 8px 4px; display: flex; align-items: center; gap: 8px; }
+    .tx-group-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%); }
+    .tx-list { display: flex; flex-direction: column; gap: 8px; }
+    .tx-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 14px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xs); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
+    .tx-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+    .tx-item.deposit::before { background: var(--success); }
+    .tx-item.purchase::before { background: var(--blue-600); }
+    .tx-item:hover { border-color: var(--border-default); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+    .tx-item:active { transform: translateY(0) scale(0.995); }
+    .tx-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
     .tx-icon.deposit { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
-    .tx-icon.purchase { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+    .tx-icon.purchase { background: var(--blue-50); color: var(--blue-600); border: 1px solid var(--blue-100); }
     .tx-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.4; fill: none; }
     .tx-info { flex: 1; min-width: 0; }
-    .tx-title { font-size: 13.5px; font-weight: 800; color: var(--text-primary); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tx-meta { font-size: 11.5px; color: var(--text-tertiary); font-weight: 600; margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .tx-ref { font-family: monospace; font-size: 10.5px; background: var(--bg-subtle); padding: 1px 6px; border-radius: var(--r-xs); color: var(--text-secondary); }
+    .tx-title { font-size: 13px; font-weight: 800; color: var(--text-primary); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.2px; }
+    .tx-meta { font-size: 10.5px; color: var(--text-tertiary); font-weight: 600; margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .tx-ref { font-family: monospace; font-size: 9.5px; background: var(--bg-subtle); padding: 1px 6px; border-radius: var(--r-xs); color: var(--text-secondary); }
     .tx-right { text-align: right; flex-shrink: 0; }
-    .tx-amount { font-size: 14px; font-weight: 900; letter-spacing: -0.3px; white-space: nowrap; }
+    .tx-amount { font-size: 13.5px; font-weight: 900; letter-spacing: -0.3px; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .tx-amount.deposit { color: var(--success); }
-    .tx-amount.purchase { color: var(--danger); }
-    .tx-status { display: inline-block; margin-top: 4px; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.4px; }
+    .tx-amount.purchase { color: var(--text-primary); }
+    .tx-status { display: inline-block; margin-top: 4px; font-size: 8.5px; font-weight: 800; padding: 2px 7px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.4px; }
     .tx-status.valide, .tx-status.livre { background: var(--success-bg); color: var(--success); }
     .tx-status.en_attente, .tx-status.en_attente_stock { background: var(--warning-bg); color: var(--warning); }
     .tx-status.rejete { background: var(--danger-bg); color: var(--danger); }
 
+    /* ═══ EMPTY ═══ */
     .empty-tx { text-align: center; padding: 50px 24px; }
     .empty-tx-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
     .empty-tx-icon svg { width: 30px; height: 30px; stroke: var(--text-tertiary); stroke-width: 1.8; fill: none; }
     .empty-tx-title { font-size: 15px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
     .empty-tx-sub { font-size: 12.5px; color: var(--text-secondary); max-width: 260px; margin: 0 auto; line-height: 1.5; }
 
-    .skeleton-tx { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 14px; display: flex; gap: 12px; align-items: center; }
+    .skeleton-tx { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 14px; display: flex; gap: 12px; align-items: center; }
     .skeleton-block { background: linear-gradient(90deg, var(--bg-subtle) 0%, #E4EAF2 50%, var(--bg-subtle) 100%); background-size: 200% 100%; animation: skeleton-load 1.5s infinite; border-radius: var(--r-md); }
-    .skeleton-circle { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; }
+    .skeleton-circle { width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; }
     .skeleton-lines { flex: 1; display: flex; flex-direction: column; gap: 6px; }
     .skeleton-line { height: 12px; }
     .skeleton-line-sm { height: 10px; width: 60%; }
     @keyframes skeleton-load { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-    .sheet-backdrop { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 200; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); display: flex; align-items: flex-end; justify-content: center; }
-    .sheet-backdrop.active { opacity: 1; visibility: visible; }
-    .sheet-modal { width: 100%; max-width: 480px; max-height: 92vh; background: var(--bg-card); border-radius: var(--r-3xl) var(--r-3xl) 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.45s var(--ease-out); overflow: hidden; box-shadow: var(--shadow-2xl); }
-    .sheet-backdrop.active .sheet-modal { transform: translateY(0); }
-    .sheet-grabber { width: 40px; height: 4px; background: var(--border-strong); border-radius: var(--r-full); margin: 10px auto 4px; opacity: 0.6; }
-    .sheet-head { padding: 12px 20px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); }
-    .sheet-title { font-size: 17px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; }
-    .sheet-close { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; flex-shrink: 0; font-family: inherit; }
-    .sheet-close svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .sheet-body { padding: 18px 20px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
-    .sheet-footer { padding: 16px 20px 20px; background: var(--bg-card); border-top: 1px solid var(--border-subtle); }
+    /* ═══ SECURITY BADGE ═══ */
+    .security-card { background: linear-gradient(135deg, #064E3B 0%, #059669 100%); border-radius: var(--r-xl); padding: 16px 18px; margin: 20px 0 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25); position: relative; overflow: hidden; }
+    .security-card::after { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
+    .security-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; z-index: 1; }
+    .security-icon svg { width: 20px; height: 20px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+    .security-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
+    .security-title { font-size: 13px; font-weight: 900; color: #FFFFFF; letter-spacing: -0.2px; margin-bottom: 2px; }
+    .security-desc { font-size: 11.5px; color: rgba(255,255,255,0.85); line-height: 1.4; font-weight: 600; }
 
+    /* ═══ SHEET MODAL ═══ */
+    .sheet-backdrop { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 200; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); display: flex; align-items: flex-end; justify-content: center; }
+    .sheet-backdrop.active { opacity: 1; visibility: visible; }
+    .sheet-modal { width: 100%; max-width: 480px; max-height: 94vh; background: var(--bg-card); border-radius: var(--r-3xl) var(--r-3xl) 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.45s var(--ease-out); overflow: hidden; box-shadow: var(--shadow-2xl); }
+    .sheet-backdrop.active .sheet-modal { transform: translateY(0); }
+    .sheet-grabber { width: 40px; height: 4px; background: var(--border-strong); border-radius: var(--r-full); margin: 10px auto 4px; opacity: 0.6; flex-shrink: 0; }
+    .sheet-head { padding: 12px 20px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
+    .sheet-title { font-size: 17px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; }
+    .sheet-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; flex-shrink: 0; font-family: inherit; }
+    .sheet-close svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .sheet-body { padding: 20px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .sheet-footer { padding: 16px 20px 20px; background: var(--bg-card); border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
+
+    /* ═══ DEPOSIT MODAL — STEPS ═══ */
+    .dep-steps { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .dep-step { display: flex; align-items: center; gap: 8px; flex: 1; }
+    .dep-step-circle { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-subtle); color: var(--text-tertiary); font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s var(--ease-spring); border: 2px solid var(--border-subtle); }
+    .dep-step.active .dep-step-circle { background: var(--blue-gradient); color: #FFFFFF; border-color: transparent; box-shadow: 0 4px 12px rgba(0, 85, 255, 0.3); transform: scale(1.05); }
+    .dep-step.completed .dep-step-circle { background: var(--success); color: #FFFFFF; border-color: transparent; }
+    .dep-step-label { font-size: 11px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; display: none; }
+    .dep-step.active .dep-step-label { color: var(--blue-600); display: block; }
+    .dep-step-line { height: 2px; flex: 1; background: var(--border-subtle); border-radius: 2px; transition: background 0.3s ease; }
+    .dep-step.completed + .dep-step-line, .dep-step.completed ~ .dep-step-line.active { background: var(--success); }
+
+    .dep-hero { text-align: center; padding: 8px 0 20px; }
+    .dep-hero-icon { width: 64px; height: 64px; border-radius: 20px; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; box-shadow: var(--shadow-blue-lg); }
+    .dep-hero-icon svg { width: 30px; height: 30px; stroke: #FFFFFF; stroke-width: 2; fill: none; }
+    .dep-hero-title { font-size: 18px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; margin-bottom: 4px; }
+    .dep-hero-sub { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; max-width: 320px; margin: 0 auto; }
+
+    /* ═══ DEP METHODS ═══ */
     .dep-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
-    .dep-pill { background: var(--bg-card); border: 1.5px solid var(--border-default); border-radius: var(--r-md); padding: 14px 8px 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.2s var(--ease-out); font-family: inherit; }
+    .dep-pill { background: var(--bg-card); border: 1.5px solid var(--border-default); border-radius: var(--r-md); padding: 14px 8px 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.22s var(--ease-out); font-family: inherit; position: relative; overflow: visible; }
     .dep-pill:active { transform: scale(0.97); }
-    .dep-pill.active { border-color: var(--blue-600); background: var(--blue-50); box-shadow: 0 0 0 1px var(--blue-600); }
-    .dep-pill-logo { width: 44px; height: 44px; border-radius: var(--r-md); background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .dep-pill.active { border-color: var(--blue-600); background: var(--blue-50); box-shadow: 0 0 0 1px var(--blue-600), 0 6px 16px rgba(0, 85, 255, 0.15); transform: translateY(-2px); }
+    .dep-pill-logo { width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border: 1px solid var(--border-subtle); }
     .dep-pill-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
     .dep-pill-letter { font-size: 13px; font-weight: 900; letter-spacing: -0.3px; }
     .dep-pill-name { font-size: 11px; font-weight: 800; color: var(--text-primary); text-align: center; letter-spacing: -0.1px; }
     .dep-pill.active .dep-pill-name { color: var(--blue-700); }
+    .dep-pill-check { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: var(--blue-gradient); display: none; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0, 85, 255, 0.4); z-index: 2; }
+    .dep-pill.active .dep-pill-check { display: flex; }
+    .dep-pill-check svg { width: 11px; height: 11px; stroke: #FFFFFF; stroke-width: 3; fill: none; }
 
-    .deposit-info { background: var(--bg-subtle); border: 1px solid var(--border-subtle); border-radius: var(--r-md); padding: 14px; margin-bottom: 16px; }
-    .deposit-info-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-    .deposit-info-label { font-size: 11px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.4px; }
-    .deposit-info-value { font-family: monospace; font-size: 15px; font-weight: 900; color: var(--text-primary); word-break: break-all; letter-spacing: 0.3px; }
-    .deposit-info-hint { font-size: 11px; color: var(--text-tertiary); font-weight: 600; margin-top: 4px; }
-    .btn-copy { background: #FFFFFF; border: 1px solid var(--border-default); color: var(--blue-600); font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: var(--r-sm); cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: inherit; transition: all 0.15s ease; }
-    .btn-copy:hover { background: var(--blue-50); border-color: var(--blue-200); }
+    /* ═══ DEP INFO BOX ═══ */
+    .deposit-info { background: linear-gradient(135deg, var(--blue-50) 0%, rgba(0, 180, 255, 0.08) 100%); border: 1px solid var(--blue-100); border-radius: var(--r-md); padding: 14px; margin-bottom: 16px; position: relative; overflow: hidden; }
+    .deposit-info::after { content: ''; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%); pointer-events: none; }
+    .deposit-info-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; position: relative; z-index: 1; }
+    .deposit-info-label { font-size: 10.5px; font-weight: 800; color: var(--blue-700); text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-copy { background: #FFFFFF; border: 1px solid var(--blue-200); color: var(--blue-600); font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: var(--r-sm); cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: inherit; transition: all 0.15s ease; position: relative; z-index: 1; }
+    .btn-copy:hover { background: var(--blue-50); }
+    .btn-copy:active { transform: scale(0.96); }
     .btn-copy svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .deposit-info-value { font-family: 'SF Mono', 'Monaco', monospace; font-size: 16px; font-weight: 900; color: var(--blue-700); word-break: break-all; letter-spacing: 0.3px; position: relative; z-index: 1; line-height: 1.3; }
+    .deposit-info-hint { font-size: 11px; color: var(--blue-600); font-weight: 700; margin-top: 6px; position: relative; z-index: 1; opacity: 0.85; }
 
+    /* ═══ AMOUNT QUICK PICKER ═══ */
+    .amount-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+    .amount-preset { background: var(--bg-subtle); border: 1.5px solid transparent; border-radius: var(--r-md); padding: 10px 4px; font-size: 12.5px; font-weight: 800; color: var(--text-primary); cursor: pointer; font-family: inherit; transition: all 0.18s ease; text-align: center; }
+    .amount-preset:hover { background: var(--bg-hover); border-color: var(--border-default); }
+    .amount-preset.active { background: var(--blue-50); border-color: var(--blue-600); color: var(--blue-700); box-shadow: 0 0 0 1px var(--blue-600); }
+    .amount-preset:active { transform: scale(0.96); }
+
+    /* ═══ FIELDS ═══ */
     .field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
-    .field-label { font-size: 11.5px; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.4px; }
+    .field-label { font-size: 11.5px; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .field-label-hint { font-size: 10px; font-weight: 700; color: var(--text-tertiary); text-transform: none; letter-spacing: 0; }
     .text-input { width: 100%; height: 46px; background: var(--bg-subtle); border: 1.5px solid transparent; border-radius: var(--r-md); padding: 0 14px; font-size: 14px; font-weight: 600; color: var(--text-primary); outline: none; font-family: inherit; transition: all 0.2s ease; }
     .text-input:focus { background: var(--bg-card); border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); }
     .text-input::placeholder { color: var(--text-quaternary); font-weight: 500; }
+    .text-input.money { font-size: 22px; font-weight: 900; height: 56px; letter-spacing: -0.5px; padding: 0 16px; font-variant-numeric: tabular-nums; }
 
+    .meru-hint { background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: var(--r-md); padding: 10px 12px; font-size: 12px; font-weight: 800; color: var(--blue-700); margin-top: 8px; display: none; align-items: center; gap: 8px; }
+    .meru-hint.visible { display: flex; }
+    .meru-hint svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.4; fill: none; flex-shrink: 0; }
+
+    /* ═══ FILE UPLOAD ═══ */
     .file-upload { position: relative; }
     .file-upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2; }
     .file-upload-box { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-subtle); border: 1.5px dashed var(--border-strong); border-radius: var(--r-md); transition: all 0.2s ease; }
     .file-upload-box:hover { background: var(--bg-hover); border-color: var(--blue-400); }
+    .file-upload-box.has-file { background: var(--success-bg); border-color: var(--success-border); border-style: solid; }
     .file-upload-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-50); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .file-upload-box.has-file .file-upload-icon { background: var(--success); }
     .file-upload-icon svg { width: 17px; height: 17px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; }
+    .file-upload-box.has-file .file-upload-icon svg { stroke: #FFFFFF; }
     .file-upload-text { flex: 1; min-width: 0; }
     .file-upload-title { font-size: 12.5px; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .file-upload-sub { font-size: 11px; color: var(--text-tertiary); font-weight: 600; margin-top: 2px; }
+    .file-upload-box.has-file .file-upload-title { color: var(--success); }
+    .file-upload-box.has-file .file-upload-sub { color: var(--success); }
 
-    .meru-hint { background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: var(--r-md); padding: 12px 14px; font-size: 12px; font-weight: 700; color: var(--blue-700); margin-top: 6px; display: none; }
-    .meru-hint.visible { display: block; }
-
+    /* ═══ SUBMIT ═══ */
     .btn-submit-deposit { width: 100%; height: 54px; background: var(--blue-gradient); color: #FFFFFF; border: none; border-radius: var(--r-md); font-size: 14.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit; box-shadow: var(--shadow-blue); transition: all 0.2s var(--ease-out); letter-spacing: -0.1px; position: relative; overflow: hidden; }
-    .btn-submit-deposit:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0, 85, 255, 0.3); }
-    .btn-submit-deposit:active { transform: scale(0.985); }
-    .btn-submit-deposit:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
+    .btn-submit-deposit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0, 85, 255, 0.3); }
+    .btn-submit-deposit:active:not(:disabled) { transform: scale(0.985); }
+    .btn-submit-deposit:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
     .btn-submit-deposit .spinner { width: 20px; height: 20px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #FFFFFF; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
     .btn-submit-deposit.loading .spinner { display: block; }
     .btn-submit-deposit.loading .btn-label { display: none; }
@@ -208,12 +299,13 @@
     .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transform: scale(0); animation: ripple-anim 0.6s var(--ease-out); pointer-events: none; }
     @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
 
+    /* ═══ FOOTER ═══ */
     .site-footer { background: var(--bg-card); border-top: 1px solid var(--border-subtle); padding: 18px; }
     .footer-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--text-tertiary); gap: 12px; }
     .footer-status { display: flex; align-items: center; gap: 6px; color: var(--success); font-weight: 700; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); } 50% { box-shadow: 0 0 0 6px rgba(5, 150, 105, 0.05); } }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
 
+    /* ═══ TOASTS ═══ */
     #toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 400; width: calc(100% - 32px); max-width: 400px; pointer-events: none; }
     .toast { background: var(--text-primary); color: #FFFFFF; padding: 14px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); transform: translateY(-20px); opacity: 0; transition: all 0.35s var(--ease-spring); overflow: hidden; position: relative; }
     .toast::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; background: var(--blue-600); width: 100%; transform-origin: left; animation: toast-progress 2.6s linear forwards; }
@@ -234,31 +326,67 @@
     .toast.info .toast-icon svg { stroke: #93C5FD; }
     .toast-msg { flex: 1; line-height: 1.35; }
 
+    /* ═══ SIDEBAR COMPACTE ═══ */
     .sidebar-overlay { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); }
     .sidebar-overlay.active { opacity: 1; visibility: visible; }
-    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(85vw, 360px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
+    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(80vw, 310px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
     .sidebar-overlay.active .sidebar-drawer { transform: translateX(0); }
-    .sidebar-content { padding: 26px 22px 22px; display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
-    .sidebar-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle); }
-    .sidebar-brand { display: flex; align-items: center; gap: 12px; }
-    .sidebar-logo-wrap { width: 46px; height: 46px; border-radius: var(--r-md); background: var(--bg-subtle); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
-    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
-    .sidebar-brand-name { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; line-height: 1.1; }
-    .sidebar-brand-sub { font-size: 12px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.3px; }
-    .sidebar-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
-    .sidebar-close svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .sidebar-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); margin: 22px 0 10px; }
-    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .lang-pill { background: var(--bg-subtle); border: 1px solid transparent; padding: 10px 12px; border-radius: var(--r-sm); display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text-primary); cursor: pointer; font-family: inherit; transition: all 0.18s ease; }
-    .lang-pill.active { background: var(--blue-50); border-color: var(--blue-600); color: var(--blue-600); font-weight: 800; }
-    .lang-pill .flag { font-size: 15px; line-height: 1; }
-    .sidebar-nav { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
-    .sidebar-nav-link { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: var(--r-md); color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.18s ease; cursor: pointer; font-family: inherit; background: none; border: none; width: 100%; text-align: left; }
-    .sidebar-nav-link:hover { background: var(--bg-hover); }
-    .sidebar-nav-link.active { background: var(--bg-subtle); color: var(--blue-600); font-weight: 700; }
-    .sidebar-nav-link svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; flex-shrink: 0; }
-    .sidebar-nav-link.active svg { stroke: var(--blue-600); }
+    .sidebar-content { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+    .sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px 10px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-card); }
+    .sidebar-brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .sidebar-logo-wrap { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 100%); border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+    .sidebar-brand-name { font-size: 12.5px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; line-height: 1.1; text-transform: uppercase; }
+    .sidebar-brand-sub { font-size: 8px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 2px; }
+    .sidebar-close { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid transparent; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all 0.18s var(--ease-out); flex-shrink: 0; }
+    .sidebar-close:hover { background: var(--bg-hover); border-color: var(--border-default); color: var(--text-primary); }
+    .sidebar-close:active { transform: scale(0.92); }
+    .sidebar-close svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none; }
 
+    .sidebar-user-card { display: flex; align-items: center; gap: 9px; padding: 8px 10px; margin: 10px 10px 6px; background: var(--bg-card); border: 1.5px solid var(--blue-200); border-radius: 12px; flex-shrink: 0; box-shadow: 0 1px 6px rgba(0, 85, 255, 0.06); }
+    .sidebar-user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 11px; font-weight: 800; letter-spacing: -0.3px; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 85, 255, 0.28); border: 1.5px solid #FFFFFF; }
+    .sidebar-user-info { flex: 1; min-width: 0; }
+    .sidebar-user-label { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--blue-600); margin-bottom: 1px; }
+    .sidebar-user-email { font-size: 10.5px; font-weight: 700; color: var(--text-primary); word-break: break-all; line-height: 1.3; letter-spacing: -0.2px; }
+    .sidebar-user-card.guest { background: var(--bg-card); border-color: var(--border-default); box-shadow: 0 1px 6px rgba(10, 22, 51, 0.04); }
+    .sidebar-user-card.guest .sidebar-user-avatar { background: linear-gradient(135deg, #94A3B8 0%, #64748B 100%); box-shadow: 0 2px 8px rgba(100, 116, 139, 0.25); }
+    .sidebar-user-card.guest .sidebar-user-label { color: var(--text-tertiary); }
+    .sidebar-user-card.guest .sidebar-user-email { color: var(--text-secondary); font-weight: 600; font-size: 10px; }
+
+    .sidebar-label { display: flex; align-items: center; gap: 8px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-tertiary); margin: 10px 12px 4px; flex-shrink: 0; }
+    .sidebar-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%); }
+
+    .sidebar-body { padding: 0 8px 12px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .sidebar-body::-webkit-scrollbar { width: 3px; }
+
+    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    .lang-pill { background: var(--bg-card); border: 1px solid var(--border-default); padding: 5px 8px; border-radius: 8px; display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--text-primary); cursor: pointer; transition: all 0.18s var(--ease-out); box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); }
+    .lang-pill:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+    .lang-pill:active { transform: scale(0.98); }
+    .lang-pill.active { background: var(--blue-50); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500); }
+    .lang-pill .flag { font-size: 11px; line-height: 1; flex-shrink: 0; }
+
+    .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+    .sidebar-nav-link { position: relative; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 10px; background: var(--bg-card); border: 1.5px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; font-size: 12px; font-weight: 700; width: 100%; text-align: left; cursor: pointer; transition: all 0.18s var(--ease-out); letter-spacing: -0.15px; box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); font-family: inherit; }
+    .sidebar-nav-link:hover { border-color: var(--border-default); box-shadow: 0 2px 6px rgba(10, 22, 51, 0.06); transform: translateY(-1px); }
+    .sidebar-nav-link:active { transform: translateY(0) scale(0.99); }
+    .sidebar-nav-link svg { width: 14px; height: 14px; stroke: var(--blue-600); stroke-width: 2; fill: none; flex-shrink: 0; padding: 6px; background: var(--blue-50); border-radius: 8px; box-sizing: content-box; transition: all 0.2s var(--ease-out); }
+    .sidebar-nav-link:hover svg { background: var(--blue-100); transform: scale(1.04); }
+    .sidebar-nav-link.active { background: var(--bg-card); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500), 0 3px 10px rgba(0, 85, 255, 0.12); }
+    .sidebar-nav-link.active svg { background: var(--blue-100); stroke: var(--blue-700); stroke-width: 2.2; }
+    .sidebar-nav-link.active::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--blue-600); margin-left: auto; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.15); }
+    .sidebar-nav-link.danger { color: var(--danger); margin-top: 4px; border-color: var(--danger-border); }
+    .sidebar-nav-link.danger::before { content: ''; position: absolute; top: -7px; left: 6px; right: 6px; height: 1px; background: var(--border-subtle); }
+    .sidebar-nav-link.danger svg { stroke: var(--danger); background: var(--danger-bg); }
+    .sidebar-nav-link.danger:hover { background: var(--danger-bg); border-color: var(--danger); box-shadow: 0 2px 6px rgba(220, 38, 38, 0.15); }
+    .sidebar-nav-link.danger:hover svg { background: #FEE2E2; }
+    .sidebar-nav-link.sidebar-login-btn { background: var(--blue-gradient); color: #FFFFFF !important; border-color: transparent; justify-content: center; font-weight: 800; box-shadow: 0 3px 10px rgba(0, 85, 255, 0.28); margin-top: 4px; }
+    .sidebar-nav-link.sidebar-login-btn svg { background: rgba(255, 255, 255, 0.2); stroke: #FFFFFF; padding: 5px; }
+    .sidebar-nav-link.sidebar-login-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(0, 85, 255, 0.35); }
+    .sidebar-nav-link.sidebar-register-btn { background: var(--bg-card); justify-content: center; font-weight: 700; border-color: var(--border-default); }
+    .sidebar-nav-link.sidebar-register-btn svg { background: var(--bg-subtle); stroke: var(--text-secondary); }
+
+    /* ═══ BOTTOM NAV ═══ */
     .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.94); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-top: 1px solid var(--border-subtle); padding: 8px 10px 12px; z-index: 55; box-shadow: 0 -2px 16px rgba(10, 22, 51, 0.04); }
     .nav-track { position: relative; display: flex; align-items: center; justify-content: space-around; }
     .nav-indicator { position: absolute; bottom: 0; height: 3px; border-radius: var(--r-full); background: var(--blue-gradient); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 2px 8px rgba(0, 85, 255, 0.4); width: 30px; }
@@ -301,44 +429,88 @@
 
     <main class="wallet-main">
 
+      <!-- BALANCE CARD PREMIUM -->
       <div class="balance-card">
-        <div class="balance-label">
-          <span class="balance-live-dot"></span>
-          <span data-i18n="balanceLabel">Solde disponible</span>
+        <div class="balance-top">
+          <div class="balance-label" data-i18n="balanceLabel">Solde disponible</div>
+          <button class="balance-eye" onclick="toggleBalanceVisibility()" aria-label="Afficher/Masquer">
+            <svg id="eye-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
         <div class="balance-amount">
           <span class="balance-value" id="balance-value">0</span>
           <span class="balance-currency">HTG</span>
         </div>
+        <div class="balance-sparkline">
+          <svg viewBox="0 0 300 40" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="sparkGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path class="sparkline-area" id="spark-area" d="M0,30 L0,40 L300,40 L300,30 Z"/>
+            <path class="sparkline-path" id="spark-path" d="M0,30 L300,30"/>
+          </svg>
+        </div>
         <div class="balance-footer">
-          <div class="balance-footer-item">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span data-i18n="securedLabel">Transactions sécurisées</span>
+          <div class="balance-stat">
+            <div class="balance-stat-label" data-i18n="lastDeposit">Dernier dépôt</div>
+            <div class="balance-stat-value" id="last-deposit">—</div>
           </div>
-          <div class="balance-footer-item">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <span data-i18n="instantLabel">Instantané</span>
+          <div class="balance-stat" style="text-align: right;">
+            <div class="balance-stat-label" data-i18n="totalTx">Transactions</div>
+            <div class="balance-stat-value" id="total-tx">0</div>
           </div>
         </div>
       </div>
 
+      <!-- QUICK ACTIONS 4 -->
       <div class="quick-actions">
         <button class="qa-btn primary" onclick="openDepositModal()">
           <div class="qa-icon"><svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg></div>
-          <div class="qa-text">
-            <div class="qa-title" data-i18n="qaDeposit">Recharger</div>
-            <div class="qa-sub" data-i18n="qaDepositSub">Ajouter des fonds</div>
-          </div>
+          <div class="qa-title" data-i18n="qaDeposit">Recharger</div>
         </button>
         <a href="index.html" class="qa-btn">
           <div class="qa-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
-          <div class="qa-text">
-            <div class="qa-title" data-i18n="qaShop">Boutique</div>
-            <div class="qa-sub" data-i18n="qaShopSub">Acheter maintenant</div>
-          </div>
+          <div class="qa-title" data-i18n="qaShop">Boutique</div>
+        </a>
+        <a href="commande.html" class="qa-btn">
+          <div class="qa-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+          <div class="qa-title" data-i18n="qaHistory">Historique</div>
+        </a>
+        <a href="help.html" class="qa-btn">
+          <div class="qa-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="qa-title" data-i18n="qaSupport">Support</div>
         </a>
       </div>
 
+      <!-- PAYMENT METHODS STRIP -->
+      <div class="section-head">
+        <h3 class="section-title" data-i18n="payMethodsTitle">Méthodes acceptées</h3>
+      </div>
+      <div class="pay-methods-strip">
+        <div class="pay-pill-mini">
+          <div class="pay-pill-mini-logo"><img src="assets/moncash-logo.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='MC';"></div>
+          <span class="pay-pill-mini-name">MonCash</span>
+        </div>
+        <div class="pay-pill-mini">
+          <div class="pay-pill-mini-logo"><img src="assets/natcash-logo.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='NC';"></div>
+          <span class="pay-pill-mini-name">NatCash</span>
+        </div>
+        <div class="pay-pill-mini">
+          <div class="pay-pill-mini-logo"><img src="assets/meru.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='M';"></div>
+          <span class="pay-pill-mini-name">Meru USD</span>
+        </div>
+        <div class="pay-pill-mini">
+          <div class="pay-pill-mini-logo" style="background:var(--blue-gradient);">
+            <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#FFF;stroke-width:2.4;fill:none;"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg>
+          </div>
+          <span class="pay-pill-mini-name">Wallet</span>
+        </div>
+      </div>
+
+      <!-- HISTORIQUE -->
       <div class="section-head">
         <h3 class="section-title" data-i18n="txTitle">Historique</h3>
         <span class="section-count" id="tx-count">0</span>
@@ -348,20 +520,34 @@
         <button class="filter-pill active" data-filter="all" onclick="setTxFilter('all', this)">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
           <span data-i18n="filterAll">Tout</span>
+          <span class="filter-pill-count" id="cnt-all">0</span>
         </button>
         <button class="filter-pill" data-filter="deposits" onclick="setTxFilter('deposits', this)">
           <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg>
           <span data-i18n="filterDeposits">Dépôts</span>
+          <span class="filter-pill-count" id="cnt-dep">0</span>
         </button>
         <button class="filter-pill" data-filter="purchases" onclick="setTxFilter('purchases', this)">
           <svg viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span data-i18n="filterPurchases">Achats</span>
+          <span class="filter-pill-count" id="cnt-pur">0</span>
         </button>
       </div>
 
-      <div class="tx-list" id="tx-list">
+      <div id="tx-container">
         <div class="skeleton-tx"><div class="skeleton-block skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line-sm"></div></div></div>
-        <div class="skeleton-tx"><div class="skeleton-block skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line-sm"></div></div></div>
+        <div class="skeleton-tx" style="margin-top:8px;"><div class="skeleton-block skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line-sm"></div></div></div>
+      </div>
+
+      <!-- SECURITY CARD -->
+      <div class="security-card">
+        <div class="security-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="security-text">
+          <div class="security-title" data-i18n="securityTitle">Transactions 100% sécurisées</div>
+          <div class="security-desc" data-i18n="securityDesc">Chiffrement SSL · Firebase Auth · Validation manuelle</div>
+        </div>
       </div>
 
     </main>
@@ -430,71 +616,133 @@
       </aside>
     </div>
 
+    <!-- MODAL DÉPÔT PREMIUM -->
     <div class="sheet-backdrop" id="deposit-backdrop" onclick="closeDepositModal()">
       <div class="sheet-modal" onclick="event.stopPropagation()">
         <div class="sheet-grabber"></div>
         <div class="sheet-head">
-          <span class="sheet-title" data-i18n="depositTitle">Recharger</span>
+          <span class="sheet-title" data-i18n="depositTitle">Recharger mon portefeuille</span>
           <button class="sheet-close" onclick="closeDepositModal()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
         </div>
         <div class="sheet-body">
-          <div class="dep-methods">
-            <button class="dep-pill active" data-method="moncash" onclick="selectDepositMethod('moncash')">
-              <div class="dep-pill-logo">
-                <img src="assets/moncash-logo.png" alt="MonCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#DC2626;&quot;>MC</span>';">
-              </div>
-              <span class="dep-pill-name">MonCash</span>
-            </button>
-            <button class="dep-pill" data-method="natcash" onclick="selectDepositMethod('natcash')">
-              <div class="dep-pill-logo">
-                <img src="assets/natcash-logo.png" alt="NatCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#10B981;&quot;>NC</span>';">
-              </div>
-              <span class="dep-pill-name">NatCash</span>
-            </button>
-            <button class="dep-pill" data-method="meru" onclick="selectDepositMethod('meru')">
-              <div class="dep-pill-logo">
-                <img src="assets/meru.png" alt="Meru" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#7C3AED;&quot;>M</span>';">
-              </div>
-              <span class="dep-pill-name">Meru USD</span>
-            </button>
+
+          <!-- ÉTAPES -->
+          <div class="dep-steps" id="dep-steps">
+            <div class="dep-step active" data-step="1">
+              <div class="dep-step-circle">1</div>
+              <div class="dep-step-label" data-i18n="stepMethod">Méthode</div>
+            </div>
+            <div class="dep-step-line"></div>
+            <div class="dep-step" data-step="2">
+              <div class="dep-step-circle">2</div>
+              <div class="dep-step-label" data-i18n="stepAmount">Montant</div>
+            </div>
+            <div class="dep-step-line"></div>
+            <div class="dep-step" data-step="3">
+              <div class="dep-step-circle">3</div>
+              <div class="dep-step-label" data-i18n="stepProof">Preuve</div>
+            </div>
           </div>
 
-          <div class="deposit-info">
-            <div class="deposit-info-head">
-              <span class="deposit-info-label" id="dep-target-label" data-i18n="depTargetPhone">Envoyez au numéro</span>
-              <button class="btn-copy" onclick="copyDepositTarget()">
-                <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                <span data-i18n="copyBtn">Copier</span>
+          <!-- HERO -->
+          <div class="dep-hero">
+            <div class="dep-hero-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg>
+            </div>
+            <div class="dep-hero-title" data-i18n="depHeroTitle">Ajouter des fonds</div>
+            <div class="dep-hero-sub" data-i18n="depHeroSub">Validation en 5-15 minutes pendant nos heures d'ouverture.</div>
+          </div>
+
+          <!-- ÉTAPE 1 : MÉTHODE -->
+          <div class="dep-block" data-block="method">
+            <div class="dep-methods">
+              <button class="dep-pill active" data-method="moncash" onclick="selectDepositMethod('moncash')">
+                <div class="dep-pill-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="dep-pill-logo">
+                  <img src="assets/moncash-logo.png" alt="MonCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#DC2626;&quot;>MC</span>';">
+                </div>
+                <span class="dep-pill-name">MonCash</span>
+              </button>
+              <button class="dep-pill" data-method="natcash" onclick="selectDepositMethod('natcash')">
+                <div class="dep-pill-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="dep-pill-logo">
+                  <img src="assets/natcash-logo.png" alt="NatCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#10B981;&quot;>NC</span>';">
+                </div>
+                <span class="dep-pill-name">NatCash</span>
+              </button>
+              <button class="dep-pill" data-method="meru" onclick="selectDepositMethod('meru')">
+                <div class="dep-pill-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="dep-pill-logo">
+                  <img src="assets/meru.png" alt="Meru" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#7C3AED;&quot;>M</span>';">
+                </div>
+                <span class="dep-pill-name">Meru USD</span>
               </button>
             </div>
-            <div class="deposit-info-value" id="dep-target-value">+509 3643-5649</div>
-            <div class="deposit-info-hint" id="dep-target-hint">MonCash</div>
           </div>
 
-          <div class="field">
-            <label class="field-label" id="dep-amount-label" data-i18n="depAmountHTG">Montant à créditer (HTG)</label>
-            <input type="number" class="text-input" id="dep-amount" placeholder="Ex: 1500" min="50" max="1000000">
-            <div class="meru-hint" id="meru-hint"></div>
+          <!-- ÉTAPE 2 : TARGET + MONTANT -->
+          <div class="dep-block" data-block="target">
+            <div class="deposit-info">
+              <div class="deposit-info-head">
+                <span class="deposit-info-label" id="dep-target-label" data-i18n="depTargetPhone">Envoyez au numéro</span>
+                <button class="btn-copy" onclick="copyDepositTarget()">
+                  <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  <span data-i18n="copyBtn">Copier</span>
+                </button>
+              </div>
+              <div class="deposit-info-value" id="dep-target-value">+509 3643-5649</div>
+              <div class="deposit-info-hint" id="dep-target-hint">MonCash</div>
+            </div>
           </div>
 
-          <div class="field">
-            <label class="field-label" data-i18n="txIdLabel">ID de transaction / N° expéditeur</label>
-            <input type="text" class="text-input" id="dep-txid" placeholder="Ex: 882910392" maxlength="50">
+          <!-- ÉTAPE 2bis : MONTANT -->
+          <div class="dep-block" data-block="amount">
+            <div class="field">
+              <label class="field-label">
+                <span id="dep-amount-label" data-i18n="depAmountHTG">Montant à créditer (HTG)</span>
+                <span class="field-label-hint" data-i18n="depAmountHint">Min 50 HTG</span>
+              </label>
+              <div class="amount-presets" id="amount-presets">
+                <button class="amount-preset" onclick="applyAmountPreset(500, this)">500</button>
+                <button class="amount-preset" onclick="applyAmountPreset(1000, this)">1 000</button>
+                <button class="amount-preset" onclick="applyAmountPreset(2500, this)">2 500</button>
+                <button class="amount-preset" onclick="applyAmountPreset(5000, this)">5 000</button>
+              </div>
+              <input type="number" class="text-input money" id="dep-amount" placeholder="0" min="50" max="1000000">
+              <div class="meru-hint" id="meru-hint">
+                <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg>
+                <span id="meru-conversion">1 USD = 150 HTG</span>
+              </div>
+            </div>
           </div>
 
-          <div class="field">
-            <label class="field-label" data-i18n="proofLabel">Capture du reçu (max 700 Ko)</label>
-            <div class="file-upload">
-              <input type="file" class="file-upload-input" id="dep-proof" accept="image/*" onchange="handleDepositProof(this)">
-              <div class="file-upload-box">
-                <div class="file-upload-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-                <div class="file-upload-text">
-                  <div class="file-upload-title" id="dep-proof-title" data-i18n="proofTitle">Ajouter une image</div>
-                  <div class="file-upload-sub" id="dep-proof-sub" data-i18n="proofSub">JPG, PNG — 700 Ko max</div>
+          <!-- ÉTAPE 3 : PREUVE -->
+          <div class="dep-block" data-block="proof">
+            <div class="field">
+              <label class="field-label" data-i18n="txIdLabel">ID de transaction / N° expéditeur</label>
+              <input type="text" class="text-input" id="dep-txid" placeholder="Ex: 882910392" maxlength="50">
+            </div>
+
+            <div class="field">
+              <label class="field-label">
+                <span data-i18n="proofLabel">Capture du reçu</span>
+                <span class="field-label-hint" data-i18n="proofMax">Max 700 Ko</span>
+              </label>
+              <div class="file-upload" id="file-upload-wrapper">
+                <input type="file" class="file-upload-input" id="dep-proof" accept="image/*" onchange="handleDepositProof(this)">
+                <div class="file-upload-box" id="file-upload-box">
+                  <div class="file-upload-icon">
+                    <svg id="proof-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  </div>
+                  <div class="file-upload-text">
+                    <div class="file-upload-title" id="dep-proof-title" data-i18n="proofTitle">Ajouter une image</div>
+                    <div class="file-upload-sub" id="dep-proof-sub" data-i18n="proofSub">JPG, PNG — 700 Ko max</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
         <div class="sheet-footer">
           <button class="btn-submit-deposit" id="btn-submit-deposit" onclick="submitDeposit(event)">
@@ -564,6 +812,8 @@
       depositMethod: 'moncash',
       lang: 'fr',
       submitting: false,
+      balanceHidden: false,
+      sparklineData: [],
       unsubBalance: null,
       unsubDeposits: null,
       unsubOrders: null
@@ -594,27 +844,30 @@
       fr: {
         toastLang: "Langue : Français",
         balanceLabel: "Solde disponible",
-        securedLabel: "Transactions sécurisées",
-        instantLabel: "Instantané",
-        qaDeposit: "Recharger",
-        qaDepositSub: "Ajouter des fonds",
-        qaShop: "Boutique",
-        qaShopSub: "Acheter maintenant",
+        lastDeposit: "Dernier dépôt",
+        totalTx: "Transactions",
+        qaDeposit: "Recharger", qaShop: "Boutique", qaHistory: "Historique", qaSupport: "Support",
+        payMethodsTitle: "Méthodes acceptées",
         txTitle: "Historique",
-        filterAll: "Tout",
-        filterDeposits: "Dépôts",
-        filterPurchases: "Achats",
+        filterAll: "Tout", filterDeposits: "Dépôts", filterPurchases: "Achats",
+        todayLabel: "Aujourd'hui", yesterdayLabel: "Hier", weekLabel: "Cette semaine", olderLabel: "Plus ancien",
         emptyTxTitle: "Aucune transaction",
         emptyTxSub: "Rechargez votre portefeuille ou effectuez un achat pour voir l'historique.",
-        depositTitle: "Recharger",
+        depositTitle: "Recharger mon portefeuille",
+        stepMethod: "Méthode", stepAmount: "Montant", stepProof: "Preuve",
+        depHeroTitle: "Ajouter des fonds",
+        depHeroSub: "Validation en 5-15 minutes pendant nos heures d'ouverture.",
         depTargetPhone: "Envoyez au numéro",
         depTargetEmail: "Envoyez à l'adresse",
         depAmountHTG: "Montant à créditer (HTG)",
         depAmountUSD: "Montant envoyé (USD)",
+        depAmountHint: "Min 50 HTG",
         txIdLabel: "ID de transaction / N° expéditeur",
-        proofLabel: "Capture du reçu (max 700 Ko)",
+        proofLabel: "Capture du reçu",
+        proofMax: "Max 700 Ko",
         proofTitle: "Ajouter une image",
         proofSub: "JPG, PNG — 700 Ko max",
+        proofSelected: "Image ajoutée",
         depSubmit: "Soumettre la recharge",
         copyBtn: "Copier",
         copied: "Copié !",
@@ -630,39 +883,46 @@
         statusValid: "Validé",
         statusRejected: "Rejeté",
         statusDelivered: "Livré",
-        statusStock: "En attente stock",
+        statusStock: "Stock",
+        securityTitle: "Transactions 100% sécurisées",
+        securityDesc: "Chiffrement SSL · Firebase Auth · Validation manuelle",
         footerStatus: "Système 24/7",
         langLabel: "Langue / Language",
         navLabel: "Navigation",
         navHome: "Accueil", navHistory: "Historique", navWallet: "Wallet", navShop: "Boutique", navSupport: "Support",
         connectedAs: "Connecté", authLogout: "Se Déconnecter",
         authLogin: "Se Connecter", authRegister: "Créer un compte",
-        meruHint: "Taux : 1 USD = 150 HTG — Crédit équivalent"
+        meruHint: "Équivalent crédité",
+        balanceNow: "Maintenant",
+        balanceUnit: "HTG"
       },
       ht: {
         toastLang: "Lang : Kreyòl Ayisyen",
         balanceLabel: "Kòb ki disponib",
-        securedLabel: "Tranzaksyon sekirize",
-        instantLabel: "Enstantane",
-        qaDeposit: "Rechaje",
-        qaDepositSub: "Ajoute kòb",
-        qaShop: "Boutik",
-        qaShopSub: "Achte kounye a",
+        lastDeposit: "Dènye depo",
+        totalTx: "Tranzaksyon",
+        qaDeposit: "Rechaje", qaShop: "Boutik", qaHistory: "Istorik", qaSupport: "Sipò",
+        payMethodsTitle: "Mwayen nou aksepte",
         txTitle: "Istorik",
-        filterAll: "Tout",
-        filterDeposits: "Depo",
-        filterPurchases: "Acha",
+        filterAll: "Tout", filterDeposits: "Depo", filterPurchases: "Acha",
+        todayLabel: "Jodi a", yesterdayLabel: "Yè", weekLabel: "Semèn sa", olderLabel: "Pi ansyen",
         emptyTxTitle: "Pa gen tranzaksyon",
         emptyTxSub: "Rechaje bous ou oswa fè yon acha pou wè istorik la.",
-        depositTitle: "Rechaje",
+        depositTitle: "Rechaje bous mwen",
+        stepMethod: "Metòd", stepAmount: "Kantite", stepProof: "Prèv",
+        depHeroTitle: "Ajoute kòb",
+        depHeroSub: "Validasyon nan 5-15 minit pandan lè ouvèti nou yo.",
         depTargetPhone: "Voye sou nimewo",
         depTargetEmail: "Voye sou adrès",
         depAmountHTG: "Kantite pou depoze (HTG)",
         depAmountUSD: "Kantite ou voye (USD)",
+        depAmountHint: "Min 50 HTG",
         txIdLabel: "ID tranzaksyon / Nimewo voye",
-        proofLabel: "Foto prèv peman (max 700 Ko)",
+        proofLabel: "Foto prèv peman",
+        proofMax: "Max 700 Ko",
         proofTitle: "Ajoute yon imaj",
         proofSub: "JPG, PNG — 700 Ko maks",
+        proofSelected: "Imaj ajoute",
         depSubmit: "Voye demann rechaj la",
         copyBtn: "Kopye",
         copied: "Kopye !",
@@ -678,39 +938,46 @@
         statusValid: "Valide",
         statusRejected: "Rejte",
         statusDelivered: "Livre",
-        statusStock: "Nan tann stòk",
+        statusStock: "Stòk",
+        securityTitle: "Tranzaksyon 100% sekirize",
+        securityDesc: "Chifreman SSL · Firebase Auth · Validasyon manyèl",
         footerStatus: "Sistèm 24/7",
         langLabel: "Lang / Language",
         navLabel: "Navigasyon",
         navHome: "Akèy", navHistory: "Istorik", navWallet: "Bous", navShop: "Boutik", navSupport: "Sipò",
         connectedAs: "Konekte", authLogout: "Dekonekte",
         authLogin: "Konekte", authRegister: "Kreye yon kont",
-        meruHint: "To : 1 USD = 150 HTG — Kredi ekivalan"
+        meruHint: "Ekivalan kredite",
+        balanceNow: "Kounye a",
+        balanceUnit: "HTG"
       },
       en: {
         toastLang: "Language: English",
         balanceLabel: "Available balance",
-        securedLabel: "Secure transactions",
-        instantLabel: "Instant",
-        qaDeposit: "Top up",
-        qaDepositSub: "Add funds",
-        qaShop: "Shop",
-        qaShopSub: "Buy now",
+        lastDeposit: "Last deposit",
+        totalTx: "Transactions",
+        qaDeposit: "Top up", qaShop: "Shop", qaHistory: "History", qaSupport: "Support",
+        payMethodsTitle: "Accepted methods",
         txTitle: "History",
-        filterAll: "All",
-        filterDeposits: "Deposits",
-        filterPurchases: "Purchases",
+        filterAll: "All", filterDeposits: "Deposits", filterPurchases: "Purchases",
+        todayLabel: "Today", yesterdayLabel: "Yesterday", weekLabel: "This week", olderLabel: "Older",
         emptyTxTitle: "No transactions",
         emptyTxSub: "Top up your wallet or make a purchase to see history.",
-        depositTitle: "Top up",
+        depositTitle: "Top up my wallet",
+        stepMethod: "Method", stepAmount: "Amount", stepProof: "Proof",
+        depHeroTitle: "Add funds",
+        depHeroSub: "Validation within 5-15 minutes during opening hours.",
         depTargetPhone: "Send to number",
         depTargetEmail: "Send to Meru address",
         depAmountHTG: "Amount to credit (HTG)",
         depAmountUSD: "Amount sent (USD)",
+        depAmountHint: "Min 50 HTG",
         txIdLabel: "Transaction ID / Sender number",
-        proofLabel: "Receipt screenshot (max 700 KB)",
+        proofLabel: "Receipt screenshot",
+        proofMax: "Max 700 KB",
         proofTitle: "Add an image",
         proofSub: "JPG, PNG — 700 KB max",
+        proofSelected: "Image added",
         depSubmit: "Submit top-up",
         copyBtn: "Copy",
         copied: "Copied!",
@@ -726,44 +993,51 @@
         statusValid: "Validated",
         statusRejected: "Rejected",
         statusDelivered: "Delivered",
-        statusStock: "Awaiting stock",
+        statusStock: "Stock",
+        securityTitle: "100% secure transactions",
+        securityDesc: "SSL encryption · Firebase Auth · Manual validation",
         footerStatus: "24/7 System",
         langLabel: "Language / Langue",
         navLabel: "Navigation",
         navHome: "Home", navHistory: "History", navWallet: "Wallet", navShop: "Shop", navSupport: "Support",
         connectedAs: "Signed in", authLogout: "Sign Out",
         authLogin: "Sign In", authRegister: "Create account",
-        meruHint: "Rate: 1 USD = 150 HTG — Equivalent credit"
+        meruHint: "Equivalent credited",
+        balanceNow: "Now",
+        balanceUnit: "HTG"
       },
       es: {
         toastLang: "Idioma: Español",
         balanceLabel: "Saldo disponible",
-        securedLabel: "Transacciones seguras",
-        instantLabel: "Instantáneo",
-        qaDeposit: "Recargar",
-        qaDepositSub: "Añadir fondos",
-        qaShop: "Tienda",
-        qaShopSub: "Comprar ahora",
+        lastDeposit: "Último depósito",
+        totalTx: "Transacciones",
+        qaDeposit: "Recargar", qaShop: "Tienda", qaHistory: "Historial", qaSupport: "Soporte",
+        payMethodsTitle: "Métodos aceptados",
         txTitle: "Historial",
-        filterAll: "Todo",
-        filterDeposits: "Depósitos",
-        filterPurchases: "Compras",
+        filterAll: "Todo", filterDeposits: "Depósitos", filterPurchases: "Compras",
+        todayLabel: "Hoy", yesterdayLabel: "Ayer", weekLabel: "Esta semana", olderLabel: "Más antiguo",
         emptyTxTitle: "Sin transacciones",
         emptyTxSub: "Recargue su billetera o haga una compra para ver el historial.",
-        depositTitle: "Recargar",
+        depositTitle: "Recargar mi billetera",
+        stepMethod: "Método", stepAmount: "Monto", stepProof: "Prueba",
+        depHeroTitle: "Añadir fondos",
+        depHeroSub: "Validación en 5-15 minutos durante el horario de apertura.",
         depTargetPhone: "Enviar al número",
         depTargetEmail: "Enviar a la dirección Meru",
         depAmountHTG: "Monto a acreditar (HTG)",
         depAmountUSD: "Monto enviado (USD)",
+        depAmountHint: "Min 50 HTG",
         txIdLabel: "ID de transacción / N° remitente",
-        proofLabel: "Captura del recibo (max 700 KB)",
+        proofLabel: "Captura del recibo",
+        proofMax: "Máx 700 KB",
         proofTitle: "Añadir imagen",
-        proofSub: "JPG, PNG — 700 KB max",
+        proofSub: "JPG, PNG — 700 KB máx",
+        proofSelected: "Imagen añadida",
         depSubmit: "Enviar recarga",
         copyBtn: "Copiar",
         copied: "¡Copiado!",
         copyFail: "No se pudo copiar",
-        fileTooLarge: "Archivo muy grande (max 700 KB).",
+        fileTooLarge: "Archivo muy grande (máx 700 KB).",
         fileWrongType: "Solo se aceptan imágenes.",
         fillAll: "Complete todos los campos.",
         invalidAmount: "Monto inválido.",
@@ -774,14 +1048,18 @@
         statusValid: "Validado",
         statusRejected: "Rechazado",
         statusDelivered: "Entregado",
-        statusStock: "Esperando stock",
+        statusStock: "Stock",
+        securityTitle: "Transacciones 100% seguras",
+        securityDesc: "Cifrado SSL · Firebase Auth · Validación manual",
         footerStatus: "Sistema 24/7",
         langLabel: "Idioma / Language",
         navLabel: "Navegación",
         navHome: "Inicio", navHistory: "Historial", navWallet: "Billetera", navShop: "Tienda", navSupport: "Soporte",
         connectedAs: "Conectado", authLogout: "Cerrar Sesión",
         authLogin: "Iniciar Sesión", authRegister: "Crear cuenta",
-        meruHint: "Tasa: 1 USD = 150 HTG — Crédito equivalente"
+        meruHint: "Equivalente acreditado",
+        balanceNow: "Ahora",
+        balanceUnit: "HTG"
       }
     };
 
@@ -885,9 +1163,103 @@
       showToast(t('toastLang'), 'info');
     }
 
+    /* ═══ BALANCE UI ═══ */
     function updateBalanceUI() {
       const el = document.getElementById('balance-value');
-      if (el) el.textContent = Number(STATE.userBalance || 0).toLocaleString('fr-FR');
+      if (el) {
+        el.textContent = STATE.balanceHidden ? '••••••' : Number(STATE.userBalance || 0).toLocaleString('fr-FR');
+        el.classList.toggle('blurred', STATE.balanceHidden);
+      }
+    }
+
+    function toggleBalanceVisibility() {
+      STATE.balanceHidden = !STATE.balanceHidden;
+      localStorage.setItem('dp_balance_hidden', STATE.balanceHidden ? '1' : '0');
+      updateBalanceUI();
+      const icon = document.getElementById('eye-icon');
+      if (icon) {
+        icon.innerHTML = STATE.balanceHidden
+          ? '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+          : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+      }
+      vibrate(5);
+    }
+
+    /* ═══ SPARKLINE (derniers 7 jours) ═══ */
+    function updateSparkline() {
+      const path = document.getElementById('spark-path');
+      const area = document.getElementById('spark-area');
+      if (!path || !area) return;
+
+      // Compile daily totals from transactions (last 7 days)
+      const days = [];
+      const now = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+        days.push({ date: d, total: 0 });
+      }
+      STATE.transactions.forEach(tx => {
+        const d = new Date(tx.timestamp);
+        const idx = days.findIndex(day => day.date.getFullYear() === d.getFullYear() && day.date.getMonth() === d.getMonth() && day.date.getDate() === d.getDate());
+        if (idx >= 0) days[idx].total += tx.txType === 'deposit' ? tx.amount : 0;
+      });
+
+      const W = 300, H = 40, PAD = 4;
+      const chartW = W - PAD * 2;
+      const chartH = H - PAD * 2;
+      const max = Math.max(...days.map(d => d.total), 1);
+      const stepX = chartW / (days.length - 1);
+
+      let pathD = '';
+      let areaD = '';
+      days.forEach((day, i) => {
+        const x = PAD + i * stepX;
+        const y = PAD + chartH - (day.total / max) * chartH;
+        if (i === 0) {
+          pathD = `M${x.toFixed(1)},${y.toFixed(1)}`;
+          areaD = `M${x.toFixed(1)},${(H - PAD).toFixed(1)} L${x.toFixed(1)},${y.toFixed(1)}`;
+        } else {
+          pathD += ` L${x.toFixed(1)},${y.toFixed(1)}`;
+          areaD += ` L${x.toFixed(1)},${y.toFixed(1)}`;
+        }
+        if (i === days.length - 1) {
+          areaD += ` L${x.toFixed(1)},${(H - PAD).toFixed(1)} Z`;
+        }
+      });
+      path.setAttribute('d', pathD);
+      area.setAttribute('d', areaD);
+    }
+
+    /* ═══ STATS CARD TOP ═══ */
+    function updateBalanceStats() {
+      const lastDep = document.getElementById('last-deposit');
+      const totalTx = document.getElementById('total-tx');
+      if (lastDep) {
+        const dep = STATE.deposits.slice().sort((a, b) => b.timestamp - a.timestamp)[0];
+        if (dep) {
+          const d = new Date(dep.timestamp);
+          const now = new Date();
+          const diffMin = Math.floor((now - d) / 60000);
+          let label;
+          if (diffMin < 1) label = "À l'instant";
+          else if (diffMin < 60) label = `Il y a ${diffMin} min`;
+          else if (diffMin < 1440) label = `Il y a ${Math.floor(diffMin / 60)}h`;
+          else label = d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+          lastDep.textContent = `+${dep.amount.toLocaleString()} HTG · ${label}`;
+        } else {
+          lastDep.textContent = '—';
+        }
+      }
+      if (totalTx) totalTx.textContent = STATE.transactions.length;
+    }
+
+    function updateFilterCounts() {
+      const all = STATE.transactions.length;
+      const deps = STATE.transactions.filter(x => x.txType === 'deposit').length;
+      const purs = STATE.transactions.filter(x => x.txType === 'purchase').length;
+      const el1 = document.getElementById('cnt-all'); if (el1) el1.textContent = all;
+      const el2 = document.getElementById('cnt-dep'); if (el2) el2.textContent = deps;
+      const el3 = document.getElementById('cnt-pur'); if (el3) el3.textContent = purs;
     }
 
     function setTxFilter(filter, btn) {
@@ -898,9 +1270,26 @@
       vibrate(4);
     }
 
+    /* ═══ RENDER TX GROUPÉ PAR DATE ═══ */
+    function groupTxByDate(items) {
+      const groups = { today: [], yesterday: [], week: [], older: [] };
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+      const yesterdayStart = todayStart - 86400000;
+      const weekStart = todayStart - 7 * 86400000;
+
+      items.forEach(tx => {
+        if (tx.timestamp >= todayStart) groups.today.push(tx);
+        else if (tx.timestamp >= yesterdayStart) groups.yesterday.push(tx);
+        else if (tx.timestamp >= weekStart) groups.week.push(tx);
+        else groups.older.push(tx);
+      });
+      return groups;
+    }
+
     function renderTransactions() {
-      const target = document.getElementById('tx-list');
-      if (!target) return;
+      const container = document.getElementById('tx-container');
+      if (!container) return;
 
       const list = STATE.transactions.slice().sort((a, b) => b.timestamp - a.timestamp);
       let filtered = list;
@@ -911,7 +1300,7 @@
       if (cEl) cEl.textContent = filtered.length;
 
       if (filtered.length === 0) {
-        target.innerHTML = `
+        container.innerHTML = `
           <div class="empty-tx">
             <div class="empty-tx-icon">
               <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -923,45 +1312,68 @@
         return;
       }
 
-      target.innerHTML = filtered.map(tx => {
-        const isDeposit = tx.txType === 'deposit';
-        const date = new Date(tx.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+      const groups = groupTxByDate(filtered);
+      const groupOrder = [
+        { key: 'today', labelKey: 'todayLabel' },
+        { key: 'yesterday', labelKey: 'yesterdayLabel' },
+        { key: 'week', labelKey: 'weekLabel' },
+        { key: 'older', labelKey: 'olderLabel' }
+      ];
 
-        let statusClass = 'en_attente';
-        let statusLabel = t('statusPending');
-        if (tx.status === 'valide') { statusClass = 'valide'; statusLabel = t('statusValid'); }
-        else if (tx.status === 'livre') { statusClass = 'livre'; statusLabel = t('statusDelivered'); }
-        else if (tx.status === 'rejete') { statusClass = 'rejete'; statusLabel = t('statusRejected'); }
-        else if (tx.status === 'en_attente_stock') { statusClass = 'en_attente'; statusLabel = t('statusStock'); }
+      let html = '';
+      groupOrder.forEach(g => {
+        if (groups[g.key].length === 0) return;
+        html += `<div class="tx-group"><div class="tx-group-label">${escapeHtml(t(g.labelKey))}</div><div class="tx-list">`;
+        groups[g.key].forEach(tx => {
+          html += renderTxItem(tx);
+        });
+        html += `</div></div>`;
+      });
 
-        const iconSvg = isDeposit
-          ? '<path d="M12 4v16m8-8H4" stroke-linecap="round"/>'
-          : '<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/>';
+      container.innerHTML = html;
+    }
 
-        return `
-          <div class="tx-item">
-            <div class="tx-icon ${isDeposit ? 'deposit' : 'purchase'}">
-              <svg viewBox="0 0 24 24">${iconSvg}</svg>
-            </div>
-            <div class="tx-info">
-              <div class="tx-title">${escapeHtml(tx.title)}</div>
-              <div class="tx-meta">
-                <span>${escapeHtml(date)}</span>
-                <span class="tx-ref">${escapeHtml(tx.refId)}</span>
-              </div>
-            </div>
-            <div class="tx-right">
-              <div class="tx-amount ${isDeposit ? 'deposit' : 'purchase'}">${isDeposit ? '+' : '-'}${Number(tx.amount || 0).toLocaleString()} HTG</div>
-              <span class="tx-status ${statusClass}">${escapeHtml(statusLabel)}</span>
+    function renderTxItem(tx) {
+      const isDeposit = tx.txType === 'deposit';
+      const date = new Date(tx.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+      let statusClass = 'en_attente';
+      let statusLabel = t('statusPending');
+      if (tx.status === 'valide') { statusClass = 'valide'; statusLabel = t('statusValid'); }
+      else if (tx.status === 'livre') { statusClass = 'livre'; statusLabel = t('statusDelivered'); }
+      else if (tx.status === 'rejete') { statusClass = 'rejete'; statusLabel = t('statusRejected'); }
+      else if (tx.status === 'en_attente_stock') { statusClass = 'en_attente'; statusLabel = t('statusStock'); }
+
+      const iconSvg = isDeposit
+        ? '<path d="M12 4v16m8-8H4" stroke-linecap="round"/>'
+        : '<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/>';
+
+      return `
+        <div class="tx-item ${isDeposit ? 'deposit' : 'purchase'}">
+          <div class="tx-icon ${isDeposit ? 'deposit' : 'purchase'}">
+            <svg viewBox="0 0 24 24">${iconSvg}</svg>
+          </div>
+          <div class="tx-info">
+            <div class="tx-title">${escapeHtml(tx.title)}</div>
+            <div class="tx-meta">
+              <span>${escapeHtml(date)}</span>
+              <span class="tx-ref">${escapeHtml(tx.refId)}</span>
             </div>
           </div>
-        `;
-      }).join('');
+          <div class="tx-right">
+            <div class="tx-amount ${isDeposit ? 'deposit' : 'purchase'}">${isDeposit ? '+' : '-'}${Number(tx.amount || 0).toLocaleString()} HTG</div>
+            <span class="tx-status ${statusClass}">${escapeHtml(statusLabel)}</span>
+          </div>
+        </div>
+      `;
     }
 
     function mergeTransactions() {
       STATE.transactions = [...STATE.deposits, ...STATE.purchases];
       renderTransactions();
+      updateFilterCounts();
+      updateBalanceStats();
+      updateSparkline();
     }
 
     function listenUserData() {
@@ -1016,9 +1428,11 @@
         }, () => {});
     }
 
+    /* ═══ MODAL ═══ */
     function openDepositModal() {
       document.getElementById('deposit-backdrop').classList.add('active');
       document.body.style.overflow = 'hidden';
+      updateStepsUI();
     }
 
     function closeDepositModal() {
@@ -1030,12 +1444,37 @@
       document.getElementById('dep-proof-title').textContent = t('proofTitle');
       document.getElementById('dep-proof-sub').textContent = t('proofSub');
       document.getElementById('dep-proof-sub').style.color = '';
+      document.getElementById('file-upload-box').classList.remove('has-file');
+      document.querySelectorAll('.amount-preset').forEach(b => b.classList.remove('active'));
+      updateStepsUI();
+    }
+
+    function updateStepsUI() {
+      const hasMethod = !!STATE.depositMethod;
+      const amountVal = parseFloat(document.getElementById('dep-amount')?.value || '0');
+      const hasAmount = amountVal > 0;
+      const txId = document.getElementById('dep-txid')?.value?.trim() || '';
+      const hasFile = document.getElementById('dep-proof')?.files?.length > 0;
+      const hasProof = txId && hasFile;
+
+      const steps = document.querySelectorAll('.dep-step');
+      const stepState = [
+        { active: !hasMethod, done: hasMethod },
+        { active: hasMethod && !hasAmount, done: hasAmount },
+        { active: hasMethod && hasAmount && !hasProof, done: hasProof }
+      ];
+      steps.forEach((step, i) => {
+        step.classList.remove('active', 'completed');
+        if (stepState[i]?.done) step.classList.add('completed');
+        else if (stepState[i]?.active) step.classList.add('active');
+      });
     }
 
     function selectDepositMethod(method) {
       STATE.depositMethod = method;
       document.querySelectorAll('.dep-pill').forEach(p => p.classList.toggle('active', p.dataset.method === method));
       updateDepositMethodUI();
+      updateStepsUI();
       vibrate(4);
     }
 
@@ -1047,6 +1486,7 @@
       const amountLabel = document.getElementById('dep-amount-label');
       const amountInput = document.getElementById('dep-amount');
       const meruHint = document.getElementById('meru-hint');
+      const presetsWrap = document.getElementById('amount-presets');
 
       if (!target || !labelEl) return;
 
@@ -1057,26 +1497,39 @@
 
       if (STATE.depositMethod === 'meru') {
         amountLabel.textContent = t('depAmountUSD');
-        amountInput.placeholder = 'Ex: 10 (USD)';
+        amountInput.placeholder = '0';
         amountInput.oninput = handleMeruAmountInput;
+        presetsWrap.style.display = 'none';
       } else {
         amountLabel.textContent = t('depAmountHTG');
-        amountInput.placeholder = 'Ex: 1500';
+        amountInput.placeholder = '0';
         amountInput.oninput = null;
         meruHint.classList.remove('visible');
+        presetsWrap.style.display = 'grid';
       }
+      updateStepsUI();
+    }
+
+    function applyAmountPreset(val, btn) {
+      document.querySelectorAll('.amount-preset').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const input = document.getElementById('dep-amount');
+      if (input) { input.value = val; updateStepsUI(); }
+      vibrate(4);
     }
 
     function handleMeruAmountInput(e) {
       const val = parseFloat(e.target.value);
       const hint = document.getElementById('meru-hint');
+      const conv = document.getElementById('meru-conversion');
       if (!isNaN(val) && val > 0) {
         const htg = Math.round(val * MERU_RATE);
-        hint.textContent = `${t('meruHint')} : ${htg.toLocaleString()} HTG`;
+        conv.textContent = `${t('meruHint')} : ${htg.toLocaleString()} HTG`;
         hint.classList.add('visible');
       } else {
         hint.classList.remove('visible');
       }
+      updateStepsUI();
     }
 
     function copyDepositTarget() {
@@ -1098,9 +1551,14 @@
 
       const titleEl = document.getElementById('dep-proof-title');
       const subEl = document.getElementById('dep-proof-sub');
+      const box = document.getElementById('file-upload-box');
+      const iconEl = document.getElementById('proof-icon');
       titleEl.textContent = file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name;
-      subEl.textContent = 'Image ajoutée';
+      subEl.textContent = t('proofSelected');
       subEl.style.color = 'var(--success)';
+      box.classList.add('has-file');
+      iconEl.innerHTML = '<polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/>';
+      updateStepsUI();
     }
 
     async function submitDeposit(e) {
@@ -1177,6 +1635,7 @@
       }
     }
 
+    /* ═══ SIDEBAR ═══ */
     function updateSidebarAuthUI() {
       const userZone = document.getElementById('sidebar-user-zone');
       if (userZone) {
@@ -1248,7 +1707,7 @@
 
     function initRipple() {
       document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.btn-submit-deposit, .qa-btn, .dep-pill, .icon-btn, .filter-pill, .btn-copy');
+        const btn = e.target.closest('.btn-submit-deposit, .qa-btn, .dep-pill, .icon-btn, .filter-pill, .btn-copy, .amount-preset, .balance-eye');
         if (btn && !btn.disabled) createRipple(e, btn);
       });
     }
@@ -1294,6 +1753,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const saved = localStorage.getItem('dp_lang') || 'fr';
       STATE.lang = saved;
+      STATE.balanceHidden = localStorage.getItem('dp_balance_hidden') === '1';
       const langBtn = document.querySelector(`.lang-pill[data-lang="${saved}"]`);
       if (langBtn) {
         document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
@@ -1305,11 +1765,19 @@
       updateCartBadge();
       initScrollEffects();
       initRipple();
+      // Init steps
       setTimeout(() => {
+        updateStepsUI();
         moveNavIndicator();
         document.body.classList.add('ready');
       }, 100);
       window.addEventListener('resize', moveNavIndicator);
+
+      // Live updates sur les champs du modal
+      const depAmount = document.getElementById('dep-amount');
+      const depTxId = document.getElementById('dep-txid');
+      if (depAmount) depAmount.addEventListener('input', updateStepsUI);
+      if (depTxId) depTxId.addEventListener('input', updateStepsUI);
     });
 
     window.addEventListener('beforeunload', () => {
