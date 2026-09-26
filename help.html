@@ -22,7 +22,6 @@
 
   <style>
     :root {
-      /* ===== DIGITALPAY HAÏTI v8 — Palette dérivée du logo (cyan → bleu profond) ===== */
       --bg-page: #F5F7FB; --bg-card: #FFFFFF; --bg-subtle: #F0F4F9; --bg-hover: #F8FAFC;
       --bg-glass: rgba(245, 247, 251, 0.72);
       --border-subtle: #EDF1F7; --border-default: #E1E8F0; --border-strong: #C7D2E0;
@@ -50,7 +49,7 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body { background: var(--bg-page); color: var(--text-primary); font-family: var(--font); font-size: 14px; line-height: 1.5; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; opacity: 0; transition: opacity 0.4s ease; }
+    body { background: var(--bg-page); color: var(--text-primary); font-family: var(--font); font-size: 14px; line-height: 1.5; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; opacity: 0; transition: opacity 0.4s ease; padding-bottom: 90px; }
     body.ready { opacity: 1; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
@@ -71,65 +70,245 @@
     .cart-badge { position: absolute; top: -3px; right: -3px; background: var(--blue-gradient); color: #FFFFFF; font-size: 10px; font-weight: 800; min-width: 19px; height: 19px; padding: 0 5px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px var(--bg-page); line-height: 1; }
     .cart-badge.visible { display: flex; }
 
-    .help-main { padding: 22px 18px 32px; flex: 1; }
+    .help-main { padding: 18px 18px 24px; flex: 1; }
 
-    .help-hero { background: var(--blue-gradient); border-radius: var(--r-2xl); padding: 28px 24px; color: #FFFFFF; margin-bottom: 22px; position: relative; overflow: hidden; box-shadow: var(--shadow-blue-lg); }
-    .help-hero::after { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
+    /* ═══ HERO ═══ */
+    .help-hero {
+      position: relative;
+      background: linear-gradient(135deg, #0A1633 0%, #003BCC 45%, #00B4FF 100%);
+      border-radius: var(--r-2xl);
+      padding: 26px 22px 24px;
+      color: #FFFFFF;
+      margin-bottom: 22px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0, 85, 255, 0.28);
+    }
+    .help-hero::after { content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%); pointer-events: none; }
     .help-hero::before { content: ''; position: absolute; bottom: -50px; left: -30px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); pointer-events: none; }
-    .help-hero-icon { width: 56px; height: 56px; border-radius: 18px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; position: relative; z-index: 1; backdrop-filter: blur(8px); }
-    .help-hero-icon svg { width: 28px; height: 28px; stroke: #FFFFFF; stroke-width: 2; fill: none; }
-    .help-hero-title { font-size: 25px; font-weight: 900; letter-spacing: -0.7px; line-height: 1.15; margin-bottom: 10px; position: relative; z-index: 1; }
-    .help-hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.88); line-height: 1.55; position: relative; z-index: 1; max-width: 340px; }
+    .help-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 5px 11px;
+      border-radius: var(--r-full);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .help-hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 3px rgba(52,211,153,0.35); }
+    .help-hero-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .help-hero-icon svg { width: 26px; height: 26px; stroke: #FFFFFF; stroke-width: 2; fill: none; }
+    .help-hero-title { font-size: 25px; font-weight: 900; letter-spacing: -0.7px; line-height: 1.15; margin-bottom: 8px; position: relative; z-index: 1; }
+    .help-hero-sub { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.55; position: relative; z-index: 1; max-width: 340px; }
 
-    .wa-priority { background: linear-gradient(135deg, #0A1633 0%, #1E293B 100%); border-radius: var(--r-xl); padding: 22px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 26px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
-    .wa-priority::after { content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(16,185,129,0.3) 0%, transparent 70%); pointer-events: none; }
-    .wa-priority-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; z-index: 1; }
-    .wa-priority-title { font-size: 16px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.3px; }
-    .wa-badge { background: rgba(16,185,129,0.2); color: #34D399; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.6px; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
-    .wa-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 2px rgba(52,211,153,0.4); animation: wa-pulse 2s infinite; }
-    @keyframes wa-pulse { 0%, 100% { box-shadow: 0 0 0 2px rgba(52,211,153,0.4); } 50% { box-shadow: 0 0 0 5px rgba(52,211,153,0.15); } }
-    .wa-priority-desc { font-size: 12.5px; color: #94A3B8; line-height: 1.5; position: relative; z-index: 1; }
-    .wa-btn-full { height: 50px; background: #10B981; color: #FFFFFF; border-radius: var(--r-md); font-size: 13.5px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 18px rgba(16,185,129,0.4); transition: all 0.2s var(--ease-out); position: relative; z-index: 1; letter-spacing: -0.1px; }
-    .wa-btn-full:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(16,185,129,0.5); }
-    .wa-btn-full:active { transform: scale(0.98); }
-    .wa-btn-full svg { width: 18px; height: 18px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+    /* ═══ SLA GRID ═══ */
+    .section-title { font-size: 15px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .section-title svg { width: 16px; height: 16px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; }
 
-    .block-title { font-size: 18px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 14px; line-height: 1.2; }
-
-    .sla-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
-    .sla-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 16px 10px 14px; text-align: center; box-shadow: var(--shadow-xs); transition: all 0.25s var(--ease-out); }
+    .sla-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 26px; }
+    .sla-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: 14px 8px 12px;
+      text-align: center;
+      box-shadow: var(--shadow-xs);
+      transition: all 0.25s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .sla-card::after { content: ''; position: absolute; top: -20px; right: -20px; width: 70px; height: 70px; background: radial-gradient(circle, rgba(0, 85, 255, 0.06) 0%, transparent 70%); pointer-events: none; }
     .sla-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--blue-200); }
-    .sla-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--blue-50); color: var(--blue-600); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+    .sla-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
     .sla-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.2; fill: none; }
     .sla-time { font-size: 13.5px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; margin-bottom: 3px; }
-    .sla-label { font-size: 10.5px; font-weight: 700; color: var(--text-tertiary); line-height: 1.3; letter-spacing: 0.2px; }
+    .sla-label { font-size: 10px; font-weight: 700; color: var(--text-tertiary); line-height: 1.3; letter-spacing: 0.2px; }
 
-    .contact-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-xl); padding: 8px 6px; box-shadow: var(--shadow-xs); margin-bottom: 30px; }
-    .contact-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 14px; gap: 12px; transition: background 0.15s ease; border-radius: var(--r-md); }
-    .contact-row:hover { background: var(--bg-hover); }
-    .contact-row:not(:last-child) { border-bottom: 1px solid var(--border-subtle); }
-    .contact-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-    .contact-icon { width: 38px; height: 38px; border-radius: var(--r-sm); background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; color: var(--blue-600); flex-shrink: 0; }
-    .contact-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2.2; fill: none; }
-    .contact-info { min-width: 0; flex: 1; }
-    .contact-name { font-size: 13.5px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.15px; }
-    .contact-sub { font-size: 11px; color: var(--text-tertiary); font-weight: 600; margin-top: 2px; }
-    .contact-value { font-family: monospace; font-size: 12px; font-weight: 800; color: var(--blue-600); text-align: right; word-break: break-all; flex-shrink: 0; max-width: 150px; }
-    .contact-value.big { font-size: 12.5px; }
+    /* ═══ CONTACT CARDS ═══ */
+    .contact-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-xs);
+      transition: all 0.2s var(--ease-out);
+      position: relative;
+    }
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      border-radius: var(--r-lg) 0 0 var(--r-lg);
+    }
+    .contact-card.moncash::before { background: #DC2626; }
+    .contact-card.natcash::before { background: #10B981; }
+    .contact-card.meru::before { background: #7C3AED; }
+    .contact-card:hover { border-color: var(--border-default); box-shadow: var(--shadow-sm); }
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--border-subtle);
+      background: #FFFFFF;
+      overflow: hidden;
+    }
+    .contact-icon img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+    .contact-icon-fallback { font-size: 13px; font-weight: 900; letter-spacing: -0.3px; }
+    .contact-icon.moncash .contact-icon-fallback { color: #DC2626; }
+    .contact-icon.natcash .contact-icon-fallback { color: #10B981; }
+    .contact-icon.meru .contact-icon-fallback { color: #7C3AED; }
+    .contact-body { flex: 1; min-width: 0; }
+    .contact-name { font-size: 13.5px; font-weight: 800; color: var(--text-primary); margin-bottom: 3px; letter-spacing: -0.15px; }
+    .contact-value { font-family: 'SF Mono', 'Monaco', monospace; font-size: 12px; font-weight: 800; color: var(--blue-600); word-break: break-all; letter-spacing: 0.2px; }
+    .contact-sub { font-size: 10.5px; color: var(--text-tertiary); font-weight: 600; margin-top: 2px; }
+    .contact-copy {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--blue-600);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      font-family: inherit;
+    }
+    .contact-copy:hover { background: var(--blue-50); border-color: var(--blue-200); }
+    .contact-copy:active { transform: scale(0.92); }
+    .contact-copy svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.2; fill: none; }
 
-    .faq-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 30px; }
+    /* ═══ WA CARD ═══ */
+    .wa-card { background: linear-gradient(135deg, #0A1633 0%, #1E293B 100%); border-radius: var(--r-xl); padding: 20px; margin-bottom: 26px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
+    .wa-card::after { content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(16,185,129,0.28) 0%, transparent 70%); pointer-events: none; }
+    .wa-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; z-index: 1; }
+    .wa-card-title { font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.3px; }
+    .wa-card-badge { background: rgba(16,185,129,0.2); color: #34D399; font-size: 9.5px; font-weight: 900; padding: 4px 10px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.6px; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .wa-card-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 2px rgba(52,211,153,0.4); }
+    .wa-card-desc { font-size: 12.5px; color: #94A3B8; line-height: 1.5; position: relative; z-index: 1; }
+    .wa-card-btn { height: 50px; background: #10B981; color: #FFFFFF; border-radius: var(--r-md); font-size: 13.5px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 18px rgba(16,185,129,0.4); transition: all 0.2s var(--ease-out); position: relative; z-index: 1; letter-spacing: -0.1px; }
+    .wa-card-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(16,185,129,0.5); }
+    .wa-card-btn:active { transform: scale(0.98); }
+    .wa-card-btn svg { width: 18px; height: 18px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+
+    /* ═══ FAQ ═══ */
+    .faq-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 26px; }
     .faq-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); overflow: hidden; transition: all 0.25s var(--ease-out); }
     .faq-item.open { border-color: var(--blue-300); box-shadow: 0 0 0 3px var(--blue-50); }
-    .faq-head { width: 100%; padding: 16px; background: none; border: none; font-size: 13.5px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; font-family: inherit; text-align: left; line-height: 1.4; letter-spacing: -0.15px; }
+    .faq-head { width: 100%; padding: 15px 16px; background: none; border: none; font-size: 13.5px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; font-family: inherit; text-align: left; line-height: 1.4; }
     .faq-chevron { width: 18px; height: 18px; flex-shrink: 0; transition: transform 0.3s var(--ease-out); color: var(--text-tertiary); }
     .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--blue-600); }
     .faq-body { padding: 0 16px 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; display: none; }
     .faq-item.open .faq-body { display: block; }
     .faq-body strong { color: var(--text-primary); font-weight: 800; }
-    .faq-body code { background: var(--bg-subtle); padding: 1px 6px; border-radius: var(--r-xs); font-family: monospace; font-size: 11.5px; color: var(--blue-600); }
+    .faq-body code { background: var(--bg-subtle); padding: 2px 6px; border-radius: var(--r-xs); font-family: monospace; font-size: 11.5px; color: var(--blue-600); font-weight: 800; }
 
+    /* ═══ GUIDES ═══ */
+    .guides-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 26px; }
+    .guide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: 14px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: var(--shadow-2xs);
+      transition: all 0.25s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      width: 100%;
+    }
+    .guide-card:hover { transform: translateY(-2px); border-color: var(--blue-200); box-shadow: var(--shadow-md); }
+    .guide-card:active { transform: translateY(0) scale(0.985); }
+    .guide-icon { width: 34px; height: 34px; border-radius: 10px; background: var(--blue-50); color: var(--blue-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .guide-icon svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+    .guide-title { font-size: 12.5px; font-weight: 800; color: var(--text-primary); line-height: 1.3; letter-spacing: -0.2px; }
+    .guide-arrow { position: absolute; bottom: 12px; right: 12px; color: var(--blue-600); opacity: 0; transition: all 0.25s ease; }
+    .guide-card:hover .guide-arrow { opacity: 1; transform: translateX(2px); }
+    .guide-arrow svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.6; fill: none; }
+
+    /* ═══ SYSTEM STATUS ═══ */
+    .status-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-xs);
+      margin-bottom: 26px;
+    }
+    .status-dot-big {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .status-dot-big::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; background: rgba(5, 150, 105, 0.25); }
+    .status-dot-big.closed { background: var(--danger); }
+    .status-dot-big.closed::after { background: rgba(220, 38, 38, 0.25); }
+    .status-info { flex: 1; min-width: 0; }
+    .status-title { font-size: 12.5px; font-weight: 800; color: var(--text-primary); margin-bottom: 2px; }
+    .status-sub { font-size: 11px; color: var(--text-tertiary); font-weight: 600; }
+    .status-value { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: var(--success); flex-shrink: 0; }
+    .status-value.closed { color: var(--danger); }
+
+    /* ═══ FINAL CTA ═══ */
     .final-cta { background: linear-gradient(135deg, var(--blue-25) 0%, var(--blue-50) 100%); border: 1px solid var(--blue-100); border-radius: var(--r-xl); padding: 24px 20px; text-align: center; }
-    .final-cta-icon { width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .final-cta-icon { width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; box-shadow: 0 4px 14px rgba(0, 85, 255, 0.12); }
     .final-cta-icon svg { width: 24px; height: 24px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; }
     .final-cta-title { font-size: 16px; font-weight: 900; color: var(--blue-700); letter-spacing: -0.3px; margin-bottom: 6px; }
     .final-cta-sub { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 18px; max-width: 300px; margin-left: auto; margin-right: auto; }
@@ -138,16 +317,13 @@
     .final-cta-btn:active { transform: scale(0.98); }
     .final-cta-btn svg { width: 16px; height: 16px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
 
-    .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transform: scale(0); animation: ripple-anim 0.6s var(--ease-out); pointer-events: none; }
-    .final-cta-btn .ripple { background: rgba(255, 255, 255, 0.5); }
-    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
-
-    .site-footer { background: var(--bg-card); border-top: 1px solid var(--border-subtle); padding: 20px 18px; }
+    /* ═══ FOOTER ═══ */
+    .site-footer { background: var(--bg-card); border-top: 1px solid var(--border-subtle); padding: 18px; margin-top: 20px; }
     .footer-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--text-tertiary); gap: 12px; }
     .footer-status { display: flex; align-items: center; gap: 6px; color: var(--success); font-weight: 700; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); } 50% { box-shadow: 0 0 0 6px rgba(5, 150, 105, 0.05); } }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
 
+    /* ═══ TOASTS ═══ */
     #toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 400; width: calc(100% - 32px); max-width: 400px; pointer-events: none; }
     .toast { background: var(--text-primary); color: #FFFFFF; padding: 14px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); transform: translateY(-20px); opacity: 0; transition: all 0.35s var(--ease-spring); overflow: hidden; position: relative; }
     .toast::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; background: var(--blue-600); width: 100%; transform-origin: left; animation: toast-progress 2.6s linear forwards; }
@@ -168,42 +344,111 @@
     .toast.info .toast-icon svg { stroke: #93C5FD; }
     .toast-msg { flex: 1; line-height: 1.35; }
 
+    /* ═══ SIDEBAR COMPACTE ═══ */
     .sidebar-overlay { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); }
     .sidebar-overlay.active { opacity: 1; visibility: visible; }
-    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(85vw, 360px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
+    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(80vw, 310px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
     .sidebar-overlay.active .sidebar-drawer { transform: translateX(0); }
-    .sidebar-content { padding: 26px 22px 22px; display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
-    .sidebar-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle); }
-    .sidebar-brand { display: flex; align-items: center; gap: 12px; }
-    .sidebar-logo-wrap { width: 46px; height: 46px; border-radius: var(--r-md); background: var(--bg-subtle); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
-    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
-    .sidebar-brand-name { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; line-height: 1.1; }
-    .sidebar-brand-sub { font-size: 12px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.3px; }
-    .sidebar-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; font-family: inherit; }
-    .sidebar-close svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .sidebar-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); margin: 22px 0 10px; }
-    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .lang-pill { background: var(--bg-subtle); border: 1px solid transparent; padding: 10px 12px; border-radius: var(--r-sm); display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text-primary); cursor: pointer; font-family: inherit; transition: all 0.18s ease; }
-    .lang-pill.active { background: var(--blue-50); border-color: var(--blue-600); color: var(--blue-600); font-weight: 800; }
-    .lang-pill .flag { font-size: 15px; line-height: 1; }
-    .sidebar-nav { margin-top: 6px; display: flex; flex-direction: column; gap: 2px; }
-    .sidebar-nav-link { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: var(--r-md); color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.18s ease; cursor: pointer; font-family: inherit; background: none; border: none; width: 100%; text-align: left; }
-    .sidebar-nav-link:hover { background: var(--bg-hover); }
-    .sidebar-nav-link.active { background: var(--bg-subtle); color: var(--blue-600); font-weight: 700; }
-    .sidebar-nav-link svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; flex-shrink: 0; }
-    .sidebar-nav-link.active svg { stroke: var(--blue-600); }
-    .sidebar-auth { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px; }
-    .auth-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 46px; border-radius: var(--r-md); font-size: 13.5px; font-weight: 700; text-decoration: none; cursor: pointer; font-family: inherit; border: none; transition: all 0.18s ease; }
-    .auth-btn-primary { background: var(--blue-gradient); color: #FFFFFF; box-shadow: var(--shadow-blue); }
-    .auth-btn-secondary { background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-primary); }
-    .auth-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
-    .sidebar-logged-info { font-size: 12px; color: var(--text-tertiary); font-weight: 600; text-align: center; margin-bottom: 4px; padding: 0 4px; word-break: break-all; }
-    .sidebar-logged-info strong { color: var(--text-primary); font-weight: 800; }
+    .sidebar-content { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+    .sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px 10px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-card); }
+    .sidebar-brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .sidebar-logo-wrap { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 100%); border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+    .sidebar-brand-name { font-size: 12.5px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; line-height: 1.1; text-transform: uppercase; }
+    .sidebar-brand-sub { font-size: 8px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 2px; }
+    .sidebar-close { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid transparent; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all 0.18s var(--ease-out); flex-shrink: 0; }
+    .sidebar-close:hover { background: var(--bg-hover); border-color: var(--border-default); color: var(--text-primary); }
+    .sidebar-close:active { transform: scale(0.92); }
+    .sidebar-close svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+
+    .sidebar-user-card { display: flex; align-items: center; gap: 9px; padding: 8px 10px; margin: 10px 10px 6px; background: var(--bg-card); border: 1.5px solid var(--blue-200); border-radius: 12px; flex-shrink: 0; box-shadow: 0 1px 6px rgba(0, 85, 255, 0.06); }
+    .sidebar-user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 11px; font-weight: 800; letter-spacing: -0.3px; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 85, 255, 0.28); border: 1.5px solid #FFFFFF; }
+    .sidebar-user-info { flex: 1; min-width: 0; }
+    .sidebar-user-label { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--blue-600); margin-bottom: 1px; }
+    .sidebar-user-email { font-size: 10.5px; font-weight: 700; color: var(--text-primary); word-break: break-all; line-height: 1.3; letter-spacing: -0.2px; }
+    .sidebar-user-card.guest { background: var(--bg-card); border-color: var(--border-default); box-shadow: 0 1px 6px rgba(10, 22, 51, 0.04); }
+    .sidebar-user-card.guest .sidebar-user-avatar { background: linear-gradient(135deg, #94A3B8 0%, #64748B 100%); box-shadow: 0 2px 8px rgba(100, 116, 139, 0.25); }
+    .sidebar-user-card.guest .sidebar-user-label { color: var(--text-tertiary); }
+    .sidebar-user-card.guest .sidebar-user-email { color: var(--text-secondary); font-weight: 600; font-size: 10px; }
+
+    .sidebar-label { display: flex; align-items: center; gap: 8px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-tertiary); margin: 10px 12px 4px; flex-shrink: 0; }
+    .sidebar-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%); }
+
+    .sidebar-body { padding: 0 8px 12px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .sidebar-body::-webkit-scrollbar { width: 3px; }
+
+    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    .lang-pill { background: var(--bg-card); border: 1px solid var(--border-default); padding: 5px 8px; border-radius: 8px; display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--text-primary); cursor: pointer; transition: all 0.18s var(--ease-out); box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); }
+    .lang-pill:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+    .lang-pill:active { transform: scale(0.98); }
+    .lang-pill.active { background: var(--blue-50); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500); }
+    .lang-pill .flag { font-size: 11px; line-height: 1; flex-shrink: 0; }
+
+    .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+    .sidebar-nav-link { position: relative; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 10px; background: var(--bg-card); border: 1.5px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; font-size: 12px; font-weight: 700; width: 100%; text-align: left; cursor: pointer; transition: all 0.18s var(--ease-out); letter-spacing: -0.15px; box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); font-family: inherit; }
+    .sidebar-nav-link:hover { border-color: var(--border-default); box-shadow: 0 2px 6px rgba(10, 22, 51, 0.06); transform: translateY(-1px); }
+    .sidebar-nav-link:active { transform: translateY(0) scale(0.99); }
+    .sidebar-nav-link svg { width: 14px; height: 14px; stroke: var(--blue-600); stroke-width: 2; fill: none; flex-shrink: 0; padding: 6px; background: var(--blue-50); border-radius: 8px; box-sizing: content-box; transition: all 0.2s var(--ease-out); }
+    .sidebar-nav-link:hover svg { background: var(--blue-100); transform: scale(1.04); }
+    .sidebar-nav-link.active { background: var(--bg-card); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500), 0 3px 10px rgba(0, 85, 255, 0.12); }
+    .sidebar-nav-link.active svg { background: var(--blue-100); stroke: var(--blue-700); stroke-width: 2.2; }
+    .sidebar-nav-link.active::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--blue-600); margin-left: auto; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.15); }
+    .sidebar-nav-link.danger { color: var(--danger); margin-top: 4px; border-color: var(--danger-border); }
+    .sidebar-nav-link.danger::before { content: ''; position: absolute; top: -7px; left: 6px; right: 6px; height: 1px; background: var(--border-subtle); }
+    .sidebar-nav-link.danger svg { stroke: var(--danger); background: var(--danger-bg); }
+    .sidebar-nav-link.danger:hover { background: var(--danger-bg); border-color: var(--danger); box-shadow: 0 2px 6px rgba(220, 38, 38, 0.15); }
+    .sidebar-nav-link.danger:hover svg { background: #FEE2E2; }
+    .sidebar-nav-link.sidebar-login-btn { background: var(--blue-gradient); color: #FFFFFF !important; border-color: transparent; justify-content: center; font-weight: 800; box-shadow: 0 3px 10px rgba(0, 85, 255, 0.28); margin-top: 4px; }
+    .sidebar-nav-link.sidebar-login-btn svg { background: rgba(255, 255, 255, 0.2); stroke: #FFFFFF; padding: 5px; }
+    .sidebar-nav-link.sidebar-login-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(0, 85, 255, 0.35); }
+    .sidebar-nav-link.sidebar-register-btn { background: var(--bg-card); justify-content: center; font-weight: 700; border-color: var(--border-default); }
+    .sidebar-nav-link.sidebar-register-btn svg { background: var(--bg-subtle); stroke: var(--text-secondary); }
+
+    /* ═══ BOTTOM NAV ═══ */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.94); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-top: 1px solid var(--border-subtle); padding: 8px 10px 12px; z-index: 55; box-shadow: 0 -2px 16px rgba(10, 22, 51, 0.04); }
+    .nav-track { position: relative; display: flex; align-items: center; justify-content: space-around; }
+    .nav-indicator { position: absolute; bottom: 0; height: 3px; border-radius: var(--r-full); background: var(--blue-gradient); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 2px 8px rgba(0, 85, 255, 0.4); width: 30px; }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 4px; background: none; border: none; cursor: pointer; font-family: inherit; color: var(--text-tertiary); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); position: relative; text-decoration: none; }
+    .nav-item:active { transform: scale(0.92); }
+    .nav-item.active { color: var(--blue-600); }
+    .nav-icon-wrap { position: relative; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+    .nav-icon-wrap svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; transition: all 0.2s ease; }
+    .nav-item.active .nav-icon-wrap svg { stroke-width: 2.2; transform: scale(1.05); }
+    .nav-label { font-size: 10.5px; font-weight: 700; letter-spacing: -0.1px; }
+    .nav-item.active .nav-label { font-weight: 800; }
+    .nav-item .nav-badge { position: absolute; top: -4px; right: -6px; background: var(--blue-gradient); color: #FFFFFF; font-size: 9px; font-weight: 800; min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #FFFFFF; line-height: 1; }
+    .nav-item .nav-badge.visible { display: flex; }
+
+    /* ═══ GUIDE MODAL ═══ */
+    .guide-modal-backdrop { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 300; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); display: flex; align-items: flex-end; justify-content: center; }
+    .guide-modal-backdrop.active { opacity: 1; visibility: visible; }
+    .guide-modal { width: 100%; max-width: 480px; max-height: 88vh; background: var(--bg-card); border-radius: var(--r-3xl) var(--r-3xl) 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.42s var(--ease-out); overflow: hidden; box-shadow: var(--shadow-2xl); }
+    .guide-modal-backdrop.active .guide-modal { transform: translateY(0); }
+    .guide-modal-head { padding: 20px 20px 16px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
+    .guide-modal-head-text { min-width: 0; flex: 1; }
+    .guide-modal-title { font-size: 17px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; line-height: 1.25; }
+    .guide-modal-subtitle { font-size: 12px; color: var(--text-tertiary); font-weight: 600; margin-top: 3px; }
+    .guide-modal-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; font-family: inherit; flex-shrink: 0; }
+    .guide-modal-close svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+    .guide-modal-body { padding: 20px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+    .guide-modal-body h4 { font-size: 13.5px; font-weight: 800; color: var(--text-primary); margin: 16px 0 8px; letter-spacing: -0.2px; }
+    .guide-modal-body h4:first-child { margin-top: 0; }
+    .guide-modal-body p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 12px; }
+    .guide-modal-body ol, .guide-modal-body ul { padding-left: 20px; margin-bottom: 12px; }
+    .guide-modal-body li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px; }
+    .guide-modal-body strong { color: var(--text-primary); font-weight: 800; }
+    .guide-modal-body code { background: var(--bg-subtle); color: var(--blue-600); padding: 2px 7px; border-radius: 6px; font-family: monospace; font-size: 11.5px; font-weight: 800; }
+    .guide-modal-body .guide-tip { background: var(--blue-50); border-left: 3px solid var(--blue-600); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; color: var(--blue-700); line-height: 1.55; margin: 14px 0; font-weight: 600; }
+    .guide-modal-foot { padding: 14px 20px 20px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
+    .guide-modal-cta { width: 100%; height: 46px; background: var(--blue-gradient); color: #FFFFFF; border: none; border-radius: var(--r-md); font-size: 13.5px; font-weight: 800; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-blue); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .guide-modal-cta:active { transform: scale(0.98); }
+    .guide-modal-cta svg { width: 16px; height: 16px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
+
+    .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transform: scale(0); animation: ripple-anim 0.6s var(--ease-out); pointer-events: none; }
+    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
   </style>
 
   <link rel="stylesheet" href="/assets/css/design-system.css">
-  <link rel="stylesheet" href="/assets/css/ux-enhancements.css">
-  <link rel="stylesheet" href="/assets/css/features.css">
 </head>
 <body>
 
@@ -228,103 +473,127 @@
 
     <main class="help-main">
 
+      <!-- HERO -->
       <div class="help-hero">
+        <div class="help-hero-badge" data-i18n="heroBadge">Réponse rapide</div>
         <div class="help-hero-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
         <h1 class="help-hero-title" data-i18n="heroTitle">Centre d'Assistance</h1>
-        <p class="help-hero-sub" data-i18n="heroSub">Une question sur votre commande ou votre portefeuille ? Notre équipe technique vous accompagne sans interruption.</p>
+        <p class="help-hero-sub" data-i18n="heroSub">Notre équipe et notre assistant intelligent sont disponibles 24/7 pour répondre à toutes vos questions.</p>
       </div>
 
-      <div class="wa-priority">
-        <div class="wa-priority-top">
-          <span class="wa-priority-title" data-i18n="waTitle">Assistance Directe</span>
-          <span class="wa-badge" data-i18n="waBadge">Réponse rapide</span>
-        </div>
-        <p class="wa-priority-desc" data-i18n="waDesc">Pour une urgence, un problème de transaction ou une validation rapide, écrivez-nous directement sur WhatsApp.</p>
-        <a href="https://wa.me/50935362631" target="_blank" rel="noopener noreferrer" class="wa-btn-full">
-          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke-linecap="round"/></svg>
-          <span data-i18n="waBtnLabel">Discuter sur WhatsApp</span>
-        </a>
-      </div>
-
-      <h2 class="block-title" data-i18n="slaTitle">Délais Moyens</h2>
+      <!-- SLA GRID -->
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>
+        <span data-i18n="slaTitle">Délais moyens</span>
+      </h2>
       <div class="sla-grid">
         <div class="sla-card">
-          <div class="sla-icon">
-            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+          <div class="sla-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="sla-time">&lt; 30s</div>
           <div class="sla-label" data-i18n="slaPins">Codes PIN</div>
         </div>
         <div class="sla-card">
-          <div class="sla-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          </div>
+          <div class="sla-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
           <div class="sla-time">5-15 min</div>
           <div class="sla-label" data-i18n="slaDeposits">Dépôts Wallet</div>
         </div>
         <div class="sla-card">
-          <div class="sla-icon">
-            <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M6 12h4m-2-2v4" stroke-linecap="round"/></svg>
-          </div>
+          <div class="sla-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M6 12h4m-2-2v4" stroke-linecap="round"/></svg></div>
           <div class="sla-time">5-20 min</div>
-          <div class="sla-label" data-i18n="slaGames">Autres Jeux</div>
+          <div class="sla-label" data-i18n="slaGames">Autres jeux</div>
         </div>
       </div>
 
-      <h2 class="block-title" data-i18n="contactsTitle">Canaux Officiels</h2>
-      <div class="contact-card">
-        <div class="contact-row">
-          <div class="contact-left">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            </div>
-            <div class="contact-info">
-              <div class="contact-name">MonCash</div>
-              <div class="contact-sub" data-i18n="contactSubPayments">Dépôts & règlements</div>
-            </div>
+      <!-- WHATSAPP CARD -->
+      <div class="wa-card">
+        <div class="wa-card-top">
+          <div class="wa-card-title" data-i18n="waCardTitle">Assistance WhatsApp directe</div>
+          <div class="wa-card-badge" data-i18n="waCardBadge">En ligne</div>
+        </div>
+        <p class="wa-card-desc" data-i18n="waCardDesc">Pour toute urgence, problème de transaction ou demande personnalisée, contactez-nous directement sur WhatsApp. Réponse en moins de 5 minutes.</p>
+        <a href="https://wa.me/50935362631" target="_blank" rel="noopener noreferrer" class="wa-card-btn">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke-linecap="round"/></svg>
+          <span data-i18n="waCardBtn">Discuter maintenant</span>
+        </a>
+      </div>
+
+      <!-- CONTACTS -->
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <span data-i18n="contactsTitle">Canaux officiels</span>
+      </h2>
+      <div class="contact-list">
+        <div class="contact-card moncash">
+          <div class="contact-icon moncash">
+            <img src="assets/moncash-logo.png" alt="MonCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;contact-icon-fallback&quot;>MC</span>';">
           </div>
-          <div class="contact-value">+509 3643-5649</div>
+          <div class="contact-body">
+            <div class="contact-name">MonCash</div>
+            <div class="contact-value" data-copy="+509 3643-5649">+509 3643-5649</div>
+            <div class="contact-sub" data-i18n="contactSubPayments">Dépôts & règlements</div>
+          </div>
+          <button class="contact-copy" onclick="copyContact(this, '+509 3643-5649')" aria-label="Copier">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
         </div>
 
-        <div class="contact-row">
-          <div class="contact-left">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            </div>
-            <div class="contact-info">
-              <div class="contact-name">NatCash</div>
-              <div class="contact-sub" data-i18n="contactSubPayments">Dépôts & règlements</div>
-            </div>
+        <div class="contact-card natcash">
+          <div class="contact-icon natcash">
+            <img src="assets/natcash-logo.png" alt="NatCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;contact-icon-fallback&quot;>NC</span>';">
           </div>
-          <div class="contact-value">+509 3566-9814</div>
+          <div class="contact-body">
+            <div class="contact-name">NatCash</div>
+            <div class="contact-value" data-copy="+509 3566-9814">+509 3566-9814</div>
+            <div class="contact-sub" data-i18n="contactSubPayments">Dépôts & règlements</div>
+          </div>
+          <button class="contact-copy" onclick="copyContact(this, '+509 3566-9814')" aria-label="Copier">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
         </div>
 
-        <div class="contact-row">
-          <div class="contact-left">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <div class="contact-info">
-              <div class="contact-name">Meru USD</div>
-              <div class="contact-sub" data-i18n="contactSubIntl">Transferts internationaux</div>
-            </div>
+        <div class="contact-card meru">
+          <div class="contact-icon meru">
+            <img src="assets/meru.png" alt="Meru" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;contact-icon-fallback&quot;>M</span>';">
           </div>
-          <div class="contact-value big">lemarquis3944@gmail.com</div>
+          <div class="contact-body">
+            <div class="contact-name">Meru USD</div>
+            <div class="contact-value" style="font-size:11px;" data-copy="lemarquis3944@gmail.com">lemarquis3944@gmail.com</div>
+            <div class="contact-sub" data-i18n="contactSubIntl">Transferts internationaux</div>
+          </div>
+          <button class="contact-copy" onclick="copyContact(this, 'lemarquis3944@gmail.com')" aria-label="Copier">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
         </div>
       </div>
 
-      <h2 class="block-title" data-i18n="faqTitle">Questions Fréquentes</h2>
+      <!-- SYSTEM STATUS -->
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2" stroke-linecap="round"/></svg>
+        <span data-i18n="statusTitle">Statut système</span>
+      </h2>
+      <div class="status-card">
+        <div class="status-dot-big" id="status-dot"></div>
+        <div class="status-info">
+          <div class="status-title" id="status-title" data-i18n="statusOpen">Plateforme opérationnelle</div>
+          <div class="status-sub" id="status-sub" data-i18n="statusSub">Tous les services fonctionnent normalement</div>
+        </div>
+        <div class="status-value" id="status-value" data-i18n="statusOpenValue">Actif</div>
+      </div>
+
+      <!-- FAQ -->
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span data-i18n="faqTitle">Questions fréquentes</span>
+      </h2>
       <div class="faq-stack">
         <div class="faq-item">
           <button class="faq-head" onclick="toggleFaq(this)">
             <span data-i18n="faqQ1">Comment activer un code PIN Free Fire ?</span>
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="faq-body" data-i18n-html="faqA1">
-            Dès validation de votre commande, votre code PIN s'affiche sur la page <strong>Historique</strong>. Cliquez sur <strong>Copier</strong>, puis sur le bouton menant vers <code>redeem.hype.games</code> pour créditer vos diamants avec votre identifiant joueur (UID).
-          </div>
+          <div class="faq-body" data-i18n-html="faqA1Html">Dès validation de votre commande, votre code PIN s'affiche sur la page <strong>Historique</strong>. Cliquez sur <strong>Copier</strong>, puis sur le bouton menant vers <code>redeem.hype.games</code> pour créditer vos diamants avec votre identifiant joueur (UID).</div>
         </div>
 
         <div class="faq-item">
@@ -332,9 +601,7 @@
             <span data-i18n="faqQ2">Combien de temps prend la validation d'un dépôt ?</span>
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="faq-body" data-i18n="faqA2">
-            Dès que vous soumettez le reçu avec l'ID de transaction, notre service financier valide et crédite votre portefeuille sous 5 à 15 minutes. Vos fonds sont immédiatement utilisables pour tous vos achats.
-          </div>
+          <div class="faq-body" data-i18n="faqA2">Dès que vous soumettez le reçu avec l'ID de transaction, notre service financier valide et crédite votre portefeuille sous 5 à 15 minutes. Vos fonds sont immédiatement utilisables pour tous vos achats.</div>
         </div>
 
         <div class="faq-item">
@@ -342,9 +609,7 @@
             <span data-i18n="faqQ3">Mes identifiants de jeu sont-ils sécurisés ?</span>
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="faq-body" data-i18n="faqA3">
-            Oui, à 100 %. Vos identifiants de connexion (pour Call of Duty, E-Football, etc.) sont chiffrés et transmis directement à nos opérateurs certifiés uniquement pour procéder à la livraison. Dès que le service est activé, la commande est clôturée.
-          </div>
+          <div class="faq-body" data-i18n="faqA3">Oui, à 100 %. Vos identifiants de connexion (Call of Duty, E-Football, etc.) sont chiffrés et transmis directement à nos opérateurs certifiés uniquement pour procéder à la livraison. Dès que le service est activé, la commande est clôturée.</div>
         </div>
 
         <div class="faq-item">
@@ -352,9 +617,7 @@
             <span data-i18n="faqQ4">Que faire si mon dépôt tarde à être validé ?</span>
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="faq-body" data-i18n="faqA4">
-            Vérifiez que votre ID de transaction correspond exactement à votre SMS MonCash ou NatCash. Si le délai dépasse 15 minutes, cliquez directement sur le bouton WhatsApp ci-dessus avec votre référence de dépôt (DEP-XXXXXX) pour une accélération manuelle.
-          </div>
+          <div class="faq-body" data-i18n="faqA4">Vérifiez que votre ID de transaction correspond exactement à votre SMS MonCash ou NatCash. Si le délai dépasse 15 minutes, cliquez sur le bouton WhatsApp ci-dessus avec votre référence de dépôt (DEP-XXXXXX) pour une accélération manuelle.</div>
         </div>
 
         <div class="faq-item">
@@ -362,12 +625,39 @@
             <span data-i18n="faqQ5">Quels moyens de paiement sont acceptés ?</span>
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="faq-body" data-i18n="faqA5">
-            Nous acceptons MonCash, NatCash, Meru USD, ainsi que le solde de votre Portefeuille DigitalPay. Chaque paiement par wallet est instantané et ne requiert aucune preuve supplémentaire.
-          </div>
+          <div class="faq-body" data-i18n="faqA5">Nous acceptons MonCash, NatCash, Meru USD, ainsi que le solde de votre Portefeuille DigitalPay. Chaque paiement par Wallet est instantané et ne requiert aucune preuve supplémentaire.</div>
         </div>
       </div>
 
+      <!-- GUIDES -->
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        <span data-i18n="guidesTitle">Guides & Astuces</span>
+      </h2>
+      <div class="guides-grid">
+        <button type="button" class="guide-card" onclick="openGuide('freefire')">
+          <div class="guide-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <div class="guide-title" data-i18n="guide1">Activer un PIN Free Fire</div>
+          <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button type="button" class="guide-card" onclick="openGuide('wise')">
+          <div class="guide-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <div class="guide-title" data-i18n="guide2">Utiliser Wise depuis Haïti</div>
+          <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button type="button" class="guide-card" onclick="openGuide('netflix')">
+          <div class="guide-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="guide-title" data-i18n="guide3">Netflix sans carte bancaire</div>
+          <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button type="button" class="guide-card" onclick="openGuide('rates')">
+          <div class="guide-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6" stroke-linecap="round"/></svg></div>
+          <div class="guide-title" data-i18n="guide4">Comprendre taux USD/HTG</div>
+          <span class="guide-arrow"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+      </div>
+
+      <!-- FINAL CTA -->
       <div class="final-cta">
         <div class="final-cta-icon">
           <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -446,6 +736,51 @@
       </aside>
     </div>
 
+    <nav class="bottom-nav">
+      <div class="nav-track" id="nav-track">
+        <div class="nav-indicator" id="nav-indicator"></div>
+        <a href="index.html" class="nav-item" data-nav="home">
+          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+          <span class="nav-label">Accueil</span>
+        </a>
+        <a href="index.html" class="nav-item" data-nav="shop">
+          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+          <span class="nav-label">Boutique</span>
+        </a>
+        <a href="cart.html" class="nav-item" data-nav="cart">
+          <div class="nav-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="nav-badge" id="nav-cart-badge">0</span>
+          </div>
+          <span class="nav-label">Panier</span>
+        </a>
+        <a href="wallet.html" class="nav-item" data-nav="wallet">
+          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg></div>
+          <span class="nav-label">Wallet</span>
+        </a>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- GUIDE MODAL -->
+  <div class="guide-modal-backdrop" id="guide-modal-backdrop" onclick="closeGuide()">
+    <div class="guide-modal" onclick="event.stopPropagation()">
+      <div class="guide-modal-head">
+        <div class="guide-modal-head-text">
+          <div class="guide-modal-title" id="guide-modal-title">Guide</div>
+          <div class="guide-modal-subtitle" id="guide-modal-subtitle">DigitalPay · 2 min de lecture</div>
+        </div>
+        <button class="guide-modal-close" onclick="closeGuide()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="guide-modal-body" id="guide-modal-body"></div>
+      <div class="guide-modal-foot">
+        <button class="guide-modal-cta" onclick="closeGuide()">
+          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="guideUnderstood">Compris, merci !</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -457,39 +792,52 @@
       messagingSenderId: "1030926360593",
       appId: "1:1030926360593:web:c6e0f502af4ef6b76711b0"
     };
-
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    const STATE = { user: null, lang: 'fr' };
+    const STATE = { lang: 'fr', user: null, unsubStatus: null };
 
     const I18N = {
       fr: {
         toastLang: "Langue : Français",
+        heroBadge: "Réponse rapide",
         heroTitle: "Centre d'Assistance",
-        heroSub: "Une question sur votre commande ou votre portefeuille ? Notre équipe technique vous accompagne sans interruption.",
-        waTitle: "Assistance Directe",
-        waBadge: "Réponse rapide",
-        waDesc: "Pour une urgence, un problème de transaction ou une validation rapide, écrivez-nous directement sur WhatsApp.",
-        waBtnLabel: "Discuter sur WhatsApp",
-        slaTitle: "Délais Moyens",
+        heroSub: "Notre équipe et notre assistant intelligent sont disponibles 24/7 pour répondre à toutes vos questions.",
+        slaTitle: "Délais moyens",
         slaPins: "Codes PIN",
         slaDeposits: "Dépôts Wallet",
-        slaGames: "Autres Jeux",
-        contactsTitle: "Canaux Officiels",
+        slaGames: "Autres jeux",
+        waCardTitle: "Assistance WhatsApp directe",
+        waCardBadge: "En ligne",
+        waCardDesc: "Pour toute urgence, problème de transaction ou demande personnalisée, contactez-nous directement sur WhatsApp. Réponse en moins de 5 minutes.",
+        waCardBtn: "Discuter maintenant",
+        contactsTitle: "Canaux officiels",
         contactSubPayments: "Dépôts & règlements",
         contactSubIntl: "Transferts internationaux",
-        faqTitle: "Questions Fréquentes",
+        statusTitle: "Statut système",
+        statusOpen: "Plateforme opérationnelle",
+        statusSub: "Tous les services fonctionnent normalement",
+        statusOpenValue: "Actif",
+        statusClosed: "Maintenance en cours",
+        statusClosedSub: "Les commandes sont temporairement suspendues",
+        statusClosedValue: "Fermé",
+        faqTitle: "Questions fréquentes",
         faqQ1: "Comment activer un code PIN Free Fire ?",
         faqQ2: "Combien de temps prend la validation d'un dépôt ?",
         faqQ3: "Mes identifiants de jeu sont-ils sécurisés ?",
         faqQ4: "Que faire si mon dépôt tarde à être validé ?",
         faqQ5: "Quels moyens de paiement sont acceptés ?",
         faqA2: "Dès que vous soumettez le reçu avec l'ID de transaction, notre service financier valide et crédite votre portefeuille sous 5 à 15 minutes. Vos fonds sont immédiatement utilisables pour tous vos achats.",
-        faqA3: "Oui, à 100 %. Vos identifiants de connexion sont chiffrés et transmis directement à nos opérateurs certifiés uniquement pour procéder à la livraison. Dès que le service est activé, la commande est clôturée.",
-        faqA4: "Vérifiez que votre ID de transaction correspond exactement à votre SMS MonCash ou NatCash. Si le délai dépasse 15 minutes, cliquez directement sur le bouton WhatsApp ci-dessus avec votre référence de dépôt (DEP-XXXXXX) pour une accélération manuelle.",
-        faqA5: "Nous acceptons MonCash, NatCash, Meru USD, ainsi que le solde de votre Portefeuille DigitalPay. Chaque paiement par wallet est instantané et ne requiert aucune preuve supplémentaire.",
+        faqA3: "Oui, à 100 %. Vos identifiants de connexion (Call of Duty, E-Football, etc.) sont chiffrés et transmis directement à nos opérateurs certifiés uniquement pour procéder à la livraison. Dès que le service est activé, la commande est clôturée.",
+        faqA4: "Vérifiez que votre ID de transaction correspond exactement à votre SMS MonCash ou NatCash. Si le délai dépasse 15 minutes, cliquez sur le bouton WhatsApp ci-dessus avec votre référence de dépôt (DEP-XXXXXX) pour une accélération manuelle.",
+        faqA5: "Nous acceptons MonCash, NatCash, Meru USD, ainsi que le solde de votre Portefeuille DigitalPay. Chaque paiement par Wallet est instantané et ne requiert aucune preuve supplémentaire.",
+        guidesTitle: "Guides & Astuces",
+        guide1: "Activer un PIN Free Fire",
+        guide2: "Utiliser Wise depuis Haïti",
+        guide3: "Netflix sans carte bancaire",
+        guide4: "Comprendre taux USD/HTG",
+        guideUnderstood: "Compris, merci !",
         ctaTitle: "Toujours besoin d'aide ?",
         ctaSub: "Notre équipe est disponible 24h/24 et 7j/7 pour vous accompagner.",
         ctaBtn: "Contacter le support",
@@ -498,25 +846,34 @@
         navLabel: "Navigation",
         navHome: "Accueil", navHistory: "Historique", navWallet: "Wallet", navShop: "Boutique", navSupport: "Support",
         connectedAs: "Connecté", authLogout: "Se Déconnecter",
-        authLogin: "Se Connecter", authRegister: "Créer un compte"
+        authLogin: "Se Connecter", authRegister: "Créer un compte",
+        copied: "Copié !"
       },
       ht: {
         toastLang: "Lang : Kreyòl Ayisyen",
-        heroTitle: "Sant Asistans Kliyan",
-        heroSub: "Yon kesyon sou yon kòmand oswa sou bous ou ? Ekip teknik la la pou ede w.",
-        waTitle: "Asistans Dirèk",
-        waBadge: "Repons rapid",
-        waDesc: "Pou yon ijans, yon pwoblèm tranzaksyon oswa yon validasyon rapid, ekri nou dirèkteman sou WhatsApp.",
-        waBtnLabel: "Pale sou WhatsApp",
-        slaTitle: "Tan Mwayen",
+        heroBadge: "Repons rapid",
+        heroTitle: "Sant Asistans",
+        heroSub: "Ekip nou ak asistan entèlijan nou disponib 24/7 pou reponn tout kesyon ou yo.",
+        slaTitle: "Delè mwayen",
         slaPins: "Kòd PIN",
         slaDeposits: "Depo Bous",
-        slaGames: "Lòt Jwèt",
-        contactsTitle: "Kontak Ofisyèl",
+        slaGames: "Lòt jwèt",
+        waCardTitle: "Asistans WhatsApp dirèk",
+        waCardBadge: "An liy",
+        waCardDesc: "Pou tout ijans, pwoblèm tranzaksyon oswa demann pèsonalize, kontakte nou dirèkteman sou WhatsApp. Repons nan mwens pase 5 minit.",
+        waCardBtn: "Pale kounye a",
+        contactsTitle: "Kanal ofisyèl",
         contactSubPayments: "Depo ak peman",
         contactSubIntl: "Transfè entènasyonal",
+        statusTitle: "Estati sistèm",
+        statusOpen: "Platfòm fonksyone",
+        statusSub: "Tout sèvis yo fonksyone nòmalman",
+        statusOpenValue: "Aktif",
+        statusClosed: "Antretyen nan kou",
+        statusClosedSub: "Kòmand yo sispann tanporèman",
+        statusClosedValue: "Fèmen",
         faqTitle: "Kesyon yo poze souvan",
-        faqQ1: "Kijan pou m aktive kòd PIN Free Fire mwen ?",
+        faqQ1: "Kijan pou m aktive yon kòd PIN Free Fire ?",
         faqQ2: "Konbyen tan yon depo pran pou l valide ?",
         faqQ3: "Èske enfòmasyon kont jwèt mwen an sekirize ?",
         faqQ4: "Kisa pou m fè si depo m pran tan ?",
@@ -525,6 +882,12 @@
         faqA3: "Wi, a 100 %. Done koneksyon w yo chifre epi yo voye sèlman bay operatè sètifye pou livrezon.",
         faqA4: "Verifye ke ID transaksyon w lan matche egzakteman ak SMS MonCash oswa NatCash ou. Si sa depase 15 minit, ekri nou sou WhatsApp ak referans depo w la (DEP-XXXXXX).",
         faqA5: "Nou aksepte MonCash, NatCash, Meru USD, ak balans Bous DigitalPay ou.",
+        guidesTitle: "Gid ak Konsèy",
+        guide1: "Aktive yon PIN Free Fire",
+        guide2: "Itilize Wise soti Ayiti",
+        guide3: "Netflix san kat bankè",
+        guide4: "Konprann to USD/HTG",
+        guideUnderstood: "Konpran, mèsi !",
         ctaTitle: "Toujou bezwen èd ?",
         ctaSub: "Ekip nou an disponib 24h/24 ak 7j/7 pou ede w.",
         ctaBtn: "Kontakte sipò",
@@ -533,24 +896,33 @@
         navLabel: "Navigasyon",
         navHome: "Akèy", navHistory: "Istorik", navWallet: "Bous", navShop: "Boutik", navSupport: "Sipò",
         connectedAs: "Konekte", authLogout: "Dekonekte",
-        authLogin: "Konekte", authRegister: "Kreye yon kont"
+        authLogin: "Konekte", authRegister: "Kreye yon kont",
+        copied: "Kopye !"
       },
       en: {
         toastLang: "Language: English",
+        heroBadge: "Fast reply",
         heroTitle: "Help Center",
-        heroSub: "A question about your order or wallet? Our team is available 24/7.",
-        waTitle: "Direct Support",
-        waBadge: "Fast reply",
-        waDesc: "For an emergency, transaction issue, or fast validation, message us directly on WhatsApp.",
-        waBtnLabel: "Chat on WhatsApp",
-        slaTitle: "Average Times",
-        slaPins: "PIN Codes",
-        slaDeposits: "Wallet Deposits",
-        slaGames: "Other Games",
-        contactsTitle: "Official Channels",
+        heroSub: "Our team and AI assistant are available 24/7 to answer all your questions.",
+        slaTitle: "Average times",
+        slaPins: "PIN codes",
+        slaDeposits: "Wallet deposits",
+        slaGames: "Other games",
+        waCardTitle: "Direct WhatsApp support",
+        waCardBadge: "Online",
+        waCardDesc: "For any emergency, transaction issue or custom request, contact us directly on WhatsApp. Reply in under 5 minutes.",
+        waCardBtn: "Chat now",
+        contactsTitle: "Official channels",
         contactSubPayments: "Deposits & payments",
         contactSubIntl: "International transfers",
-        faqTitle: "Frequently Asked Questions",
+        statusTitle: "System status",
+        statusOpen: "Platform operational",
+        statusSub: "All services running normally",
+        statusOpenValue: "Active",
+        statusClosed: "Maintenance in progress",
+        statusClosedSub: "Orders are temporarily suspended",
+        statusClosedValue: "Closed",
+        faqTitle: "Frequently asked questions",
         faqQ1: "How do I activate a Free Fire PIN code?",
         faqQ2: "How long does a deposit take?",
         faqQ3: "Are my game credentials secure?",
@@ -560,6 +932,12 @@
         faqA3: "Yes, 100%. Your credentials are encrypted and shared only with certified operators for delivery.",
         faqA4: "Verify that your transaction ID matches exactly your MonCash or NatCash SMS. If it exceeds 15 minutes, reach out via WhatsApp with your deposit reference (DEP-XXXXXX).",
         faqA5: "We accept MonCash, NatCash, Meru USD, and your DigitalPay Wallet balance.",
+        guidesTitle: "Guides & Tips",
+        guide1: "Activate a Free Fire PIN",
+        guide2: "Use Wise from Haiti",
+        guide3: "Netflix without a bank card",
+        guide4: "Understand USD/HTG rates",
+        guideUnderstood: "Got it, thanks!",
         ctaTitle: "Still need help?",
         ctaSub: "Our team is available 24/7 to assist you.",
         ctaBtn: "Contact support",
@@ -568,24 +946,33 @@
         navLabel: "Navigation",
         navHome: "Home", navHistory: "History", navWallet: "Wallet", navShop: "Shop", navSupport: "Support",
         connectedAs: "Signed in", authLogout: "Sign Out",
-        authLogin: "Sign In", authRegister: "Create account"
+        authLogin: "Sign In", authRegister: "Create account",
+        copied: "Copied!"
       },
       es: {
         toastLang: "Idioma: Español",
+        heroBadge: "Respuesta rápida",
         heroTitle: "Centro de Ayuda",
-        heroSub: "¿Dudas sobre su pedido o billetera? Nuestro equipo le asiste sin interrupción.",
-        waTitle: "Soporte Directo",
-        waBadge: "Respuesta rápida",
-        waDesc: "Para una urgencia, problema de transacción o validación rápida, escríbanos directamente por WhatsApp.",
-        waBtnLabel: "Chatear por WhatsApp",
-        slaTitle: "Tiempos Promedio",
+        heroSub: "Nuestro equipo y asistente inteligente están disponibles 24/7 para responder todas sus preguntas.",
+        slaTitle: "Tiempos promedio",
         slaPins: "Códigos PIN",
-        slaDeposits: "Recargas",
-        slaGames: "Otros Juegos",
-        contactsTitle: "Canales Oficiales",
+        slaDeposits: "Recargas Wallet",
+        slaGames: "Otros juegos",
+        waCardTitle: "Soporte WhatsApp directo",
+        waCardBadge: "En línea",
+        waCardDesc: "Para urgencias, problemas de transacción o solicitudes personalizadas, contáctenos directamente por WhatsApp. Respuesta en menos de 5 minutos.",
+        waCardBtn: "Chatear ahora",
+        contactsTitle: "Canales oficiales",
         contactSubPayments: "Depósitos y pagos",
         contactSubIntl: "Transferencias internacionales",
-        faqTitle: "Preguntas Frecuentes",
+        statusTitle: "Estado del sistema",
+        statusOpen: "Plataforma operativa",
+        statusSub: "Todos los servicios funcionan normalmente",
+        statusOpenValue: "Activo",
+        statusClosed: "Mantenimiento en curso",
+        statusClosedSub: "Los pedidos están suspendidos temporalmente",
+        statusClosedValue: "Cerrado",
+        faqTitle: "Preguntas frecuentes",
         faqQ1: "¿Cómo activo mi código PIN de Free Fire?",
         faqQ2: "¿Cuánto tarda un depósito en validarse?",
         faqQ3: "¿Son seguras mis credenciales de juego?",
@@ -595,6 +982,12 @@
         faqA3: "Sí, 100%. Sus credenciales están cifradas y se comparten solo con operadores certificados para la entrega.",
         faqA4: "Verifique que su ID de transacción coincida exactamente con su SMS de MonCash o NatCash. Si supera 15 minutos, contáctenos por WhatsApp con su referencia (DEP-XXXXXX).",
         faqA5: "Aceptamos MonCash, NatCash, Meru USD y su saldo de Billetera DigitalPay.",
+        guidesTitle: "Guías y Consejos",
+        guide1: "Activar un PIN Free Fire",
+        guide2: "Usar Wise desde Haití",
+        guide3: "Netflix sin tarjeta bancaria",
+        guide4: "Entender tasas USD/HTG",
+        guideUnderstood: "¡Entendido, gracias!",
         ctaTitle: "¿Aún necesita ayuda?",
         ctaSub: "Nuestro equipo está disponible 24/7 para asistirle.",
         ctaBtn: "Contactar soporte",
@@ -603,7 +996,17 @@
         navLabel: "Navegación",
         navHome: "Inicio", navHistory: "Historial", navWallet: "Billetera", navShop: "Tienda", navSupport: "Soporte",
         connectedAs: "Conectado", authLogout: "Cerrar Sesión",
-        authLogin: "Iniciar Sesión", authRegister: "Crear cuenta"
+        authLogin: "Iniciar Sesión", authRegister: "Crear cuenta",
+        copied: "¡Copiado!"
+      }
+    };
+
+    const FAQ_HTML = {
+      faqA1Html: {
+        fr: 'Dès validation de votre commande, votre code PIN s\'affiche sur la page <strong>Historique</strong>. Cliquez sur <strong>Copier</strong>, puis sur le bouton menant vers <code>redeem.hype.games</code> pour créditer vos diamants avec votre identifiant joueur (UID).',
+        ht: 'Depi kòmand ou valide, kòd PIN ou parèt sou paj <strong>Istorik</strong>. Klike sou <strong>Kopye</strong>, epi sou bouton ki mennen nan <code>redeem.hype.games</code> pou kredite dyaman w yo ak UID jwè w.',
+        en: 'Once your order is validated, your PIN code appears on the <strong>History</strong> page. Click <strong>Copy</strong>, then the button leading to <code>redeem.hype.games</code> to credit your diamonds with your Player UID.',
+        es: 'Tras validarse su pedido, su código PIN aparece en la página <strong>Historial</strong>. Haga clic en <strong>Copiar</strong>, luego en el botón hacia <code>redeem.hype.games</code> para acreditar sus diamantes con su UID de jugador.'
       }
     };
 
@@ -636,8 +1039,8 @@
     function createRipple(e, el) {
       const rect = el.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height);
-      const x = (e.clientX || e.touches?.[0]?.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
-      const y = (e.clientY || e.touches?.[0]?.clientY || rect.top + rect.height / 2) - rect.top - size / 2;
+      const x = (e.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
+      const y = (e.clientY || rect.top + rect.height / 2) - rect.top - size / 2;
       const ripple = document.createElement('span');
       ripple.className = 'ripple';
       ripple.style.width = ripple.style.height = size + 'px';
@@ -647,21 +1050,57 @@
       setTimeout(() => ripple.remove(), 600);
     }
 
+    function vibrate(ms = 8) { if ('vibrate' in navigator) { try { navigator.vibrate(ms); } catch (e) {} } }
+
+    function copyContact(btn, text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(t('copied'), 'success');
+          vibrate(6);
+          // Animation feedback
+          btn.style.background = 'var(--success-bg)';
+          btn.style.borderColor = 'var(--success-border)';
+          btn.style.color = 'var(--success)';
+          btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          setTimeout(() => {
+            btn.style.background = '';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+            btn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+          }, 1600);
+        }).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showToast(t('copied'), 'success'); }
+      catch (e) { showToast('Erreur', 'danger'); }
+      document.body.removeChild(ta);
+    }
+
+    function toggleFaq(btn) {
+      btn.parentElement.classList.toggle('open');
+      vibrate(3);
+    }
+
     function applyTranslations() {
       document.documentElement.setAttribute('lang', STATE.lang);
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (I18N[STATE.lang][key]) el.textContent = I18N[STATE.lang][key];
       });
-      const faq1 = document.querySelector('[data-i18n-html="faqA1"]');
+      // Special HTML FAQ
+      const faq1 = document.querySelector('[data-i18n-html="faqA1Html"]');
       if (faq1) {
-        const map = {
-          fr: 'Dès validation de votre commande, votre code PIN s\'affiche sur la page <strong>Historique</strong>. Cliquez sur <strong>Copier</strong>, puis sur le bouton menant vers <code>redeem.hype.games</code> pour créditer vos diamants avec votre identifiant joueur (UID).',
-          ht: 'Depi kòmand ou valide, kòd PIN ou parèt sou paj <strong>Istorik</strong>. Klike sou <strong>Kopye</strong>, epi sou bouton ki mennen nan <code>redeem.hype.games</code> pou kredite dyaman w yo ak UID jwè w.',
-          en: 'Once your order is validated, your PIN code appears on the <strong>History</strong> page. Click <strong>Copy</strong>, then the button leading to <code>redeem.hype.games</code> to credit your diamonds with your Player UID.',
-          es: 'Tras validarse su pedido, su código PIN aparece en la página <strong>Historial</strong>. Haga clic en <strong>Copiar</strong>, luego en el botón hacia <code>redeem.hype.games</code> para acreditar sus diamantes con su UID de jugador.'
-        };
-        faq1.innerHTML = map[STATE.lang] || map.fr;
+        faq1.innerHTML = FAQ_HTML.faqA1Html[STATE.lang] || FAQ_HTML.faqA1Html.fr;
       }
     }
 
@@ -674,8 +1113,6 @@
       updateSidebarAuthUI();
       showToast(t('toastLang'), 'info');
     }
-
-    function toggleFaq(btn) { btn.parentElement.classList.toggle('open'); }
 
     function updateSidebarAuthUI() {
       const userZone = document.getElementById('sidebar-user-zone');
@@ -716,11 +1153,11 @@
         `;
       } else {
         zone.innerHTML = `
-          <a href="authentification/login.html" class="sidebar-nav-link" style="background:var(--blue-gradient);color:#FFF;margin-top:8px;justify-content:center;font-weight:800;">
-            <svg viewBox="0 0 24 24" style="stroke:#FFF;opacity:1;"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <a href="authentification/login.html" class="sidebar-nav-link sidebar-login-btn">
+            <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span>${escapeHtml(t('authLogin'))}</span>
           </a>
-          <a href="authentification/register.html" class="sidebar-nav-link" style="margin-top:4px;justify-content:center;font-weight:700;background:var(--bg-subtle);">
+          <a href="authentification/register.html" class="sidebar-nav-link sidebar-register-btn">
             <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
             <span>${escapeHtml(t('authRegister'))}</span>
           </a>
@@ -738,23 +1175,18 @@
     function openSidebar() { document.getElementById('sidebar-overlay').classList.add('active'); document.body.style.overflow = 'hidden'; }
     function closeSidebar() { document.getElementById('sidebar-overlay').classList.remove('active'); document.body.style.overflow = ''; }
 
-    let scrollRaf = null;
     function initScrollEffects() {
       const header = document.getElementById('site-header');
       window.addEventListener('scroll', () => {
-        if (scrollRaf) return;
-        scrollRaf = requestAnimationFrame(() => {
-          if (window.scrollY > 20) header.classList.add('scrolled');
-          else header.classList.remove('scrolled');
-          scrollRaf = null;
-        });
+        if (window.scrollY > 20) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
       }, { passive: true });
     }
 
     function initRipple() {
       document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.wa-btn-full, .final-cta-btn, .icon-btn, .auth-btn');
-        if (btn) createRipple(e, btn);
+        const btn = e.target.closest('.wa-card-btn, .final-cta-btn, .icon-btn, .contact-copy, .guide-card, .guide-modal-cta');
+        if (btn && !btn.disabled) createRipple(e, btn);
       });
     }
 
@@ -762,16 +1194,387 @@
       try {
         const cart = JSON.parse(localStorage.getItem('dp_cart') || '[]');
         const badge = document.getElementById('cart-badge');
-        if (cart.length > 0) { badge.textContent = cart.length; badge.classList.add('visible'); }
-        else { badge.classList.remove('visible'); }
+        const navBadge = document.getElementById('nav-cart-badge');
+        if (cart.length > 0) {
+          if (badge) { badge.textContent = cart.length; badge.classList.add('visible'); }
+          if (navBadge) { navBadge.textContent = cart.length; navBadge.classList.add('visible'); }
+        } else {
+          if (badge) badge.classList.remove('visible');
+          if (navBadge) navBadge.classList.remove('visible');
+        }
       } catch (e) {}
     }
 
+    function moveNavIndicator() {
+      const indicator = document.getElementById('nav-indicator');
+      const track = document.getElementById('nav-track');
+      const active = track?.querySelector('.nav-item.active');
+      if (!indicator || !track || !active) return;
+      const trackRect = track.getBoundingClientRect();
+      const btnRect = active.getBoundingClientRect();
+      indicator.style.left = (btnRect.left - trackRect.left + btnRect.width / 2 - 15) + 'px';
+    }
+
+    /* ═══ SYSTEM STATUS LIVE ═══ */
+    function listenSystemStatus() {
+      if (STATE.unsubStatus) STATE.unsubStatus();
+      STATE.unsubStatus = db.collection('system_config').doc('status').onSnapshot(doc => {
+        const isOpen = doc.exists ? (doc.data().isSiteOpen !== false) : true;
+        const dot = document.getElementById('status-dot');
+        const title = document.getElementById('status-title');
+        const sub = document.getElementById('status-sub');
+        const val = document.getElementById('status-value');
+        if (isOpen) {
+          dot.classList.remove('closed');
+          title.textContent = t('statusOpen');
+          sub.textContent = t('statusSub');
+          val.textContent = t('statusOpenValue');
+          val.classList.remove('closed');
+        } else {
+          dot.classList.add('closed');
+          title.textContent = t('statusClosed');
+          sub.textContent = t('statusClosedSub');
+          val.textContent = t('statusClosedValue');
+          val.classList.add('closed');
+        }
+      }, () => {});
+    }
+
+    /* ═══ GUIDES (réutilise depuis index) ═══ */
+    const GUIDES = {
+      freefire: {
+        fr: {
+          title: 'Comment activer un PIN Free Fire',
+          subtitle: 'DigitalPay · 2 min de lecture',
+          body: `
+            <h4>1. Acheter votre pack</h4>
+            <p>Choisissez votre pack de diamants Free Fire dans la boutique. Le paiement peut se faire via <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> ou votre <strong>Wallet DigitalPay</strong>.</p>
+            <h4>2. Recevoir votre PIN</h4>
+            <p>Pour les 6 packs auto-livrés, le code PIN apparaît <strong>instantanément</strong> sur la page Historique dès la confirmation de la commande.</p>
+            <h4>3. Copier le PIN</h4>
+            <p>Rendez-vous sur <code>commande.html</code> → trouvez votre commande → cliquez sur <strong>Copier</strong>.</p>
+            <h4>4. Réclamer vos diamants</h4>
+            <ol>
+              <li>Ouvrez <code>redeem.hype.games</code></li>
+              <li>Connectez-vous avec votre compte Free Fire</li>
+              <li>Collez votre code PIN</li>
+              <li>Validez — vos diamants sont crédités en moins de 30 secondes !</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Astuce :</strong> vérifiez bien que votre ID de joueur Free Fire est correct avant toute réclamation.</div>
+          `
+        },
+        ht: {
+          title: 'Kijan pou aktive yon PIN Free Fire',
+          subtitle: 'DigitalPay · 2 min lekti',
+          body: `
+            <h4>1. Achte pakèt ou</h4>
+            <p>Chwazi pakèt dyaman Free Fire ou nan boutik la. Peman an fèt ak <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> oswa <strong>Bous DigitalPay</strong> ou.</p>
+            <h4>2. Resevwa PIN ou</h4>
+            <p>Pou 6 pakèt yo oto-livre, kòd PIN nan parèt <strong>enstanteman</strong> nan paj Istorik la.</p>
+            <h4>3. Kopye PIN nan</h4>
+            <p>Ale sou <code>commande.html</code> → jwenn kòmand ou → klike <strong>Kopye</strong>.</p>
+            <h4>4. Reklame dyaman ou</h4>
+            <ol>
+              <li>Louvri <code>redeem.hype.games</code></li>
+              <li>Konekte ak kont Free Fire ou</li>
+              <li>Kole kòd PIN nan</li>
+              <li>Valide — dyaman ou kredite nan mwens pase 30 segonn !</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> verifye ID jwè Free Fire ou anvan ou reklame.</div>
+          `
+        },
+        en: {
+          title: 'How to activate a Free Fire PIN',
+          subtitle: 'DigitalPay · 2 min read',
+          body: `
+            <h4>1. Buy your pack</h4>
+            <p>Choose your Free Fire diamond pack from the shop. Payment via <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> or your <strong>DigitalPay Wallet</strong>.</p>
+            <h4>2. Receive your PIN</h4>
+            <p>For the 6 auto-delivered packs, the PIN code appears <strong>instantly</strong> on the History page.</p>
+            <h4>3. Copy the PIN</h4>
+            <p>Go to <code>commande.html</code> → find your order → click <strong>Copy</strong>.</p>
+            <h4>4. Redeem your diamonds</h4>
+            <ol>
+              <li>Open <code>redeem.hype.games</code></li>
+              <li>Log in with your Free Fire account</li>
+              <li>Paste your PIN code</li>
+              <li>Validate — diamonds credited in under 30 seconds!</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Tip:</strong> verify your Free Fire player ID is correct before redeeming.</div>
+          `
+        },
+        es: {
+          title: 'Cómo activar un PIN de Free Fire',
+          subtitle: 'DigitalPay · 2 min de lectura',
+          body: `
+            <h4>1. Compre su paquete</h4>
+            <p>Elija su paquete de diamantes Free Fire. Pago con <strong>MonCash</strong>, <strong>NatCash</strong>, <strong>Meru</strong> o su <strong>Billetera DigitalPay</strong>.</p>
+            <h4>2. Reciba su PIN</h4>
+            <p>Para los 6 paquetes auto-entregados, el código PIN aparece <strong>al instante</strong> en el Historial.</p>
+            <h4>3. Copie el PIN</h4>
+            <p>Vaya a <code>commande.html</code> → busque su pedido → haga clic en <strong>Copiar</strong>.</p>
+            <h4>4. Reclame sus diamantes</h4>
+            <ol>
+              <li>Abra <code>redeem.hype.games</code></li>
+              <li>Inicie sesión con su cuenta Free Fire</li>
+              <li>Pegue su código PIN</li>
+              <li>¡Valide — diamantes acreditados en menos de 30 segundos!</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> verifique su ID de jugador Free Fire antes de reclamar.</div>
+          `
+        }
+      },
+      wise: {
+        fr: {
+          title: 'Utiliser Wise depuis Haïti',
+          subtitle: 'DigitalPay · 3 min de lecture',
+          body: `
+            <h4>Pourquoi Wise ?</h4>
+            <p>Wise permet d'envoyer des USD partout dans le monde à faible coût. DigitalPay vous permet d'envoyer des fonds vers <strong>n'importe quel compte Wise</strong> en quelques minutes.</p>
+            <h4>Comment ça marche sur DigitalPay</h4>
+            <ol>
+              <li>Choisissez le montant en USD (min $5, max $250)</li>
+              <li>Entrez l'<strong>email du destinataire Wise</strong></li>
+              <li>Payez via MonCash, NatCash ou Wallet</li>
+              <li>Nous transférons sous 5-15 minutes</li>
+            </ol>
+            <h4>Nos frais</h4>
+            <p><strong>Taux :</strong> 1 USD = 145 HTG · <strong>Frais :</strong> 5% du montant · <strong>Aucun autre frais caché</strong></p>
+            <div class="guide-tip">💡 <strong>Conseil :</strong> vérifiez bien l'email du destinataire.</div>
+          `
+        },
+        ht: {
+          title: 'Itilize Wise soti Ayiti',
+          subtitle: 'DigitalPay · 3 min lekti',
+          body: `
+            <h4>Poukisa Wise ?</h4>
+            <p>Wise pèmèt ou voye USD toupatou ak bon mache. DigitalPay pèmèt ou voye lajan nan <strong>nenpòt kont Wise</strong>.</p>
+            <h4>Kijan sa fonksyone</h4>
+            <ol>
+              <li>Chwazi kantite USD ($5 min, $250 max)</li>
+              <li>Antre <strong>imel destinatè Wise</strong></li>
+              <li>Peye ak MonCash, NatCash oswa Bous</li>
+              <li>Nou transfere nan 5-15 minit</li>
+            </ol>
+            <h4>Frè nou</h4>
+            <p><strong>To :</strong> 1 USD = 145 HTG · <strong>Frè :</strong> 5% · <strong>Pa gen lòt frè kache</strong></p>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> verifye imel destinatè a byen.</div>
+          `
+        },
+        en: {
+          title: 'Use Wise from Haiti',
+          subtitle: 'DigitalPay · 3 min read',
+          body: `
+            <h4>Why Wise?</h4>
+            <p>Wise lets you send USD worldwide at low cost. DigitalPay allows you to send funds to <strong>any Wise account</strong>.</p>
+            <h4>How it works</h4>
+            <ol>
+              <li>Choose USD amount (min $5, max $250)</li>
+              <li>Enter the <strong>Wise recipient email</strong></li>
+              <li>Pay via MonCash, NatCash or Wallet</li>
+              <li>We transfer within 5-15 minutes</li>
+            </ol>
+            <h4>Our fees</h4>
+            <p><strong>Rate:</strong> 1 USD = 145 HTG · <strong>Fees:</strong> 5% · <strong>No hidden charges</strong></p>
+            <div class="guide-tip">💡 <strong>Tip:</strong> double-check the recipient email.</div>
+          `
+        },
+        es: {
+          title: 'Usar Wise desde Haití',
+          subtitle: 'DigitalPay · 3 min de lectura',
+          body: `
+            <h4>¿Por qué Wise?</h4>
+            <p>Wise permite enviar USD a todo el mundo a bajo costo. DigitalPay le permite enviar fondos a <strong>cualquier cuenta Wise</strong>.</p>
+            <h4>Cómo funciona</h4>
+            <ol>
+              <li>Elija monto USD (min $5, max $250)</li>
+              <li>Ingrese el <strong>email del destinatario Wise</strong></li>
+              <li>Pague con MonCash, NatCash o Billetera</li>
+              <li>Transferimos en 5-15 minutos</li>
+            </ol>
+            <h4>Nuestras tarifas</h4>
+            <p><strong>Tasa:</strong> 1 USD = 145 HTG · <strong>Comisión:</strong> 5%</p>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> verifique el email del destinatario.</div>
+          `
+        }
+      },
+      netflix: {
+        fr: {
+          title: 'Netflix sans carte bancaire',
+          subtitle: 'DigitalPay · 2 min de lecture',
+          body: `
+            <h4>Le problème</h4>
+            <p>Netflix demande une carte bancaire internationale pour s'abonner. En Haïti, peu de gens en possèdent une.</p>
+            <h4>La solution DigitalPay</h4>
+            <p>Nous activons votre compte Netflix directement, <strong>sans carte bancaire</strong>. Vous n'avez qu'à payer en gourdes via MonCash, NatCash ou Wallet.</p>
+            <h4>Comment procéder</h4>
+            <ol>
+              <li>Choisissez Netflix → 1, 2 ou 3 mois</li>
+              <li>Payez avec votre méthode préférée</li>
+              <li>Nous activons votre compte sous 5-15 minutes</li>
+              <li>Recevez vos identifiants par WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Astuce :</strong> vous pouvez aussi acheter une <strong>Netflix Gift Card</strong>.</div>
+          `
+        },
+        ht: {
+          title: 'Netflix san kat bankè',
+          subtitle: 'DigitalPay · 2 min lekti',
+          body: `
+            <h4>Pwoblèm nan</h4>
+            <p>Netflix mande yon kat bankè entènasyonal. Ann Ayiti, pa anpil moun ki genyen.</p>
+            <h4>Solisyon DigitalPay</h4>
+            <p>Nou aktive kont Netflix ou <strong>san kat bankè</strong>. Ou peye an goud ak MonCash, NatCash oswa Bous.</p>
+            <h4>Kijan pou fè</h4>
+            <ol>
+              <li>Chwazi Netflix → 1, 2 oswa 3 mwa</li>
+              <li>Peye ak metòd ou</li>
+              <li>Nou aktive kont ou nan 5-15 minit</li>
+              <li>Resevwa idantifyan ou sou WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> ou ka achte yon <strong>Kat Kado Netflix</strong> tou.</div>
+          `
+        },
+        en: {
+          title: 'Netflix without a bank card',
+          subtitle: 'DigitalPay · 2 min read',
+          body: `
+            <h4>The problem</h4>
+            <p>Netflix requires an international bank card to subscribe. In Haiti, few people own one.</p>
+            <h4>The DigitalPay solution</h4>
+            <p>We activate your Netflix account directly, <strong>no bank card needed</strong>.</p>
+            <h4>How to proceed</h4>
+            <ol>
+              <li>Choose Netflix → 1, 2 or 3 months</li>
+              <li>Pay with your preferred method</li>
+              <li>We activate your account within 5-15 minutes</li>
+              <li>Receive your credentials via WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Tip:</strong> you can also buy a <strong>Netflix Gift Card</strong>.</div>
+          `
+        },
+        es: {
+          title: 'Netflix sin tarjeta bancaria',
+          subtitle: 'DigitalPay · 2 min de lectura',
+          body: `
+            <h4>El problema</h4>
+            <p>Netflix requiere una tarjeta bancaria internacional. En Haití, pocos la tienen.</p>
+            <h4>La solución DigitalPay</h4>
+            <p>Activamos su cuenta Netflix directamente, <strong>sin tarjeta bancaria</strong>.</p>
+            <h4>Cómo proceder</h4>
+            <ol>
+              <li>Elija Netflix → 1, 2 o 3 meses</li>
+              <li>Pague con su método preferido</li>
+              <li>Activamos su cuenta en 5-15 minutos</li>
+              <li>Reciba sus credenciales por WhatsApp</li>
+            </ol>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> también puede comprar una <strong>Netflix Gift Card</strong>.</div>
+          `
+        }
+      },
+      rates: {
+        fr: {
+          title: 'Comprendre les taux USD/HTG',
+          subtitle: 'DigitalPay · 3 min de lecture',
+          body: `
+            <h4>Pourquoi des taux différents ?</h4>
+            <p>Chaque service a son propre taux car les frais bancaires, la liquidité et les partenaires diffèrent.</p>
+            <h4>Nos taux actuels</h4>
+            <ul>
+              <li><strong>Wise :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance :</strong> 1 USD = 142 HTG</li>
+              <li><strong>Gift Cards :</strong> 1 USD = 160 HTG</li>
+              <li><strong>Dépôt wallet Meru :</strong> 1 USD = 150 HTG</li>
+            </ul>
+            <h4>Exemple concret</h4>
+            <p>Vous voulez envoyer <strong>$50</strong> via Wise :</p>
+            <ul>
+              <li>Montant USD : $50</li>
+              <li>Conversion : 50 × 145 = 7 250 HTG</li>
+              <li>Frais 5% : 362 HTG</li>
+              <li><strong>Total à payer :</strong> 7 612 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Astuce :</strong> pour les montants élevés, Binance offre les frais les plus bas (0%).</div>
+          `
+        },
+        ht: {
+          title: 'Konprann to USD/HTG',
+          subtitle: 'DigitalPay · 3 min lekti',
+          body: `
+            <h4>Poukisa diferan to ?</h4>
+            <p>Chak sèvis gen pwòp to li paske frè bankè, lajan ak patnè yo diferan.</p>
+            <h4>To nou kounye a</h4>
+            <ul>
+              <li><strong>Wise :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru :</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance :</strong> 1 USD = 142 HTG</li>
+              <li><strong>Kat Kado :</strong> 1 USD = 160 HTG</li>
+              <li><strong>Depo Meru :</strong> 1 USD = 150 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Konsèy :</strong> pou gwo montan, Binance gen pi ba frè (0%).</div>
+          `
+        },
+        en: {
+          title: 'Understand USD/HTG rates',
+          subtitle: 'DigitalPay · 3 min read',
+          body: `
+            <h4>Why different rates?</h4>
+            <p>Each service has its own rate because banking fees, liquidity and partners differ.</p>
+            <h4>Our current rates</h4>
+            <ul>
+              <li><strong>Wise:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance:</strong> 1 USD = 142 HTG</li>
+              <li><strong>Gift Cards:</strong> 1 USD = 160 HTG</li>
+              <li><strong>Meru deposit:</strong> 1 USD = 150 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Tip:</strong> for large amounts, Binance offers the lowest fees (0%).</div>
+          `
+        },
+        es: {
+          title: 'Entender las tasas USD/HTG',
+          subtitle: 'DigitalPay · 3 min de lectura',
+          body: `
+            <h4>¿Por qué diferentes tasas?</h4>
+            <p>Cada servicio tiene su propia tasa porque las comisiones bancarias, liquidez y socios difieren.</p>
+            <h4>Nuestras tasas actuales</h4>
+            <ul>
+              <li><strong>Wise:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Meru:</strong> 1 USD = 145 HTG</li>
+              <li><strong>Binance:</strong> 1 USD = 142 HTG</li>
+              <li><strong>Gift Cards:</strong> 1 USD = 160 HTG</li>
+            </ul>
+            <div class="guide-tip">💡 <strong>Consejo:</strong> para montos altos, Binance ofrece las comisiones más bajas.</div>
+          `
+        }
+      }
+    };
+
+    function openGuide(guideId) {
+      const guide = GUIDES[guideId];
+      if (!guide) return;
+      const data = guide[STATE.lang] || guide.fr;
+      document.getElementById('guide-modal-title').textContent = data.title;
+      document.getElementById('guide-modal-subtitle').textContent = data.subtitle;
+      document.getElementById('guide-modal-body').innerHTML = data.body;
+      document.getElementById('guide-modal-backdrop').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      vibrate(5);
+    }
+
+    function closeGuide() {
+      document.getElementById('guide-modal-backdrop').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    /* ═══ AUTH ═══ */
     auth.onAuthStateChanged(user => {
       STATE.user = user;
       updateSidebarAuthUI();
     });
 
+    /* ═══ BOOT ═══ */
     document.addEventListener('DOMContentLoaded', () => {
       const saved = localStorage.getItem('dp_lang') || 'fr';
       STATE.lang = saved;
@@ -785,14 +1588,23 @@
       updateCartBadge();
       initScrollEffects();
       initRipple();
-      setTimeout(() => document.body.classList.add('ready'), 60);
+      listenSystemStatus();
+      setTimeout(() => {
+        moveNavIndicator();
+        document.body.classList.add('ready');
+      }, 100);
+      window.addEventListener('resize', moveNavIndicator);
+
+      // Escape closes guide modal
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeGuide();
+      });
+    });
+
+    window.addEventListener('beforeunload', () => {
+      if (STATE.unsubStatus) { try { STATE.unsubStatus(); } catch (e) {} }
     });
   </script>
-  <script src="/assets/js/notifications.js"></script>
-  <script src="/assets/js/chat.js"></script>
   <script src="/assets/js/design-system.js"></script>
-  <script src="/assets/js/ux-enhancements.js"></script>
-  <script src="/assets/js/wishlist.js"></script>
-  <script src="/assets/js/features.js"></script>
 </body>
 </html>
