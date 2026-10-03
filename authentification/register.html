@@ -1,1184 +1,1377 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#00B4FF">
-  <script>(function(){try{var t=localStorage.getItem('dp_theme')||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <title>Créer un compte — DigitalPay Haiti</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#FFFFFF">
+<title>Créer un compte — TizèPay</title>
+<meta name="description" content="Créez votre compte TizèPay gratuitement.">
+<link rel="icon" href="../assets/logo.png">
+<link rel="apple-touch-icon" href="../assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>(function(){try{
+var t=localStorage.getItem('tzp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+var l=localStorage.getItem('tzp_lang')||((navigator.language||'fr').slice(0,2).toLowerCase());
+if(!['fr','ht','en','es'].includes(l))l='fr';
+document.documentElement.setAttribute('data-theme',t);
+document.documentElement.lang=l;
+}catch(e){}})();</script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   TIZÈPAY — AUTH DESIGN SYSTEM
+   ═══════════════════════════════════════════════════════════════════════ */
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+/* ═════════ 1. TOKENS ═════════ */
+:root{
+  --blue-25:#F5F8FF;--blue-50:#EBF1FF;--blue-100:#D6E3FF;--blue-200:#ADC6FF;
+  --blue-300:#7FA4FF;--blue-400:#3D7BFF;--blue-500:#0055FF;--blue-600:#003ACC;--blue-700:#002A99;
+  --blue-soft:rgba(0,85,255,.08);--blue-glow:rgba(0,85,255,.32);--blue-glow-soft:rgba(0,85,255,.16);
+  --grad-blue:linear-gradient(135deg,#0055FF 0%,#003ACC 100%);
+  --grad-spotlight:linear-gradient(135deg,#0055FF 0%,#3D7BFF 50%,#002A99 100%);
 
-  <link rel="icon" href="/assets/favicon.ico" sizes="any">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-  <link rel="manifest" href="/assets/site.webmanifest">
+  --green:#00A86B;--green-bg:#ECFDF5;
+  --red:#FF3B30;--red-bg:#FEF2F2;
+  --amber:#F59E0B;--amber-bg:#FFFBEB;
 
-  <style>
-    :root {
-      --bg-page: #F5F7FB; --bg-card: #FFFFFF; --bg-subtle: #F0F4F9; --bg-hover: #F8FAFC;
-      --bg-glass: rgba(245, 247, 251, 0.72);
-      --border-subtle: #EDF1F7; --border-default: #E1E8F0; --border-strong: #C7D2E0;
-      --text-primary: #0A1633; --text-secondary: #4A5568; --text-tertiary: #8B94A7; --text-quaternary: #B5BDCA;
-      --blue-25: #F0F9FF; --blue-50: #E0F2FE; --blue-100: #BAE6FD; --blue-200: #7DD3FC;
-      --blue-400: #38BDF8; --blue-500: #00B4FF; --blue-600: #0055FF; --blue-700: #003BCC;
-      --blue-gradient: linear-gradient(135deg, #00B4FF 0%, #0055FF 100%);
-      --success: #059669; --success-bg: #ECFDF5; --success-border: #A7F3D0;
-      --danger: #DC2626; --danger-bg: #FEF2F2; --danger-border: #FECACA;
-      --warning: #D97706; --warning-bg: #FFFBEB;
-      --r-xs: 6px; --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-2xl: 28px; --r-3xl: 36px; --r-full: 9999px;
-      --shadow-2xs: 0 1px 1px rgba(10, 22, 51, 0.03);
-      --shadow-xs: 0 1px 2px rgba(10, 22, 51, 0.04), 0 1px 1px rgba(10, 22, 51, 0.02);
-      --shadow-sm: 0 2px 4px rgba(10, 22, 51, 0.04), 0 1px 2px rgba(10, 22, 51, 0.03);
-      --shadow-md: 0 4px 8px rgba(10, 22, 51, 0.05), 0 2px 4px rgba(10, 22, 51, 0.03);
-      --shadow-lg: 0 8px 16px rgba(10, 22, 51, 0.06), 0 4px 8px rgba(10, 22, 51, 0.04);
-      --shadow-xl: 0 16px 32px rgba(10, 22, 51, 0.08), 0 8px 16px rgba(10, 22, 51, 0.04);
-      --shadow-2xl: 0 28px 56px rgba(10, 22, 51, 0.12), 0 12px 24px rgba(10, 22, 51, 0.06);
-      --shadow-blue: 0 4px 12px rgba(0, 85, 255, 0.22), 0 10px 28px rgba(0, 85, 255, 0.14);
-      --shadow-blue-lg: 0 8px 20px rgba(0, 85, 255, 0.28), 0 16px 40px rgba(0, 85, 255, 0.16);
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+  --g25:#FCFCFD;--g50:#FAFAFA;--g100:#F4F4F5;--g200:#E4E4E7;
+  --g300:#D4D4D8;--g400:#A1A1AA;--g500:#71717A;--g600:#52525B;--g700:#3F3F46;
+  --bg:var(--g25);--bg-card:#FFFFFF;--bg-soft:var(--g50);--bg-mute:var(--g100);
+  --fg:#0A0A0A;--fg-mute:#52525B;--fg-soft:#8A8A8A;--fg-faint:#B0B0B0;
+  --border:#E8E8EC;--border-strong:#D4D4D8;--border-soft:#F0F0F4;
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body { background: var(--bg-page); color: var(--text-primary); font-family: var(--font); font-size: 14px; line-height: 1.5; min-height: 100vh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; opacity: 0; transition: opacity 0.4s ease; }
-    body.ready { opacity: 1; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+  --r-xs:6px;--r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;--r-2xl:36px;--r-full:9999px;
 
-    .app-shell { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg-page); position: relative; display: flex; flex-direction: column; border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
+  --sh-xs:0 1px 2px rgba(15,15,20,.04);
+  --sh-sm:0 2px 6px rgba(15,15,20,.04),0 1px 2px rgba(15,15,20,.02);
+  --sh-md:0 8px 20px rgba(15,15,20,.06),0 2px 6px rgba(15,15,20,.03);
+  --sh-lg:0 18px 40px rgba(15,15,20,.08),0 6px 14px rgba(15,15,20,.04);
+  --sh-xl:0 32px 64px rgba(15,15,20,.12),0 12px 24px rgba(15,15,20,.06);
+  --sh-blue:0 8px 24px rgba(0,85,255,.24),0 2px 8px rgba(0,85,255,.12);
+  --sh-blue-lg:0 16px 40px rgba(0,85,255,.32),0 4px 12px rgba(0,85,255,.18);
 
-    /* ═══ HERO ═══ */
-    .auth-hero {
-      position: relative;
-      background: linear-gradient(135deg, #0A1633 0%, #003BCC 45%, #00B4FF 100%);
-      padding: 36px 24px 32px;
-      color: #FFFFFF;
-      overflow: hidden;
-      border-radius: 0 0 32px 32px;
-      margin-bottom: 22px;
-      box-shadow: 0 12px 32px rgba(0, 85, 255, 0.24);
-    }
-    .auth-hero::after { content: ''; position: absolute; top: -80px; right: -80px; width: 260px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,0.16) 0%, transparent 70%); pointer-events: none; }
-    .auth-hero::before { content: ''; position: absolute; bottom: -60px; left: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); pointer-events: none; }
-    .auth-hero-top { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; position: relative; z-index: 1; }
-    .auth-hero-logo {
-      width: 48px; height: 48px; border-radius: 15px;
-      background: rgba(255,255,255,0.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid rgba(255,255,255,0.25);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .auth-hero-logo img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
-    .auth-hero-brand { min-width: 0; }
-    .auth-hero-brand-name { font-size: 14px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.1; text-transform: uppercase; }
-    .auth-hero-brand-sub { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
-    .auth-hero-title { font-size: 26px; font-weight: 900; letter-spacing: -0.7px; line-height: 1.1; margin-bottom: 6px; position: relative; z-index: 1; }
-    .auth-hero-sub { font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.5; position: relative; z-index: 1; max-width: 340px; }
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --ease-out:cubic-bezier(0.22,1,0.36,1);
+  --spring:cubic-bezier(0.34,1.56,0.64,1);
+  --spring-soft:cubic-bezier(0.25,1.5,0.5,1);
 
-    /* ═══ PERKS (petits arguments) ═══ */
-    .perks-row { display: flex; gap: 8px; margin-top: 18px; position: relative; z-index: 1; }
-    .perk { background: rgba(255,255,255,0.14); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.18); border-radius: var(--r-full); padding: 5px 10px; font-size: 10.5px; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 5px; letter-spacing: 0.2px; }
-    .perk svg { width: 11px; height: 11px; stroke: #FFFFFF; stroke-width: 2.6; fill: none; flex-shrink: 0; }
+  --dur-fast:150ms;--dur:220ms;--dur-slow:320ms;--dur-slower:480ms;
+  --t-fast:var(--dur-fast) var(--ease);
+  --t:var(--dur) var(--ease);
+  --t-slow:var(--dur-slow) var(--ease);
+}
 
-    /* ═══ AUTH MAIN ═══ */
-    .auth-main { padding: 0 22px 30px; flex: 1; }
+html[data-theme="dark"]{
+  --bg:#08080A;--bg-card:#141416;--bg-soft:#18181B;--bg-mute:#1E1E22;
+  --fg:#F7F7F8;--fg-mute:#A1A1AA;--fg-soft:#71717A;--fg-faint:#4A4A52;
+  --border:#26262A;--border-strong:#3F3F46;--border-soft:#1E1E22;
+  --blue-soft:rgba(0,85,255,.18);
+  --green-bg:#0A1F17;--red-bg:#2A0F0F;--amber-bg:#2A1F0A;
+  --sh-xs:0 1px 2px rgba(0,0,0,.5);
+  --sh-sm:0 2px 6px rgba(0,0,0,.4);
+  --sh-md:0 8px 20px rgba(0,0,0,.5);
+  --sh-lg:0 18px 40px rgba(0,0,0,.6);
+  --sh-xl:0 32px 64px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
 
-    /* ═══ GOOGLE BUTTON ═══ */
-    .btn-google {
-      width: 100%;
-      height: 54px;
-      background: #FFFFFF;
-      border: 1.5px solid var(--border-default);
-      border-radius: var(--r-md);
-      color: var(--text-primary);
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-family: inherit;
-      transition: all 0.2s var(--ease-out);
-      box-shadow: var(--shadow-xs);
-      letter-spacing: -0.1px;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-google:hover:not(:disabled) { border-color: var(--border-strong); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
-    .btn-google:active:not(:disabled) { transform: scale(0.985); }
-    .btn-google:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+/* ═════════ 2. BASE ═════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:14px;line-height:1.5;color:var(--fg);background:var(--bg);
+  min-height:100dvh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  font-feature-settings:'cv11','ss01','ss03','tnum';
+  transition:background-color .4s var(--ease),color .4s var(--ease);
+  overflow-x:hidden;position:relative;
+  display:flex;flex-direction:column;
+}
+img,svg{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none;transition:color var(--t)}
+input,textarea,select{font:inherit;color:inherit;font-family:inherit}
+::selection{background:var(--blue-500);color:#FFF}
+:focus-visible{outline:2px solid var(--blue-500);outline-offset:3px;border-radius:var(--r-xs)}
+::-webkit-scrollbar{width:0;height:0}
 
-    /* ═══ DIVIDER ═══ */
-    .auth-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
-    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
-    .auth-divider span { font-size: 11px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.8px; }
+/* ═════════ 3. KEYFRAMES ═════════ */
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes glowPulse{0%,100%{opacity:.55;filter:blur(40px)}50%{opacity:.85;filter:blur(60px)}}
+@keyframes spinner{to{transform:rotate(360deg)}}
+@keyframes badgePop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes progressGrow{from{width:0%}to{width:var(--progress-width)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:.9}}
 
-    /* ═══ FIELDS ═══ */
-    .field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
-    .field-label { font-size: 11.5px; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.4px; }
-    .field-wrap { position: relative; display: flex; align-items: center; }
-    .field-icon-left { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); pointer-events: none; display: flex; transition: color 0.2s ease; }
-    .field-wrap:focus-within .field-icon-left { color: var(--blue-600); }
-    .field-icon-left svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; }
+/* ═════════ 4. LAYOUT ═════════ */
+.auth-shell{
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  max-width:480px;margin:0 auto;width:100%;
+  position:relative;overflow:hidden;
+}
 
-    .text-input {
-      width: 100%;
-      height: 52px;
-      background: var(--bg-card);
-      border: 1.5px solid var(--border-default);
-      border-radius: var(--r-md);
-      padding: 0 46px 0 44px;
-      font-size: 14.5px;
-      font-weight: 600;
-      color: var(--text-primary);
-      outline: none;
-      font-family: inherit;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow-2xs);
-    }
-    .text-input::placeholder { color: var(--text-quaternary); font-weight: 500; }
-    .text-input:focus {
-      border-color: var(--blue-600);
-      box-shadow: 0 0 0 4px var(--blue-50), var(--shadow-sm);
-      background: #FFFFFF;
-    }
-    .text-input.error { border-color: var(--danger); }
-    .text-input.error:focus { box-shadow: 0 0 0 4px var(--danger-bg); }
-    .text-input.valid { border-color: var(--success-border); }
-    .text-input.valid:focus { box-shadow: 0 0 0 4px var(--success-bg); border-color: var(--success); }
+/* Background glow */
+.auth-shell::before{
+  content:'';position:absolute;top:-160px;right:-120px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(0,85,255,.16) 0%,transparent 68%);
+  filter:blur(50px);pointer-events:none;
+  animation:glowPulse 8s ease-in-out infinite;
+}
+.auth-shell::after{
+  content:'';position:absolute;bottom:-120px;left:-100px;
+  width:340px;height:340px;
+  background:radial-gradient(circle,rgba(124,58,237,.12) 0%,transparent 68%);
+  filter:blur(50px);pointer-events:none;
+  animation:glowPulse 10s ease-in-out infinite reverse;
+}
 
-    .field-toggle {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: transparent;
-      border: none;
-      color: var(--text-tertiary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s ease;
-      font-family: inherit;
-    }
-    .field-toggle:hover { background: var(--bg-subtle); color: var(--text-primary); }
-    .field-toggle:active { transform: translateY(-50%) scale(0.9); }
-    .field-toggle svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2; fill: none; }
+/* ═════════ 5. HEADER ═════════ */
+.auth-header{
+  position:relative;z-index:2;
+  padding:20px 20px 0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.auth-header__back{
+  width:40px;height:40px;border-radius:var(--r-md);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--fg);transition:all var(--t-fast);background:var(--bg-card);
+  border:1px solid var(--border-soft);
+}
+.auth-header__back:hover{background:var(--bg-mute);border-color:var(--border-strong)}
+.auth-header__back:active{transform:scale(.92)}
+.auth-header__back svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.2;fill:none}
 
-    /* ═══ PASSWORD STRENGTH ═══ */
-    .pwd-strength {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: -4px;
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: all 0.3s var(--ease-out);
-    }
-    .pwd-strength.visible { opacity: 1; max-height: 30px; margin-top: 6px; }
-    .pwd-bars { display: flex; gap: 4px; flex: 1; }
-    .pwd-bar { flex: 1; height: 4px; border-radius: 2px; background: var(--bg-subtle); transition: background 0.3s ease; }
-    .pwd-bar.weak { background: var(--danger); }
-    .pwd-bar.medium { background: var(--warning); }
-    .pwd-bar.strong { background: var(--success); }
-    .pwd-strength-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; min-width: 60px; text-align: right; }
-    .pwd-strength-label.weak { color: var(--danger); }
-    .pwd-strength-label.medium { color: var(--warning); }
-    .pwd-strength-label.strong { color: var(--success); }
+.auth-header__theme{
+  width:40px;height:40px;border-radius:var(--r-md);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--fg);transition:all var(--t-fast);background:var(--bg-card);
+  border:1px solid var(--border-soft);position:relative;overflow:hidden;
+}
+.auth-header__theme:hover{background:var(--bg-mute);border-color:var(--border-strong)}
+.auth-header__theme:active{transform:scale(.92)}
+.auth-header__theme svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;position:absolute;transition:all var(--dur-slower) var(--spring)}
+.auth-header__theme .icon-sun{display:none;transform:rotate(90deg) scale(0)}
+.auth-header__theme .icon-moon{display:block;transform:rotate(0) scale(1)}
+html[data-theme="dark"] .auth-header__theme .icon-sun{display:block;transform:rotate(0) scale(1)}
+html[data-theme="dark"] .auth-header__theme .icon-moon{display:none;transform:rotate(-90deg) scale(0)}
 
-    /* ═══ PASSWORD MATCH INDICATOR ═══ */
-    .pwd-match {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-    .pwd-match.visible { display: flex; }
-    .pwd-match svg { width: 20px; height: 20px; stroke-width: 2.4; fill: none; }
-    .pwd-match.match svg { stroke: var(--success); }
-    .pwd-match.mismatch svg { stroke: var(--danger); }
+/* ═════════ 6. HERO ═════════ */
+.auth-hero{
+  position:relative;z-index:2;
+  padding:32px 24px 24px;
+  text-align:left;
+}
+.auth-hero__logo{
+  width:60px;height:60px;border-radius:var(--r-lg);
+  background:var(--grad-blue);
+  display:grid;place-items:center;
+  box-shadow:var(--sh-blue);
+  margin-bottom:20px;
+  overflow:hidden;
+}
+.auth-hero__logo img{width:36px;height:36px;object-fit:contain;filter:brightness(0) invert(1)}
+.auth-hero__logo svg{width:28px;height:28px;stroke:#FFF;stroke-width:2.6;fill:none}
 
-    /* ═══ TERMS CHECKBOX ═══ */
-    .terms-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin: 18px 0 22px;
-      cursor: pointer;
-      user-select: none;
-      padding: 4px;
-    }
-    .terms-row input { position: absolute; opacity: 0; pointer-events: none; }
-    .terms-check {
-      width: 20px;
-      height: 20px;
-      border-radius: 6px;
-      border: 1.5px solid var(--border-strong);
-      background: var(--bg-card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.18s ease;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .terms-check svg { width: 12px; height: 12px; stroke: #FFFFFF; stroke-width: 3; fill: none; opacity: 0; transition: opacity 0.15s ease; }
-    .terms-row input:checked + .terms-check { background: var(--blue-gradient); border-color: transparent; box-shadow: 0 3px 10px rgba(0, 85, 255, 0.28); }
-    .terms-row input:checked + .terms-check svg { opacity: 1; }
-    .terms-row input:focus-visible + .terms-check { outline: 2px solid var(--blue-600); outline-offset: 2px; }
-    .terms-label { font-size: 12.5px; font-weight: 600; color: var(--text-secondary); line-height: 1.5; flex: 1; }
-    .terms-label a { color: var(--blue-600); font-weight: 800; text-decoration: none; }
-    .terms-label a:hover { text-decoration: underline; }
-    .terms-row.shake { animation: shake-row 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
-    @keyframes shake-row {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-6px); }
-      40%, 80% { transform: translateX(6px); }
-    }
+.auth-hero__eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 10px;background:var(--bg-card);
+  border:1px solid var(--border-soft);
+  border-radius:var(--r-full);
+  font-size:10.5px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--fg-mute);
+  margin-bottom:14px;
+}
+.auth-hero__eyebrow-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--blue-500);
+  box-shadow:0 0 0 3px var(--blue-soft);
+}
+.auth-hero__title{
+  font-size:clamp(28px,7.5vw,34px);
+  font-weight:900;letter-spacing:-.045em;
+  line-height:1.05;margin-bottom:8px;
+  color:var(--fg);
+}
+.auth-hero__title em{
+  font-style:normal;
+  background:var(--grad-blue);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  display:inline-block;position:relative;
+}
+.auth-hero__title em::after{
+  content:'';position:absolute;bottom:2px;left:0;right:0;
+  height:6px;background:var(--blue-100);z-index:-1;border-radius:3px;
+}
+.auth-hero__sub{
+  font-size:14.5px;color:var(--fg-mute);
+  line-height:1.55;max-width:340px;
+}
 
-    /* ═══ SUBMIT ═══ */
-    .btn-submit-register {
-      width: 100%;
-      height: 54px;
-      background: var(--blue-gradient);
-      color: #FFFFFF;
-      border: none;
-      border-radius: var(--r-md);
-      font-size: 14.5px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-family: inherit;
-      box-shadow: var(--shadow-blue);
-      transition: all 0.2s var(--ease-out);
-      letter-spacing: -0.1px;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-submit-register:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0, 85, 255, 0.3), 0 14px 32px rgba(0, 85, 255, 0.18); }
-    .btn-submit-register:active:not(:disabled) { transform: scale(0.985); }
-    .btn-submit-register:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; transform: none; }
-    .btn-submit-register .spinner { width: 20px; height: 20px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #FFFFFF; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
-    .btn-submit-register.loading .spinner { display: block; }
-    .btn-submit-register.loading .btn-label { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+/* Perks */
+.auth-perks{
+  display:flex;gap:8px;margin-top:16px;
+  flex-wrap:wrap;
+}
+.auth-perk{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 11px;
+  background:var(--bg-card);
+  border:1px solid var(--border-soft);
+  border-radius:var(--r-full);
+  font-size:11px;font-weight:700;
+  color:var(--fg-mute);
+}
+.auth-perk svg{
+  width:12px;height:12px;
+  stroke:var(--blue-500);stroke-width:2.4;fill:none;flex-shrink:0;
+}
 
-    /* ═══ ERROR/SUCCESS BOXES ═══ */
-    .auth-error {
-      margin-top: 14px;
-      padding: 12px 14px;
-      background: var(--danger-bg);
-      border: 1px solid var(--danger-border);
-      border-radius: var(--r-md);
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--danger);
-      display: none;
-      align-items: flex-start;
-      gap: 10px;
-      line-height: 1.5;
-    }
-    .auth-error.visible { display: flex; }
-    .auth-error svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; flex-shrink: 0; margin-top: 1px; }
+/* ═════════ 7. FORM ═════════ */
+.auth-form{
+  position:relative;z-index:2;
+  padding:0 24px;
+  flex:1;
+  display:flex;flex-direction:column;
+  gap:13px;
+  animation:slideUp .5s var(--ease-out) both;
+  animation-delay:.05s;
+}
 
-    .auth-success {
-      margin-top: 14px;
-      padding: 12px 14px;
-      background: var(--success-bg);
-      border: 1px solid var(--success-border);
-      border-radius: var(--r-md);
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--success);
-      display: none;
-      align-items: flex-start;
-      gap: 10px;
-      line-height: 1.5;
-    }
-    .auth-success.visible { display: flex; }
-    .auth-success svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; flex-shrink: 0; margin-top: 1px; }
+/* Google button */
+.btn-google{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;height:52px;
+  background:var(--bg-card);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-md);
+  font-size:14.5px;font-weight:700;
+  color:var(--fg);letter-spacing:-.01em;
+  transition:all var(--t);position:relative;overflow:hidden;
+  box-shadow:var(--sh-xs);
+}
+.btn-google::before{
+  content:'';position:absolute;inset:0;background:var(--fg);
+  opacity:0;transition:opacity var(--t-fast);pointer-events:none;
+}
+.btn-google:hover{border-color:var(--border-strong);box-shadow:var(--sh-sm)}
+.btn-google:hover::before{opacity:.03}
+.btn-google:active{transform:scale(.98)}
+.btn-google svg{width:20px;height:20px;flex-shrink:0}
+.btn-google[disabled]{opacity:.6;cursor:not-allowed}
 
-    /* ═══ BOTTOM CTA ═══ */
-    .auth-bottom { text-align: center; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border-subtle); }
-    .auth-bottom-text { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; }
-    .btn-secondary-outline {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: var(--bg-card);
-      border: 1.5px solid var(--border-default);
-      color: var(--text-primary);
-      padding: 12px 22px;
-      border-radius: var(--r-md);
-      font-size: 13.5px;
-      font-weight: 800;
-      text-decoration: none;
-      font-family: inherit;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow-2xs);
-      letter-spacing: -0.1px;
-    }
-    .btn-secondary-outline:hover { border-color: var(--border-strong); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
-    .btn-secondary-outline:active { transform: translateY(0) scale(0.98); }
-    .btn-secondary-outline svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+/* Divider */
+.auth-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:4px 0;
+}
+.auth-divider::before,
+.auth-divider::after{
+  content:'';flex:1;height:1px;background:var(--border-soft);
+}
+.auth-divider span{
+  font-size:11px;font-weight:700;
+  color:var(--fg-soft);
+  letter-spacing:.06em;text-transform:uppercase;
+}
 
-    /* ═══ TRUST STRIP ═══ */
-    .trust-mini { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; font-size: 10.5px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px; }
-    .trust-mini-item { display: flex; align-items: center; gap: 5px; }
-    .trust-mini-item svg { width: 12px; height: 12px; stroke: var(--success); stroke-width: 2.4; fill: none; }
+/* Field */
+.field{
+  display:flex;flex-direction:column;gap:6px;
+  position:relative;
+}
+.field label{
+  font-size:12.5px;font-weight:700;color:var(--fg);
+  letter-spacing:-.01em;
+}
+.field__wrap{position:relative}
+.field__icon{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  color:var(--fg-soft);pointer-events:none;
+  transition:color var(--t);
+  display:grid;place-items:center;
+}
+.field__icon svg{width:17px;height:17px;stroke:currentColor;stroke-width:2.2;fill:none}
+.field input{
+  width:100%;height:52px;
+  padding:0 46px 0 44px;
+  background:var(--bg-mute);
+  border:1.5px solid transparent;
+  border-radius:var(--r-md);
+  font-size:14.5px;font-weight:600;
+  color:var(--fg);outline:none;
+  transition:all .22s var(--ease);
+}
+.field input::placeholder{color:var(--fg-faint);font-weight:500}
+.field input:focus{background:var(--bg-card);border-color:var(--blue-500);box-shadow:0 0 0 4px var(--blue-soft)}
+.field input:focus ~ .field__icon{color:var(--blue-500)}
+.field input.is-valid{border-color:var(--green)}
+.field input.is-invalid{border-color:var(--red);background:var(--red-bg);animation:shake .35s}
+.field__error{
+  font-size:11px;font-weight:700;color:var(--red);
+  margin-top:2px;display:none;
+}
+.field__error.is-on{display:block}
 
-    /* ═══ TOASTS ═══ */
-    #toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 400; width: calc(100% - 32px); max-width: 400px; pointer-events: none; }
-    .toast { background: var(--text-primary); color: #FFFFFF; padding: 14px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); transform: translateY(-20px); opacity: 0; transition: all 0.35s var(--ease-spring); overflow: hidden; position: relative; }
-    .toast::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; background: var(--blue-600); width: 100%; transform-origin: left; animation: toast-progress 2.6s linear forwards; }
-    @keyframes toast-progress { from { transform: scaleX(1); } to { transform: scaleX(0); } }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.success::after { background: #34D399; }
-    .toast.danger { background: #7F1D1D; }
-    .toast.danger::after { background: #FCA5A5; }
-    .toast.warning { background: #78350F; }
-    .toast.warning::after { background: #FCD34D; }
-    .toast.info { background: #1E3A8A; }
-    .toast.info::after { background: #93C5FD; }
-    .toast-icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
-    .toast-icon svg { width: 18px; height: 18px; stroke-width: 2.5; fill: none; }
-    .toast.success .toast-icon svg { stroke: #34D399; }
-    .toast.danger .toast-icon svg { stroke: #FCA5A5; }
-    .toast.warning .toast-icon svg { stroke: #FCD34D; }
-    .toast.info .toast-icon svg { stroke: #93C5FD; }
-    .toast-msg { flex: 1; line-height: 1.35; }
+/* Password toggle */
+.field__toggle{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  width:36px;height:36px;border-radius:var(--r-sm);
+  display:grid;place-items:center;
+  color:var(--fg-soft);cursor:pointer;
+  transition:all var(--t-fast);
+}
+.field__toggle:hover{background:var(--bg-mute);color:var(--fg-mute)}
+.field__toggle:active{transform:translateY(-50%) scale(.9)}
+.field__toggle svg{width:17px;height:17px;stroke:currentColor;stroke-width:2.2;fill:none}
+.field__toggle .eye-off{display:none}
+.field__toggle.is-on .eye-on{display:none}
+.field__toggle.is-on .eye-off{display:block}
 
-    .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transform: scale(0); animation: ripple-anim 0.6s var(--ease-out); pointer-events: none; }
-    .btn-google .ripple, .btn-secondary-outline .ripple { background: rgba(0, 85, 255, 0.15); }
-    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+/* Password strength meter */
+.strength{
+  margin-top:2px;
+  display:none;
+}
+.strength.is-on{display:block}
+.strength__bars{
+  display:flex;gap:4px;margin-bottom:6px;
+}
+.strength__bar{
+  flex:1;height:4px;
+  background:var(--bg-mute);
+  border-radius:var(--r-full);
+  transition:background .3s var(--ease);
+}
+.strength[data-level="1"] .strength__bar:nth-child(1){background:var(--red)}
+.strength[data-level="2"] .strength__bar:nth-child(1),
+.strength[data-level="2"] .strength__bar:nth-child(2){background:var(--amber)}
+.strength[data-level="3"] .strength__bar:nth-child(1),
+.strength[data-level="3"] .strength__bar:nth-child(2),
+.strength[data-level="3"] .strength__bar:nth-child(3){background:#3D7BFF}
+.strength[data-level="4"] .strength__bar{background:var(--green)}
+.strength__label{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;font-weight:700;
+  color:var(--fg-soft);
+}
+.strength__label-value{
+  font-weight:800;
+  transition:color .3s var(--ease);
+}
+.strength[data-level="1"] .strength__label-value{color:var(--red)}
+.strength[data-level="2"] .strength__label-value{color:var(--amber)}
+.strength[data-level="3"] .strength__label-value{color:#3D7BFF}
+.strength[data-level="4"] .strength__label-value{color:var(--green)}
 
-    /* Dark mode */
-    html[data-theme="dark"] .btn-google { background: var(--bg-card); color: var(--text-primary); }
-    html[data-theme="dark"] .text-input { background: var(--bg-card); color: var(--text-primary); }
-    html[data-theme="dark"] .text-input:focus { background: var(--bg-card); }
-  </style>
+/* Confirm match indicator */
+.match-indicator{
+  position:absolute;right:14px;top:50%;
+  transform:translateY(-50%);
+  display:none;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:50%;
+}
+.match-indicator.is-ok{
+  display:flex;background:var(--green);
+  animation:badgePop .35s var(--spring);
+}
+.match-indicator.is-ko{
+  display:flex;background:var(--red);
+  animation:badgePop .35s var(--spring);
+}
+.match-indicator svg{width:11px;height:11px;stroke:#FFF;stroke-width:3;fill:none}
 
-  <link rel="stylesheet" href="/assets/css/design-system.css">
+/* Checkbox */
+.checkbox{
+  display:flex;align-items:flex-start;gap:10px;
+  cursor:pointer;font-size:13px;font-weight:500;
+  color:var(--fg-mute);user-select:none;
+  line-height:1.5;
+}
+.checkbox input{
+  position:absolute;opacity:0;pointer-events:none;
+}
+.checkbox__box{
+  width:20px;height:20px;border-radius:6px;
+  border:1.5px solid var(--border-strong);
+  background:var(--bg-card);
+  display:grid;place-items:center;
+  transition:all var(--t-fast);
+  flex-shrink:0;margin-top:1px;
+}
+.checkbox__box svg{
+  width:12px;height:12px;stroke:#FFF;stroke-width:3.2;fill:none;
+  stroke-dasharray:50;stroke-dashoffset:50;
+  transition:stroke-dashoffset .3s var(--ease-out);
+}
+.checkbox input:checked ~ .checkbox__box{
+  background:var(--blue-500);border-color:var(--blue-500);
+}
+.checkbox input:checked ~ .checkbox__box svg{
+  stroke-dashoffset:0;
+}
+.checkbox:hover .checkbox__box{border-color:var(--blue-500)}
+.checkbox.is-invalid .checkbox__box{
+  border-color:var(--red);background:var(--red-bg);
+  animation:shake .35s;
+}
+.checkbox__link{
+  color:var(--blue-600);font-weight:700;
+  transition:color var(--t-fast);
+}
+.checkbox__link:hover{color:var(--blue-700);text-decoration:underline}
+
+/* Submit button */
+.btn-submit{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;height:54px;
+  background:var(--blue-500);color:#FFF;
+  border-radius:var(--r-md);
+  font-size:15px;font-weight:800;
+  letter-spacing:-.01em;
+  transition:all var(--t);position:relative;overflow:hidden;
+  box-shadow:var(--sh-blue);
+  margin-top:6px;
+}
+.btn-submit::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.3) 50%,transparent 70%);
+  background-size:200% 100%;opacity:0;
+}
+.btn-submit:hover:not(:disabled){background:var(--blue-600);box-shadow:var(--sh-blue-lg)}
+.btn-submit:hover:not(:disabled)::after{opacity:1;animation:shine 1.5s linear infinite}
+.btn-submit:active:not(:disabled){transform:scale(.98)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.btn-submit svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.4;fill:none}
+.btn-submit__spinner{
+  display:none;width:18px;height:18px;
+  border:2.5px solid rgba(255,255,255,.3);
+  border-top-color:#FFF;border-radius:50%;
+  animation:spinner .7s linear infinite;
+}
+.btn-submit.is-loading .btn-submit__spinner{display:block}
+.btn-submit.is-loading .btn-submit__text,
+.btn-submit.is-loading svg{display:none}
+
+/* Alert box */
+.alert{
+  display:none;
+  padding:12px 14px;
+  border-radius:var(--r-md);
+  font-size:13px;font-weight:600;
+  line-height:1.5;
+  align-items:flex-start;gap:10px;
+  animation:slideUp .3s var(--ease-out);
+}
+.alert.is-on{display:flex}
+.alert--danger{
+  background:var(--red-bg);color:var(--red);
+  border:1px solid rgba(255,59,48,.25);
+}
+.alert--success{
+  background:var(--green-bg);color:var(--green);
+  border:1px solid rgba(0,168,107,.25);
+}
+.alert svg{
+  width:16px;height:16px;stroke:currentColor;
+  stroke-width:2.4;fill:none;flex-shrink:0;margin-top:1px;
+}
+
+/* Login link */
+.auth-footer{
+  position:relative;z-index:2;
+  padding:24px 24px calc(24px + env(safe-area-inset-bottom,0));
+  text-align:center;
+  margin-top:auto;
+}
+.auth-footer__text{
+  font-size:13.5px;font-weight:600;
+  color:var(--fg-mute);
+}
+.auth-footer__link{
+  font-weight:800;color:var(--blue-600);
+  margin-left:4px;
+  transition:color var(--t-fast);
+  cursor:pointer;
+}
+.auth-footer__link:hover{color:var(--blue-700);text-decoration:underline}
+
+/* Trust strip */
+.auth-trust{
+  position:relative;z-index:2;
+  padding:0 24px 20px;
+  display:flex;align-items:center;justify-content:center;
+  gap:20px;flex-wrap:wrap;
+}
+.auth-trust__item{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;
+  color:var(--fg-soft);letter-spacing:-.01em;
+}
+.auth-trust__item svg{
+  width:13px;height:13px;stroke:var(--blue-500);
+  stroke-width:2.2;fill:none;flex-shrink:0;
+}
+
+/* ═════════ 8. TOAST ═════════ */
+.toasts{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:999;display:flex;flex-direction:column;gap:8px;
+  width:calc(100% - 32px);max-width:400px;pointer-events:none;
+}
+.toast{
+  padding:14px 16px;border-radius:var(--r-md);
+  background:var(--fg);color:var(--bg);
+  font-size:13px;font-weight:600;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:var(--sh-xl);pointer-events:all;
+  animation:slideUp .4s var(--spring);
+  position:relative;overflow:hidden;line-height:1.4;
+}
+.toast::after{
+  content:'';position:absolute;bottom:0;left:0;
+  height:2px;width:100%;background:var(--blue-400);
+  transform-origin:left;
+  animation:progressBar 2.6s linear forwards;
+}
+.toast--success::after{background:var(--green)}
+.toast--danger::after{background:var(--red)}
+.toast--warning::after{background:var(--amber)}
+@keyframes progressBar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+/* ═════════ 9. UTILS ═════════ */
+.hidden{display:none!important}
+
+/* ═════════ 10. RESPONSIVE ═════════ */
+@media(min-width:481px){
+  .auth-shell{
+    margin:20px auto;
+    min-height:calc(100dvh - 40px);
+    border-radius:var(--r-2xl);
+    box-shadow:var(--sh-xl);
+    background:var(--bg);
+  }
+  .auth-shell::before,
+  .auth-shell::after{display:none}
+}
+</style>
 </head>
 <body>
 
-  <div id="toast-container"></div>
+<!-- TOASTS -->
+<div class="toasts" id="toasts"></div>
 
-  <div class="app-shell">
+<div class="auth-shell">
 
-    <!-- HERO -->
-    <div class="auth-hero">
-      <div class="auth-hero-top">
-        <div class="auth-hero-logo">
-          <img src="assets/logo.png" alt="DigitalPay" onerror="this.style.display='none';">
-        </div>
-        <div class="auth-hero-brand">
-          <div class="auth-hero-brand-name">DigitalPay</div>
-          <div class="auth-hero-brand-sub">Haiti</div>
-        </div>
+  <!-- HEADER -->
+  <header class="auth-header">
+    <a href="login.html" class="auth-header__back" aria-label="Retour">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </a>
+    <button class="auth-header__theme" id="themeBtn" aria-label="Thème">
+      <svg class="icon-moon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+    </button>
+  </header>
+
+  <!-- HERO -->
+  <section class="auth-hero">
+    <div class="auth-hero__logo">
+      <img src="../assets/logo.png" alt="TizèPay" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M12 7v12"/></svg>
+    </div>
+    <span class="auth-hero__eyebrow">
+      <span class="auth-hero__eyebrow-dot"></span>
+      <span data-i18n="hero_eyebrow">Inscription gratuite</span>
+    </span>
+    <h1 class="auth-hero__title">
+      <span data-i18n="hero_title1">Créez votre compte</span>
+      <br>
+      <em>TizèPay</em>
+    </h1>
+    <p class="auth-hero__sub" data-i18n="hero_sub">Rejoignez des milliers de clients en Haïti en moins d'une minute.</p>
+
+    <div class="auth-perks">
+      <span class="auth-perk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span data-i18n="perk_fast">Rapide</span>
+      </span>
+      <span class="auth-perk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-i18n="perk_secure">Sécurisé</span>
+      </span>
+      <span class="auth-perk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="perk_free">Gratuit</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <form class="auth-form" id="registerForm" novalidate>
+
+    <!-- Google -->
+    <button type="button" class="btn-google" id="googleBtn">
+      <svg viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      <span data-i18n="google_btn">S'inscrire avec Google</span>
+    </button>
+
+    <!-- Divider -->
+    <div class="auth-divider">
+      <span data-i18n="divider">ou avec email</span>
+    </div>
+
+    <!-- Alert -->
+    <div class="alert alert--danger" id="alertBox">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="alertMessage"></span>
+    </div>
+
+    <!-- Full name -->
+    <div class="field">
+      <label for="fullname" data-i18n="name_label">Nom complet</label>
+      <div class="field__wrap">
+        <input type="text" id="fullname" name="fullname" placeholder="Jean Dupont" autocomplete="name" maxlength="60" required>
+        <span class="field__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
       </div>
-      <div class="auth-hero-title" data-i18n="heroTitle">Créer un compte</div>
-      <div class="auth-hero-sub" data-i18n="heroSub">Rejoignez des milliers de clients et accédez à tous nos services en quelques secondes.</div>
-      <div class="perks-row">
-        <div class="perk">
-          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span data-i18n="perkFast">Rapide</span>
-        </div>
-        <div class="perk">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span data-i18n="perkSecure">Sécurisé</span>
-        </div>
-        <div class="perk">
-          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span data-i18n="perkFree">Gratuit</span>
-        </div>
+      <span class="field__error" id="fullnameError"></span>
+    </div>
+
+    <!-- Email -->
+    <div class="field">
+      <label for="email" data-i18n="email_label">Adresse email</label>
+      <div class="field__wrap">
+        <input type="email" id="email" name="email" placeholder="votre@email.com" autocomplete="email" inputmode="email" maxlength="100" required>
+        <span class="field__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </span>
+      </div>
+      <span class="field__error" id="emailError"></span>
+    </div>
+
+    <!-- Password -->
+    <div class="field">
+      <label for="password" data-i18n="password_label">Mot de passe</label>
+      <div class="field__wrap">
+        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password" maxlength="100" required>
+        <span class="field__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </span>
+        <button type="button" class="field__toggle" id="togglePassword" aria-label="Afficher le mot de passe">
+          <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
+      <span class="field__error" id="passwordError"></span>
+    </div>
+
+    <!-- Password strength -->
+    <div class="strength" id="strength" data-level="0">
+      <div class="strength__bars">
+        <div class="strength__bar"></div>
+        <div class="strength__bar"></div>
+        <div class="strength__bar"></div>
+        <div class="strength__bar"></div>
+      </div>
+      <div class="strength__label">
+        <span data-i18n="strength_label">Force du mot de passe</span>
+        <span class="strength__label-value" id="strengthValue" data-i18n="strength_none">—</span>
       </div>
     </div>
 
-    <!-- FORM -->
-    <main class="auth-main">
-
-      <!-- GOOGLE -->
-      <button type="button" class="btn-google" id="btn-google" onclick="signInWithGoogle(event)">
-        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
-          <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
-          <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0124 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
-          <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 01-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
-        </svg>
-        <span data-i18n="googleBtn">S'inscrire avec Google</span>
-      </button>
-
-      <!-- DIVIDER -->
-      <div class="auth-divider">
-        <span data-i18n="orDivider">ou avec email</span>
-      </div>
-
-      <!-- FULL NAME -->
-      <div class="field">
-        <label class="field-label" data-i18n="nameLabel">Nom complet</label>
-        <div class="field-wrap">
-          <div class="field-icon-left"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-          <input type="text" class="text-input" id="reg-name" placeholder="Jean Dupont" autocomplete="name" maxlength="60">
-        </div>
-      </div>
-
-      <!-- EMAIL -->
-      <div class="field">
-        <label class="field-label" data-i18n="emailLabel">Adresse email</label>
-        <div class="field-wrap">
-          <div class="field-icon-left"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <input type="email" class="text-input" id="reg-email" placeholder="votre@email.com" autocomplete="email" maxlength="100">
-        </div>
-      </div>
-
-      <!-- PASSWORD -->
-      <div class="field">
-        <label class="field-label" data-i18n="passwordLabel">Mot de passe</label>
-        <div class="field-wrap">
-          <div class="field-icon-left"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
-          <input type="password" class="text-input" id="reg-password" placeholder="••••••••" autocomplete="new-password" maxlength="100" oninput="onPasswordInput()">
-          <button type="button" class="field-toggle" id="toggle-password" onclick="togglePasswordVisibility('reg-password', 'eye-pass-icon')" aria-label="Afficher/Masquer">
-            <svg id="eye-pass-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
-        </div>
-        <!-- Password strength -->
-        <div class="pwd-strength" id="pwd-strength">
-          <div class="pwd-bars">
-            <div class="pwd-bar" id="pwd-bar-1"></div>
-            <div class="pwd-bar" id="pwd-bar-2"></div>
-            <div class="pwd-bar" id="pwd-bar-3"></div>
-          </div>
-          <div class="pwd-strength-label" id="pwd-strength-label"></div>
-        </div>
-      </div>
-
-      <!-- CONFIRM PASSWORD -->
-      <div class="field">
-        <label class="field-label" data-i18n="confirmLabel">Confirmer le mot de passe</label>
-        <div class="field-wrap">
-          <div class="field-icon-left"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <input type="password" class="text-input" id="reg-confirm" placeholder="••••••••" autocomplete="new-password" maxlength="100" oninput="onConfirmInput()">
-          <div class="pwd-match" id="pwd-match">
-            <svg id="pwd-match-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- TERMS -->
-      <label class="terms-row" id="terms-row" for="reg-terms">
-        <input type="checkbox" id="reg-terms">
-        <span class="terms-check">
-          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <!-- Confirm password -->
+    <div class="field">
+      <label for="confirm" data-i18n="confirm_label">Confirmer le mot de passe</label>
+      <div class="field__wrap">
+        <input type="password" id="confirm" name="confirm" placeholder="••••••••" autocomplete="new-password" maxlength="100" required>
+        <span class="field__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </span>
-        <span class="terms-label">
-          <span data-i18n="termsText1">J'accepte les</span>
-          <a href="../legal.html" target="_blank" data-i18n="termsLink">conditions générales</a>
-          <span data-i18n="termsText2">et la politique de confidentialité de DigitalPay Haïti.</span>
+        <span class="match-indicator" id="matchIndicator">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
         </span>
-      </label>
-
-      <!-- SUBMIT -->
-      <button type="button" class="btn-submit-register" id="btn-submit-register" onclick="handleEmailRegister(event)">
-        <span class="spinner"></span>
-        <span class="btn-label" data-i18n="registerBtn">Créer mon compte</span>
-      </button>
-
-      <!-- ERROR / SUCCESS -->
-      <div class="auth-error" id="auth-error">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span id="auth-error-text"></span>
       </div>
+      <span class="field__error" id="confirmError"></span>
+    </div>
 
-      <div class="auth-success" id="auth-success">
-        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span id="auth-success-text"></span>
-      </div>
+    <!-- Terms -->
+    <label class="checkbox" id="termsLabel">
+      <input type="checkbox" id="terms">
+      <span class="checkbox__box">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <span>
+        <span data-i18n="terms_text">J'accepte les</span>
+        <a href="../legal.html" class="checkbox__link" data-i18n="terms_link">conditions d'utilisation</a>
+        <span data-i18n="terms_and">et la</span>
+        <a href="../legal.html" class="checkbox__link" data-i18n="privacy_link">politique de confidentialité</a>
+      </span>
+    </label>
 
-      <!-- BOTTOM CTA -->
-      <div class="auth-bottom">
-        <div class="auth-bottom-text" data-i18n="hasAccount">Vous avez déjà un compte ?</div>
-        <a href="login.html" class="btn-secondary-outline">
-          <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span data-i18n="signIn">Se connecter</span>
-        </a>
-      </div>
+    <!-- Submit -->
+    <button type="submit" class="btn-submit" id="submitBtn">
+      <span class="btn-submit__spinner"></span>
+      <span class="btn-submit__text" data-i18n="submit_btn">Créer mon compte</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
 
-      <!-- TRUST STRIP -->
-      <div class="trust-mini">
-        <div class="trust-mini-item">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span data-i18n="trustSecure">Sécurisé</span>
-        </div>
-        <div class="trust-mini-item">
-          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          <span data-i18n="trustFast">Rapide</span>
-        </div>
-        <div class="trust-mini-item">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <span data-i18n="trust247">24/7</span>
-        </div>
-      </div>
+  </form>
 
-    </main>
+  <!-- FOOTER -->
+  <footer class="auth-footer">
+    <p class="auth-footer__text">
+      <span data-i18n="has_account">Vous avez déjà un compte ?</span>
+      <a href="login.html" class="auth-footer__link" data-i18n="login_link">Se connecter</a>
+    </p>
+  </footer>
 
+  <!-- TRUST -->
+  <div class="auth-trust">
+    <span class="auth-trust__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-i18n="trust_secure">100% Sécurisé</span>
+    </span>
+    <span class="auth-trust__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span data-i18n="trust_fast">Livraison rapide</span>
+    </span>
+    <span class="auth-trust__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span data-i18n="trust_support">Support 24/7</span>
+    </span>
   </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAAOQkkCgGdPvP31MrSp7ap9P20mAtQxBY",
-      authDomain: "digitalpay-officiel-v2.firebaseapp.com",
-      projectId: "digitalpay-officiel-v2",
-      storageBucket: "digitalpay-officiel-v2.firebasestorage.app",
-      messagingSenderId: "1030926360593",
-      appId: "1:1030926360593:web:c6e0f502af4ef6b76711b0"
-    };
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+</div>
 
-    const STATE = { lang: 'fr', submitting: false, googleSubmitting: false };
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   TIZÈPAY — REGISTER CONTROLLER
+   ═══════════════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
 
-    function sanitize(str, maxLen = 200) {
-      return String(str || '').trim().slice(0, maxLen).replace(/[<>]/g, '');
+/* ═════════ STATE ═════════ */
+const STATE = {
+  lang: (()=>{
+    const l = localStorage.getItem('tzp_lang') || (navigator.language||'fr').slice(0,2).toLowerCase();
+    return ['fr','ht','en','es'].includes(l) ? l : 'fr';
+  })()
+};
+
+/* ═════════ FIREBASE ═════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDlucYnlEKoQnWhZXAAgU0y1s1iaGWorV8",
+  authDomain: "tizepayhaiti.firebaseapp.com",
+  projectId: "tizepayhaiti",
+  storageBucket: "tizepayhaiti.firebasestorage.app",
+  messagingSenderId: "9916938807",
+  appId: "1:9916938807:web:186218e8cf114dbfb61db2"
+};
+let fbAuth = null, fbDb = null;
+try {
+  if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+    fbAuth = firebase.auth();
+    fbDb = firebase.firestore();
+    /* Auto-redirect if already signed in */
+    fbAuth.onAuthStateChanged(user => {
+      if (user) {
+        window.location.href = '../index.html';
+      }
+    });
+  }
+} catch(e){ console.warn('[TizèPay]', e.message); }
+
+/* ═════════ HAPTIC ═════════ */
+const Haptic = {
+  light(){ if(navigator.vibrate){ try{ navigator.vibrate(8); }catch(e){} } },
+  medium(){ if(navigator.vibrate){ try{ navigator.vibrate(15); }catch(e){} } },
+  error(){ if(navigator.vibrate){ try{ navigator.vibrate([30,40,30]); }catch(e){} } }
+};
+
+/* ═════════ I18N ═════════ */
+const I18N = {
+  fr:{
+    hero_eyebrow:'Inscription gratuite',
+    hero_title1:'Créez votre compte',
+    hero_sub:'Rejoignez des milliers de clients en Haïti en moins d\'une minute.',
+    perk_fast:'Rapide', perk_secure:'Sécurisé', perk_free:'Gratuit',
+    google_btn:'S\'inscrire avec Google',
+    divider:'ou avec email',
+    name_label:'Nom complet',
+    email_label:'Adresse email',
+    password_label:'Mot de passe',
+    confirm_label:'Confirmer le mot de passe',
+    strength_label:'Force du mot de passe',
+    strength_none:'—',
+    strength_weak:'Faible',
+    strength_fair:'Moyen',
+    strength_good:'Bon',
+    strength_strong:'Excellent',
+    terms_text:'J\'accepte les',
+    terms_link:'conditions d\'utilisation',
+    terms_and:'et la',
+    privacy_link:'politique de confidentialité',
+    submit_btn:'Créer mon compte',
+    has_account:'Vous avez déjà un compte ?',
+    login_link:'Se connecter',
+    trust_secure:'100% Sécurisé',
+    trust_fast:'Livraison rapide',
+    trust_support:'Support 24/7',
+    err_name_required:'Veuillez entrer votre nom complet',
+    err_name_short:'Nom trop court (2 caractères min)',
+    err_email_required:'Veuillez entrer votre email',
+    err_email_invalid:'Adresse email invalide',
+    err_password_required:'Veuillez entrer un mot de passe',
+    err_password_short:'6 caractères minimum',
+    err_password_weak:'Mot de passe trop faible',
+    err_confirm_required:'Veuillez confirmer votre mot de passe',
+    err_confirm_mismatch:'Les mots de passe ne correspondent pas',
+    err_terms_required:'Vous devez accepter les conditions',
+    err_email_in_use:'Cet email est déjà utilisé',
+    err_weak_password:'Mot de passe trop faible',
+    err_invalid_email:'Adresse email invalide',
+    err_too_many:'Trop de tentatives. Réessayez plus tard.',
+    err_network:'Erreur réseau. Vérifiez votre connexion.',
+    err_generic:'Une erreur est survenue. Réessayez.',
+    err_google_cancelled:'Inscription Google annulée',
+    err_google_popup:'Popup Google bloquée. Autorisez les popups.',
+    err_google_popup_closed:'Inscription Google interrompue.',
+    success_created:'Compte créé avec succès ! Vérifiez votre email.',
+    success_google:'Compte Google créé',
+    toast_welcome:'Bienvenue sur TizèPay'
+  },
+  ht:{
+    hero_eyebrow:'Enskripsyon gratis',
+    hero_title1:'Kreye kont ou',
+    hero_sub:'Rejwenn plizyè milye kliyan ann Ayiti nan mwens pase yon minit.',
+    perk_fast:'Rapid', perk_secure:'Sekirize', perk_free:'Gratis',
+    google_btn:'Enskri ak Google',
+    divider:'oswa ak imel',
+    name_label:'Non konplè',
+    email_label:'Adrès imel',
+    password_label:'Modpas',
+    confirm_label:'Konfime modpas',
+    strength_label:'Fòs modpas',
+    strength_none:'—',
+    strength_weak:'Fèb',
+    strength_fair:'Mwayen',
+    strength_good:'Bon',
+    strength_strong:'Ekselan',
+    terms_text:'Mwen aksepte',
+    terms_link:'kondisyon itilizasyon',
+    terms_and:'ak',
+    privacy_link:'politik konfidansyalite',
+    submit_btn:'Kreye kont mwen',
+    has_account:'Ou gen yon kont deja ?',
+    login_link:'Konekte',
+    trust_secure:'100% Sekirize',
+    trust_fast:'Livrezon rapid',
+    trust_support:'Sipò 24/7',
+    err_name_required:'Tanpri antre non konplè ou',
+    err_name_short:'Non twò kout (2 karaktè min)',
+    err_email_required:'Tanpri antre imel ou',
+    err_email_invalid:'Imel pa valid',
+    err_password_required:'Tanpri antre yon modpas',
+    err_password_short:'6 karaktè min',
+    err_password_weak:'Modpas twò fèb',
+    err_confirm_required:'Tanpri konfime modpas ou',
+    err_confirm_mismatch:'Modpas yo pa matche',
+    err_terms_required:'Ou dwe aksepte kondisyon yo',
+    err_email_in_use:'Imel sa deja itilize',
+    err_weak_password:'Modpas twò fèb',
+    err_invalid_email:'Imel pa valid',
+    err_too_many:'Twòp tantativ. Eseye pi devan.',
+    err_network:'Erè rezo. Verifye koneksyon ou.',
+    err_generic:'Yon erè rive. Eseye ankò.',
+    err_google_cancelled:'Enskripsyon Google anile',
+    err_google_popup:'Popup Google bloke.',
+    err_google_popup_closed:'Enskripsyon Google entèwonp.',
+    success_created:'Kont kreye avèk siksè ! Verifye imel ou.',
+    success_google:'Kont Google kreye',
+    toast_welcome:'Byenveni sou TizèPay'
+  },
+  en:{
+    hero_eyebrow:'Free registration',
+    hero_title1:'Create your account',
+    hero_sub:'Join thousands of customers in Haiti in under a minute.',
+    perk_fast:'Fast', perk_secure:'Secure', perk_free:'Free',
+    google_btn:'Sign up with Google',
+    divider:'or with email',
+    name_label:'Full name',
+    email_label:'Email address',
+    password_label:'Password',
+    confirm_label:'Confirm password',
+    strength_label:'Password strength',
+    strength_none:'—',
+    strength_weak:'Weak',
+    strength_fair:'Fair',
+    strength_good:'Good',
+    strength_strong:'Excellent',
+    terms_text:'I accept the',
+    terms_link:'terms of use',
+    terms_and:'and the',
+    privacy_link:'privacy policy',
+    submit_btn:'Create my account',
+    has_account:'Already have an account?',
+    login_link:'Sign in',
+    trust_secure:'100% Secure',
+    trust_fast:'Fast delivery',
+    trust_support:'24/7 Support',
+    err_name_required:'Please enter your full name',
+    err_name_short:'Name too short (2 chars min)',
+    err_email_required:'Please enter your email',
+    err_email_invalid:'Invalid email address',
+    err_password_required:'Please enter a password',
+    err_password_short:'6 characters minimum',
+    err_password_weak:'Password too weak',
+    err_confirm_required:'Please confirm your password',
+    err_confirm_mismatch:'Passwords do not match',
+    err_terms_required:'You must accept the terms',
+    err_email_in_use:'This email is already in use',
+    err_weak_password:'Password too weak',
+    err_invalid_email:'Invalid email address',
+    err_too_many:'Too many attempts. Try again later.',
+    err_network:'Network error. Check your connection.',
+    err_generic:'Something went wrong. Try again.',
+    err_google_cancelled:'Google sign-up cancelled',
+    err_google_popup:'Google popup blocked. Allow popups.',
+    err_google_popup_closed:'Google sign-up interrupted.',
+    success_created:'Account created! Check your email.',
+    success_google:'Google account created',
+    toast_welcome:'Welcome to TizèPay'
+  },
+  es:{
+    hero_eyebrow:'Registro gratis',
+    hero_title1:'Crea tu cuenta',
+    hero_sub:'Únete a miles de clientes en Haití en menos de un minuto.',
+    perk_fast:'Rápido', perk_secure:'Seguro', perk_free:'Gratis',
+    google_btn:'Registrarse con Google',
+    divider:'o con email',
+    name_label:'Nombre completo',
+    email_label:'Correo electrónico',
+    password_label:'Contraseña',
+    confirm_label:'Confirmar contraseña',
+    strength_label:'Fuerza de la contraseña',
+    strength_none:'—',
+    strength_weak:'Débil',
+    strength_fair:'Regular',
+    strength_good:'Buena',
+    strength_strong:'Excelente',
+    terms_text:'Acepto los',
+    terms_link:'términos de uso',
+    terms_and:'y la',
+    privacy_link:'política de privacidad',
+    submit_btn:'Crear mi cuenta',
+    has_account:'¿Ya tienes una cuenta?',
+    login_link:'Iniciar sesión',
+    trust_secure:'100% Seguro',
+    trust_fast:'Entrega rápida',
+    trust_support:'Soporte 24/7',
+    err_name_required:'Ingresa tu nombre completo',
+    err_name_short:'Nombre demasiado corto (mín 2)',
+    err_email_required:'Ingresa tu correo',
+    err_email_invalid:'Correo inválido',
+    err_password_required:'Ingresa una contraseña',
+    err_password_short:'Mínimo 6 caracteres',
+    err_password_weak:'Contraseña muy débil',
+    err_confirm_required:'Confirma tu contraseña',
+    err_confirm_mismatch:'Las contraseñas no coinciden',
+    err_terms_required:'Debes aceptar los términos',
+    err_email_in_use:'Este correo ya está en uso',
+    err_weak_password:'Contraseña muy débil',
+    err_invalid_email:'Correo inválido',
+    err_too_many:'Demasiados intentos. Intenta más tarde.',
+    err_network:'Error de red. Verifica tu conexión.',
+    err_generic:'Ocurrió un error. Intenta de nuevo.',
+    err_google_cancelled:'Registro Google cancelado',
+    err_google_popup:'Popup bloqueado. Permite popups.',
+    err_google_popup_closed:'Registro interrumpido.',
+    success_created:'¡Cuenta creada! Revisa tu correo.',
+    success_google:'Cuenta de Google creada',
+    toast_welcome:'Bienvenido a TizèPay'
+  }
+};
+
+const t = key => (I18N[STATE.lang] && I18N[STATE.lang][key]) || I18N.fr[key] || key;
+
+function applyTranslations(){
+  document.documentElement.lang = STATE.lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if(v) el.textContent = v;
+  });
+}
+
+/* ═════════ THEME ═════════ */
+const Theme = {
+  KEY:'tzp_theme',
+  sys(){ return matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'; },
+  stored(){ try{ return localStorage.getItem(this.KEY); }catch(e){ return null; } },
+  apply(th, anim=true){
+    const r = document.documentElement;
+    if(anim){ r.style.transition = 'background-color .4s ease, color .4s ease'; setTimeout(()=>r.style.transition='', 420); }
+    r.setAttribute('data-theme', th);
+    const m = document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute('content', th === 'dark' ? '#08080A' : '#FFFFFF');
+  },
+  set(th){ try{ localStorage.setItem(this.KEY, th); }catch(e){} this.apply(th); },
+  toggle(){ Haptic.light(); this.set(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+};
+Theme.apply(Theme.stored() || Theme.sys(), false);
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change', e => { if(!Theme.stored()) Theme.apply(e.matches ? 'dark' : 'light'); });
+
+/* ═════════ TOAST ═════════ */
+function toast(msg, type='success'){
+  const wrap = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast toast--' + type;
+  el.textContent = msg;
+  wrap.innerHTML = '';
+  wrap.appendChild(el);
+  setTimeout(()=>{
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-12px) scale(.95)';
+    setTimeout(()=>el.remove(), 320);
+  }, 2600);
+}
+
+/* ═════════ ALERT ═════════ */
+function showAlert(message){
+  const box = document.getElementById('alertBox');
+  const msg = document.getElementById('alertMessage');
+  msg.textContent = message;
+  box.classList.add('is-on');
+  Haptic.error();
+  box.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+function hideAlert(){
+  document.getElementById('alertBox').classList.remove('is-on');
+}
+
+/* ═════════ VALIDATORS ═════════ */
+const Validators = {
+  name(v){
+    v = String(v||'').trim();
+    if(!v) return t('err_name_required');
+    if(v.length < 2) return t('err_name_short');
+    return null;
+  },
+  email(v){
+    v = String(v||'').trim();
+    if(!v) return t('err_email_required');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return t('err_email_invalid');
+    return null;
+  },
+  password(v){
+    v = String(v||'');
+    if(!v) return t('err_password_required');
+    if(v.length < 6) return t('err_password_short');
+    return null;
+  },
+  confirm(v, original){
+    v = String(v||'');
+    if(!v) return t('err_confirm_required');
+    if(v !== original) return t('err_confirm_mismatch');
+    return null;
+  }
+};
+
+/* ═════════ PASSWORD STRENGTH ═════════ */
+function computeStrength(password){
+  if(!password) return 0;
+  let score = 0;
+  if(password.length >= 6) score++;
+  if(password.length >= 10) score++;
+  const hasLower = /[a-z]/.test(password);
+  const hasUpper = /[A-Z]/.test(password);
+  const hasDigit = /\d/.test(password);
+  const hasSymbol = /[^A-Za-z0-9]/.test(password);
+  const variety = [hasLower, hasUpper, hasDigit, hasSymbol].filter(Boolean).length;
+  if(variety >= 2) score++;
+  if(variety >= 3 && password.length >= 8) score++;
+  return Math.min(4, score);
+}
+
+function strengthLabel(level){
+  switch(level){
+    case 1: return t('strength_weak');
+    case 2: return t('strength_fair');
+    case 3: return t('strength_good');
+    case 4: return t('strength_strong');
+    default: return t('strength_none');
+  }
+}
+
+function updateStrengthUI(password){
+  const el = document.getElementById('strength');
+  const valEl = document.getElementById('strengthValue');
+  if(!password){
+    el.classList.remove('is-on');
+    el.dataset.level = '0';
+    return;
+  }
+  el.classList.add('is-on');
+  const level = computeStrength(password);
+  el.dataset.level = level;
+  valEl.textContent = strengthLabel(level);
+}
+
+/* ═════════ FIELD ERROR ═════════ */
+function setFieldError(inputId, errorId, message){
+  const input = document.getElementById(inputId);
+  const errEl = document.getElementById(errorId);
+  if(message){
+    input.classList.add('is-invalid');
+    input.classList.remove('is-valid');
+    errEl.textContent = message;
+    errEl.classList.add('is-on');
+  } else {
+    input.classList.remove('is-invalid');
+    input.classList.add('is-valid');
+    errEl.textContent = '';
+    errEl.classList.remove('is-on');
+  }
+}
+
+/* ═════════ FIREBASE ERROR MAPPING ═════════ */
+function mapFirebaseError(code){
+  switch(code){
+    case 'auth/email-already-in-use': return t('err_email_in_use');
+    case 'auth/weak-password': return t('err_weak_password');
+    case 'auth/invalid-email': return t('err_invalid_email');
+    case 'auth/too-many-requests': return t('err_too_many');
+    case 'auth/network-request-failed': return t('err_network');
+    case 'auth/popup-closed-by-user': return t('err_google_popup_closed');
+    case 'auth/cancelled-popup-request': return t('err_google_cancelled');
+    case 'auth/popup-blocked': return t('err_google_popup');
+    default: return t('err_generic');
+  }
+}
+
+/* ═════════ ELEMENTS ═════════ */
+const form = document.getElementById('registerForm');
+const submitBtn = document.getElementById('submitBtn');
+const fullnameInput = document.getElementById('fullname');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const confirmInput = document.getElementById('confirm');
+const termsInput = document.getElementById('terms');
+const termsLabel = document.getElementById('termsLabel');
+const matchIndicator = document.getElementById('matchIndicator');
+
+/* ═════════ LIVE VALIDATION ═════════ */
+fullnameInput.addEventListener('blur', ()=>{
+  if(fullnameInput.value.trim()) setFieldError('fullname','fullnameError', Validators.name(fullnameInput.value));
+});
+fullnameInput.addEventListener('input', ()=>{
+  if(fullnameInput.classList.contains('is-invalid')){
+    if(!Validators.name(fullnameInput.value)) setFieldError('fullname','fullnameError', null);
+  }
+});
+
+emailInput.addEventListener('blur', ()=>{
+  if(emailInput.value.trim()) setFieldError('email','emailError', Validators.email(emailInput.value));
+});
+emailInput.addEventListener('input', ()=>{
+  if(emailInput.classList.contains('is-invalid')){
+    if(!Validators.email(emailInput.value)) setFieldError('email','emailError', null);
+  }
+});
+
+passwordInput.addEventListener('input', ()=>{
+  updateStrengthUI(passwordInput.value);
+  if(passwordInput.classList.contains('is-invalid')){
+    if(!Validators.password(passwordInput.value)) setFieldError('password','passwordError', null);
+  }
+  /* Live check confirm match */
+  if(confirmInput.value){
+    checkConfirmMatch();
+  }
+});
+passwordInput.addEventListener('blur', ()=>{
+  if(passwordInput.value) setFieldError('password','passwordError', Validators.password(passwordInput.value));
+});
+
+confirmInput.addEventListener('input', ()=>{
+  if(confirmInput.value || confirmInput.classList.contains('is-invalid')){
+    checkConfirmMatch();
+  }
+});
+confirmInput.addEventListener('blur', ()=>{
+  if(confirmInput.value) checkConfirmMatch();
+});
+
+function checkConfirmMatch(){
+  const pwd = passwordInput.value;
+  const cnf = confirmInput.value;
+  if(!cnf){
+    matchIndicator.className = 'match-indicator';
+    return;
+  }
+  if(cnf === pwd){
+    matchIndicator.className = 'match-indicator is-ok';
+    matchIndicator.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+    if(confirmInput.classList.contains('is-invalid')){
+      setFieldError('confirm','confirmError', null);
     }
+  } else {
+    matchIndicator.className = 'match-indicator is-ko';
+    matchIndicator.innerHTML = '<svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    setFieldError('confirm','confirmError', t('err_confirm_mismatch'));
+  }
+}
 
-    const I18N = {
-      fr: {
-        heroTitle: "Créer un compte",
-        heroSub: "Rejoignez des milliers de clients et accédez à tous nos services en quelques secondes.",
-        perkFast: "Rapide",
-        perkSecure: "Sécurisé",
-        perkFree: "Gratuit",
-        googleBtn: "S'inscrire avec Google",
-        orDivider: "ou avec email",
-        nameLabel: "Nom complet",
-        emailLabel: "Adresse email",
-        passwordLabel: "Mot de passe",
-        confirmLabel: "Confirmer le mot de passe",
-        termsText1: "J'accepte les",
-        termsLink: "conditions générales",
-        termsText2: "et la politique de confidentialité de DigitalPay Haïti.",
-        registerBtn: "Créer mon compte",
-        hasAccount: "Vous avez déjà un compte ?",
-        signIn: "Se connecter",
-        trustSecure: "Sécurisé",
-        trustFast: "Rapide",
-        trust247: "24/7",
-        // Strength labels
-        strengthWeak: "Faible",
-        strengthMedium: "Moyen",
-        strengthStrong: "Fort",
-        // Errors
-        errNameRequired: "Veuillez entrer votre nom.",
-        errNameShort: "Nom trop court (2 caractères min).",
-        errEmailRequired: "Veuillez entrer votre email.",
-        errEmailInvalid: "Email invalide.",
-        errPasswordRequired: "Veuillez créer un mot de passe.",
-        errPasswordShort: "Mot de passe trop court (6 caractères min).",
-        errPasswordWeak: "Mot de passe trop faible. Ajoutez majuscules, chiffres ou symboles.",
-        errConfirmRequired: "Veuillez confirmer votre mot de passe.",
-        errConfirmMismatch: "Les mots de passe ne correspondent pas.",
-        errTermsRequired: "Veuillez accepter les conditions générales.",
-        errEmailInUse: "Un compte existe déjà avec cet email.",
-        errTooManyRequests: "Trop de tentatives. Réessayez dans quelques minutes.",
-        errNetwork: "Problème de connexion. Vérifiez votre réseau.",
-        errGeneric: "Une erreur est survenue. Réessayez.",
-        errWeakPassword: "Le mot de passe est trop faible.",
-        errGooglePopupClosed: "Inscription Google annulée.",
-        errGooglePopupBlocked: "Popup bloquée. Autorisez les popups.",
-        errGoogleCancelled: "Inscription annulée.",
-        errGoogleAccountExists: "Un compte existe déjà avec cet email.",
-        errGoogleGeneric: "Inscription Google impossible.",
-        // Success
-        successRegister: "Compte créé ! Redirection...",
-        successRegisterVerify: "Compte créé ! Vérifiez votre email."
-      },
-      ht: {
-        heroTitle: "Kreye yon kont",
-        heroSub: "Rejwenn plizyè milye kliyan epi jwenn aksè nan tout sèvis nou yo nan kèk segonn.",
-        perkFast: "Rapid",
-        perkSecure: "Sekirize",
-        perkFree: "Gratis",
-        googleBtn: "Enskri ak Google",
-        orDivider: "oswa ak imel",
-        nameLabel: "Non konplè",
-        emailLabel: "Adrès imel",
-        passwordLabel: "Modpas",
-        confirmLabel: "Konfime modpas",
-        termsText1: "Mwen aksepte",
-        termsLink: "kondisyon jeneral yo",
-        termsText2: "ak règleman konfidansyalite DigitalPay Ayiti.",
-        registerBtn: "Kreye kont mwen",
-        hasAccount: "Ou gen yon kont deja ?",
-        signIn: "Konekte",
-        trustSecure: "Sekirize",
-        trustFast: "Rapid",
-        trust247: "24/7",
-        strengthWeak: "Fèb",
-        strengthMedium: "Mwayen",
-        strengthStrong: "Fò",
-        errNameRequired: "Tanpri antre non ou.",
-        errNameShort: "Non twò kout (2 karaktè min).",
-        errEmailRequired: "Tanpri antre imel ou.",
-        errEmailInvalid: "Imel pa valid.",
-        errPasswordRequired: "Tanpri kreye yon modpas.",
-        errPasswordShort: "Modpas twò kout (6 karaktè min).",
-        errPasswordWeak: "Modpas twò fèb. Ajoute majiskil, chif oswa senbòl.",
-        errConfirmRequired: "Tanpri konfime modpas ou.",
-        errConfirmMismatch: "Modpas yo pa matche.",
-        errTermsRequired: "Tanpri aksepte kondisyon jeneral yo.",
-        errEmailInUse: "Yon kont egziste deja ak imel sa.",
-        errTooManyRequests: "Twòp tantativ. Eseye ankò nan kèk minit.",
-        errNetwork: "Pwoblèm koneksyon. Verifye rezo ou.",
-        errGeneric: "Yon erè rive. Eseye ankò.",
-        errWeakPassword: "Modpas la twò fèb.",
-        errGooglePopupClosed: "Enskripsyon Google anile.",
-        errGooglePopupBlocked: "Popups bloke. Otorize popups yo.",
-        errGoogleCancelled: "Enskripsyon anile.",
-        errGoogleAccountExists: "Yon kont egziste deja ak imel sa.",
-        errGoogleGeneric: "Enskripsyon Google enposib.",
-        successRegister: "Kont kreye ! Redireksyon...",
-        successRegisterVerify: "Kont kreye ! Verifye imel ou."
-      },
-      en: {
-        heroTitle: "Create an account",
-        heroSub: "Join thousands of customers and access all our services in seconds.",
-        perkFast: "Fast",
-        perkSecure: "Secure",
-        perkFree: "Free",
-        googleBtn: "Sign up with Google",
-        orDivider: "or with email",
-        nameLabel: "Full name",
-        emailLabel: "Email address",
-        passwordLabel: "Password",
-        confirmLabel: "Confirm password",
-        termsText1: "I accept the",
-        termsLink: "terms of service",
-        termsText2: "and privacy policy of DigitalPay Haiti.",
-        registerBtn: "Create my account",
-        hasAccount: "Already have an account?",
-        signIn: "Sign in",
-        trustSecure: "Secure",
-        trustFast: "Fast",
-        trust247: "24/7",
-        strengthWeak: "Weak",
-        strengthMedium: "Medium",
-        strengthStrong: "Strong",
-        errNameRequired: "Please enter your name.",
-        errNameShort: "Name too short (2 characters min).",
-        errEmailRequired: "Please enter your email.",
-        errEmailInvalid: "Invalid email.",
-        errPasswordRequired: "Please create a password.",
-        errPasswordShort: "Password too short (6 characters min).",
-        errPasswordWeak: "Password too weak. Add uppercase, digits or symbols.",
-        errConfirmRequired: "Please confirm your password.",
-        errConfirmMismatch: "Passwords don't match.",
-        errTermsRequired: "Please accept the terms of service.",
-        errEmailInUse: "An account already exists with this email.",
-        errTooManyRequests: "Too many attempts. Try again in a few minutes.",
-        errNetwork: "Connection problem. Check your network.",
-        errGeneric: "An error occurred. Please try again.",
-        errWeakPassword: "The password is too weak.",
-        errGooglePopupClosed: "Google sign-up cancelled.",
-        errGooglePopupBlocked: "Popup blocked. Please allow popups.",
-        errGoogleCancelled: "Sign-up cancelled.",
-        errGoogleAccountExists: "An account already exists with this email.",
-        errGoogleGeneric: "Google sign-up failed.",
-        successRegister: "Account created! Redirecting...",
-        successRegisterVerify: "Account created! Check your email."
-      },
-      es: {
-        heroTitle: "Crear una cuenta",
-        heroSub: "Únase a miles de clientes y acceda a todos nuestros servicios en segundos.",
-        perkFast: "Rápido",
-        perkSecure: "Seguro",
-        perkFree: "Gratis",
-        googleBtn: "Registrarse con Google",
-        orDivider: "o con email",
-        nameLabel: "Nombre completo",
-        emailLabel: "Correo electrónico",
-        passwordLabel: "Contraseña",
-        confirmLabel: "Confirmar contraseña",
-        termsText1: "Acepto los",
-        termsLink: "términos y condiciones",
-        termsText2: "y la política de privacidad de DigitalPay Haití.",
-        registerBtn: "Crear mi cuenta",
-        hasAccount: "¿Ya tiene una cuenta?",
-        signIn: "Iniciar sesión",
-        trustSecure: "Seguro",
-        trustFast: "Rápido",
-        trust247: "24/7",
-        strengthWeak: "Débil",
-        strengthMedium: "Media",
-        strengthStrong: "Fuerte",
-        errNameRequired: "Ingrese su nombre.",
-        errNameShort: "Nombre muy corto (mín 2 caracteres).",
-        errEmailRequired: "Ingrese su correo.",
-        errEmailInvalid: "Correo inválido.",
-        errPasswordRequired: "Cree una contraseña.",
-        errPasswordShort: "Contraseña muy corta (mín 6 caracteres).",
-        errPasswordWeak: "Contraseña muy débil. Añada mayúsculas, dígitos o símbolos.",
-        errConfirmRequired: "Confirme su contraseña.",
-        errConfirmMismatch: "Las contraseñas no coinciden.",
-        errTermsRequired: "Acepte los términos y condiciones.",
-        errEmailInUse: "Ya existe una cuenta con este correo.",
-        errTooManyRequests: "Demasiados intentos. Intente de nuevo en unos minutos.",
-        errNetwork: "Problema de conexión. Verifique su red.",
-        errGeneric: "Ocurrió un error. Intente de nuevo.",
-        errWeakPassword: "La contraseña es muy débil.",
-        errGooglePopupClosed: "Registro con Google cancelado.",
-        errGooglePopupBlocked: "Popup bloqueado. Permita las ventanas emergentes.",
-        errGoogleCancelled: "Registro cancelado.",
-        errGoogleAccountExists: "Ya existe una cuenta con este correo.",
-        errGoogleGeneric: "Error de registro con Google.",
-        successRegister: "¡Cuenta creada! Redirigiendo...",
-        successRegisterVerify: "¡Cuenta creada! Revise su correo."
-      }
-    };
+/* Terms */
+termsInput.addEventListener('change', ()=>{
+  if(termsInput.checked){
+    termsLabel.classList.remove('is-invalid');
+  }
+});
 
-    const t = (key) => (I18N[STATE.lang] && I18N[STATE.lang][key]) || key;
+/* ═════════ PASSWORD TOGGLE ═════════ */
+document.getElementById('togglePassword').addEventListener('click', ()=>{
+  const btn = document.getElementById('togglePassword');
+  const isPassword = passwordInput.type === 'password';
+  const newType = isPassword ? 'text' : 'password';
+  passwordInput.type = newType;
+  /* sync confirm type */
+  confirmInput.type = newType;
+  btn.classList.toggle('is-on', isPassword);
+  Haptic.light();
+});
 
-    function escapeHtml(str) {
-      if (str === undefined || str === null) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
+/* ═════════ THEME BUTTON ═════════ */
+document.getElementById('themeBtn').addEventListener('click', ()=>Theme.toggle());
 
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toast-container');
-      if (!container) return;
-      container.innerHTML = '';
-      const config = {
-        success: { icon: '<path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>' },
-        danger:  { icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' },
-        warning: { icon: '<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
-        info:    { icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>' }
-      };
-      const c = config[type] || config.info;
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = `<div class="toast-icon"><svg viewBox="0 0 24 24">${c.icon}</svg></div><div class="toast-msg">${escapeHtml(message)}</div>`;
-      container.appendChild(toast);
-      requestAnimationFrame(() => toast.classList.add('show'));
-      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 350); }, 2600);
-    }
+/* ═════════ SUBMIT ═════════ */
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  hideAlert();
 
-    function createRipple(e, el) {
-      const rect = el.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = (e.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
-      const y = (e.clientY || rect.top + rect.height / 2) - rect.top - size / 2;
-      const ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      el.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    }
+  const fullname = fullnameInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const confirm = confirmInput.value;
+  const terms = termsInput.checked;
 
-    function vibrate(ms = 8) { if ('vibrate' in navigator) { try { navigator.vibrate(ms); } catch (e) {} } }
+  /* Validate all */
+  const nameErr = Validators.name(fullname);
+  const emailErr = Validators.email(email);
+  const pwdErr = Validators.password(password);
+  const cnfErr = Validators.confirm(confirm, password);
 
-    function showError(msg) {
-      const box = document.getElementById('auth-error');
-      const txt = document.getElementById('auth-error-text');
-      if (txt) txt.textContent = msg;
-      if (box) box.classList.add('visible');
-      hideSuccess();
-    }
+  setFieldError('fullname','fullnameError', nameErr);
+  setFieldError('email','emailError', emailErr);
+  setFieldError('password','passwordError', pwdErr);
+  setFieldError('confirm','confirmError', cnfErr);
+  termsLabel.classList.toggle('is-invalid', !terms);
 
-    function hideError() {
-      const box = document.getElementById('auth-error');
-      if (box) box.classList.remove('visible');
-    }
+  if(nameErr || emailErr || pwdErr || cnfErr || !terms){
+    if(!terms) showAlert(t('err_terms_required'));
+    return;
+  }
 
-    function showSuccess(msg) {
-      const box = document.getElementById('auth-success');
-      const txt = document.getElementById('auth-success-text');
-      if (txt) txt.textContent = msg;
-      if (box) box.classList.add('visible');
-      hideError();
-    }
+  if(!fbAuth || !fbDb){
+    showAlert(t('err_generic'));
+    return;
+  }
 
-    function hideSuccess() {
-      const box = document.getElementById('auth-success');
-      if (box) box.classList.remove('visible');
-    }
+  submitBtn.classList.add('is-loading');
+  submitBtn.disabled = true;
+  Haptic.light();
 
-    function togglePasswordVisibility(inputId, iconId) {
-      const input = document.getElementById(inputId);
-      const icon = document.getElementById(iconId);
-      if (!input || !icon) return;
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
-      } else {
-        input.type = 'password';
-        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
-      }
-      vibrate(4);
-    }
+  try {
+    /* Create auth user */
+    const cred = await fbAuth.createUserWithEmailAndPassword(email, password);
 
-    /* ═══ PASSWORD STRENGTH ═══ */
-    function getPasswordStrength(pwd) {
-      if (!pwd || pwd.length < 6) return 0;
-      let score = 0;
-      if (pwd.length >= 8) score++;
-      if (pwd.length >= 12) score++;
-      if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) score++;
-      if (/\d/.test(pwd)) score++;
-      if (/[^a-zA-Z0-9]/.test(pwd)) score++;
-      if (score <= 1) return 1;
-      if (score <= 3) return 2;
-      return 3;
-    }
+    /* Update displayName */
+    await cred.user.updateProfile({ displayName: fullname });
 
-    function onPasswordInput() {
-      const pwd = document.getElementById('reg-password').value;
-      const wrapper = document.getElementById('pwd-strength');
-      const bar1 = document.getElementById('pwd-bar-1');
-      const bar2 = document.getElementById('pwd-bar-2');
-      const bar3 = document.getElementById('pwd-bar-3');
-      const label = document.getElementById('pwd-strength-label');
+    /* Create Firestore user doc */
+    await fbDb.collection('users').doc(cred.user.uid).set({
+      uid: cred.user.uid,
+      displayName: fullname,
+      email: email,
+      walletBalance: 0,
+      role: 'client',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
 
-      [bar1, bar2, bar3].forEach(b => b.className = 'pwd-bar');
-      label.className = 'pwd-strength-label';
-      label.textContent = '';
+    /* Send email verification (optional but good) */
+    try { await cred.user.sendEmailVerification(); } catch(e){}
 
-      if (!pwd) {
-        wrapper.classList.remove('visible');
-        return;
-      }
-      wrapper.classList.add('visible');
+    toast(t('success_created'), 'success');
+    setTimeout(()=>{ window.location.href = '../index.html'; }, 1200);
+  } catch(err){
+    console.error('[Register]', err);
+    showAlert(mapFirebaseError(err.code));
+  } finally {
+    submitBtn.classList.remove('is-loading');
+    submitBtn.disabled = false;
+  }
+});
 
-      const strength = getPasswordStrength(pwd);
-      if (strength === 1) {
-        bar1.classList.add('weak');
-        label.textContent = t('strengthWeak');
-        label.classList.add('weak');
-      } else if (strength === 2) {
-        bar1.classList.add('medium');
-        bar2.classList.add('medium');
-        label.textContent = t('strengthMedium');
-        label.classList.add('medium');
-      } else if (strength === 3) {
-        bar1.classList.add('strong');
-        bar2.classList.add('strong');
-        bar3.classList.add('strong');
-        label.textContent = t('strengthStrong');
-        label.classList.add('strong');
-      }
-      // Update confirm indicator too
-      onConfirmInput();
-    }
-
-    /* ═══ CONFIRM MATCH ═══ */
-    function onConfirmInput() {
-      const pwd = document.getElementById('reg-password').value;
-      const confirm = document.getElementById('reg-confirm').value;
-      const indicator = document.getElementById('pwd-match');
-      const icon = document.getElementById('pwd-match-icon');
-      const confirmInput = document.getElementById('reg-confirm');
-
-      if (!confirm) {
-        indicator.classList.remove('visible', 'match', 'mismatch');
-        confirmInput.classList.remove('error', 'valid');
-        return;
-      }
-      indicator.classList.add('visible');
-      if (confirm === pwd) {
-        indicator.classList.remove('mismatch');
-        indicator.classList.add('match');
-        icon.innerHTML = '<path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>';
-        confirmInput.classList.remove('error');
-        confirmInput.classList.add('valid');
-      } else {
-        indicator.classList.remove('match');
-        indicator.classList.add('mismatch');
-        icon.innerHTML = '<path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>';
-        confirmInput.classList.remove('valid');
-        confirmInput.classList.add('error');
-      }
-    }
-
-    function applyTranslations() {
-      document.documentElement.setAttribute('lang', STATE.lang);
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (I18N[STATE.lang][key]) el.textContent = I18N[STATE.lang][key];
-      });
-    }
-
-    function setLang(code) {
-      if (!I18N[code]) return;
-      STATE.lang = code;
-      localStorage.setItem('dp_lang', code);
-      applyTranslations();
-      // Refresh strength label if visible
-      onPasswordInput();
-    }
-
-    function mapFirebaseError(code) {
-      const map = {
-        'auth/email-already-in-use': 'errEmailInUse',
-        'auth/invalid-email': 'errEmailInvalid',
-        'auth/weak-password': 'errWeakPassword',
-        'auth/too-many-requests': 'errTooManyRequests',
-        'auth/network-request-failed': 'errNetwork',
-        'auth/popup-closed-by-user': 'errGooglePopupClosed',
-        'auth/popup-blocked': 'errGooglePopupBlocked',
-        'auth/cancelled-popup-request': 'errGoogleCancelled',
-        'auth/account-exists-with-different-credential': 'errGoogleAccountExists'
-      };
-      return t(map[code] || 'errGeneric');
-    }
-
-    /* ═══ GOOGLE SIGN-UP ═══ */
-    async function signInWithGoogle(e) {
-      if (STATE.googleSubmitting) return;
-      STATE.googleSubmitting = true;
-      const btn = document.getElementById('btn-google');
-      btn.disabled = true;
-      hideError();
-      hideSuccess();
-
-      try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: 'select_account' });
-        const result = await auth.signInWithPopup(provider);
-        const user = result.user;
-
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        if (!userDoc.exists) {
-          await db.collection('users').doc(user.uid).set({
-            uid: user.uid,
-            displayName: user.displayName || 'Client',
-            email: user.email,
-            walletBalance: 0,
-            role: 'client',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          }, { merge: true });
-        }
-
-        vibrate(12);
-        showSuccess(t('successRegister'));
-        setTimeout(() => { window.location.href = '../index.html'; }, 900);
-      } catch (err) {
-        console.warn('[Google sign-up]', err.code, err.message);
-        showError(mapFirebaseError(err.code) || t('errGoogleGeneric'));
-        vibrate(20);
-      } finally {
-        STATE.googleSubmitting = false;
-        btn.disabled = false;
-      }
-    }
-
-    /* ═══ EMAIL REGISTER ═══ */
-    async function handleEmailRegister(e) {
-      if (STATE.submitting) return;
-      hideError();
-      hideSuccess();
-
-      const name = sanitize(document.getElementById('reg-name').value, 60);
-      const email = sanitize(document.getElementById('reg-email').value, 100).toLowerCase();
-      const password = document.getElementById('reg-password').value;
-      const confirm = document.getElementById('reg-confirm').value;
-      const termsChecked = document.getElementById('reg-terms').checked;
-      const btn = document.getElementById('btn-submit-register');
-
-      // Reset error classes
-      ['reg-name', 'reg-email', 'reg-password', 'reg-confirm'].forEach(id => {
-        document.getElementById(id).classList.remove('error');
-      });
-
-      // Validate
-      if (!name) {
-        document.getElementById('reg-name').classList.add('error');
-        showError(t('errNameRequired'));
-        vibrate(20);
-        return;
-      }
-      if (name.length < 2) {
-        document.getElementById('reg-name').classList.add('error');
-        showError(t('errNameShort'));
-        vibrate(20);
-        return;
-      }
-      if (!email) {
-        document.getElementById('reg-email').classList.add('error');
-        showError(t('errEmailRequired'));
-        vibrate(20);
-        return;
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        document.getElementById('reg-email').classList.add('error');
-        showError(t('errEmailInvalid'));
-        vibrate(20);
-        return;
-      }
-      if (!password) {
-        document.getElementById('reg-password').classList.add('error');
-        showError(t('errPasswordRequired'));
-        vibrate(20);
-        return;
-      }
-      if (password.length < 6) {
-        document.getElementById('reg-password').classList.add('error');
-        showError(t('errPasswordShort'));
-        vibrate(20);
-        return;
-      }
-      if (getPasswordStrength(password) < 2) {
-        document.getElementById('reg-password').classList.add('error');
-        showError(t('errPasswordWeak'));
-        vibrate(20);
-        return;
-      }
-      if (!confirm) {
-        document.getElementById('reg-confirm').classList.add('error');
-        showError(t('errConfirmRequired'));
-        vibrate(20);
-        return;
-      }
-      if (confirm !== password) {
-        document.getElementById('reg-confirm').classList.add('error');
-        showError(t('errConfirmMismatch'));
-        vibrate(20);
-        return;
-      }
-      if (!termsChecked) {
-        const row = document.getElementById('terms-row');
-        row.classList.add('shake');
-        setTimeout(() => row.classList.remove('shake'), 500);
-        showError(t('errTermsRequired'));
-        vibrate(20);
-        return;
-      }
-
-      STATE.submitting = true;
-      btn.disabled = true;
-      btn.classList.add('loading');
-
-      try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-
-        // Update profile displayName
-        try {
-          await user.updateProfile({ displayName: name });
-        } catch (e) { console.warn('updateProfile', e); }
-
-        // Create Firestore user doc
-        await db.collection('users').doc(user.uid).set({
-          uid: user.uid,
-          displayName: name,
-          email: email,
+/* ═════════ GOOGLE SIGN-UP ═════════ */
+document.getElementById('googleBtn').addEventListener('click', async ()=>{
+  if(!fbAuth || !fbDb){
+    showAlert(t('err_generic'));
+    return;
+  }
+  hideAlert();
+  Haptic.light();
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  try {
+    await fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    const result = await fbAuth.signInWithPopup(provider);
+    if(result && result.user){
+      const ref = fbDb.collection('users').doc(result.user.uid);
+      const snap = await ref.get();
+      if(!snap.exists){
+        await ref.set({
+          uid: result.user.uid,
+          displayName: result.user.displayName || '',
+          email: result.user.email || '',
           walletBalance: 0,
           role: 'client',
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        // Optionnel : envoyer email de vérification
-        try {
-          await user.sendEmailVerification();
-        } catch (e) { console.warn('sendEmailVerification', e); }
-
-        vibrate(12);
-        showSuccess(t('successRegister'));
-        setTimeout(() => { window.location.href = '../index.html'; }, 900);
-
-      } catch (err) {
-        console.warn('[Email register]', err.code, err.message);
-        showError(mapFirebaseError(err.code));
-        vibrate(20);
-      } finally {
-        STATE.submitting = false;
-        btn.disabled = false;
-        btn.classList.remove('loading');
+        });
       }
     }
+    toast(t('success_google'), 'success');
+    setTimeout(()=>{ window.location.href = '../index.html'; }, 1000);
+  } catch(err){
+    console.error('[Google]', err);
+    if(err.code !== 'auth/popup-closed-by-user'){
+      showAlert(mapFirebaseError(err.code));
+    }
+  }
+});
 
-    /* Clear error on input */
-    document.addEventListener('input', (e) => {
-      if (e.target.classList && e.target.classList.contains('text-input')) {
-        e.target.classList.remove('error');
-        hideError();
-      }
-    });
+/* ═════════ INIT ═════════ */
+applyTranslations();
 
-    /* Terms checkbox - remove error state */
-    document.getElementById('reg-terms')?.addEventListener('change', () => {
-      hideError();
-    });
-
-    /* Enter key submits (from any input except confirm) */
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && ['reg-name', 'reg-email', 'reg-password', 'reg-confirm'].includes(e.target.id)) {
-        e.preventDefault();
-        handleEmailRegister(e);
-      }
-    });
-
-    /* ═══ AUTO-REDIRECT IF ALREADY LOGGED IN ═══ */
-    let authResolved = false;
-    auth.onAuthStateChanged(user => {
-      if (authResolved) return;
-      authResolved = true;
-      if (user) {
-        setTimeout(() => { window.location.href = '../index.html'; }, 300);
-      } else {
-        document.body.classList.add('ready');
-      }
-    });
-
-    /* ═══ BOOT ═══ */
-    document.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('dp_lang') || 'fr';
-      setLang(saved);
-
-      document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.btn-google, .btn-submit-register, .btn-secondary-outline, .field-toggle');
-        if (btn && !btn.disabled) createRipple(e, btn);
-      });
-
-      setTimeout(() => {
-        if (!document.body.classList.contains('ready')) {
-          document.body.classList.add('ready');
-        }
-      }, 2500);
-    });
-
-    window.addEventListener('error', () => {
-      document.body.classList.add('ready');
-    });
-  </script>
-  <script src="/assets/js/design-system.js"></script>
+})();
+</script>
 </body>
 </html>
