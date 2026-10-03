@@ -1,1796 +1,1799 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#00B4FF">
-  <script>(function(){try{var t=localStorage.getItem('dp_theme')||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <title>Portefeuille — DigitalPay Haiti</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<meta name="theme-color" content="#FFFFFF">
+<title>Portefeuille — TizèPay</title>
+<meta name="description" content="Gérez votre portefeuille TizèPay.">
+<link rel="icon" href="../assets/logo.png">
+<link rel="apple-touch-icon" href="../assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>(function(){try{
+var t=localStorage.getItem('tzp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+var l=localStorage.getItem('tzp_lang')||((navigator.language||'fr').slice(0,2).toLowerCase());
+if(!['fr','ht','en','es'].includes(l))l='fr';
+document.documentElement.setAttribute('data-theme',t);
+document.documentElement.lang=l;
+}catch(e){}})();</script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   TIZÈPAY — DESIGN SYSTEM v5.3
+   ═══════════════════════════════════════════════════════════════════════ */
+:root{
+  --blue-25:#F5F8FF;--blue-50:#EBF1FF;--blue-100:#D6E3FF;--blue-200:#ADC6FF;
+  --blue-300:#7FA4FF;--blue-400:#3D7BFF;--blue-500:#0055FF;--blue-600:#003ACC;--blue-700:#002A99;
+  --blue-soft:rgba(0,85,255,.08);--blue-glow:rgba(0,85,255,.32);--blue-glow-soft:rgba(0,85,255,.16);
+  --grad-blue:linear-gradient(135deg,#0055FF 0%,#003ACC 100%);
+  --grad-spotlight:linear-gradient(135deg,#0055FF 0%,#3D7BFF 50%,#002A99 100%);
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  --green:#00A86B;--green-bg:#ECFDF5;
+  --red:#FF3B30;--red-bg:#FEF2F2;
+  --amber:#F59E0B;--amber-bg:#FFFBEB;
+  --purple:#7C3AED;--purple-bg:#F5F3FF;
 
-  <link rel="icon" href="/assets/favicon.ico" sizes="any">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-  <link rel="manifest" href="/assets/site.webmanifest">
+  --g25:#FCFCFD;--g50:#FAFAFA;--g100:#F4F4F5;--g200:#E4E4E7;
+  --g300:#D4D4D8;--g400:#A1A1AA;--g500:#71717A;--g600:#52525B;--g700:#3F3F46;
+  --bg:var(--g25);--bg-card:#FFFFFF;--bg-soft:var(--g50);--bg-mute:var(--g100);
+  --fg:#0A0A0A;--fg-mute:#52525B;--fg-soft:#8A8A8A;--fg-faint:#B0B0B0;
+  --border:#E8E8EC;--border-strong:#D4D4D8;--border-soft:#F0F0F4;
 
-  <style>
-    :root {
-      --bg-page: #F5F7FB; --bg-card: #FFFFFF; --bg-subtle: #F0F4F9; --bg-hover: #F8FAFC;
-      --bg-glass: rgba(245, 247, 251, 0.72);
-      --border-subtle: #EDF1F7; --border-default: #E1E8F0; --border-strong: #C7D2E0;
-      --text-primary: #0A1633; --text-secondary: #4A5568; --text-tertiary: #8B94A7; --text-quaternary: #B5BDCA;
-      --blue-25: #F0F9FF; --blue-50: #E0F2FE; --blue-100: #BAE6FD; --blue-200: #7DD3FC;
-      --blue-400: #38BDF8; --blue-500: #00B4FF; --blue-600: #0055FF; --blue-700: #003BCC;
-      --blue-gradient: linear-gradient(135deg, #00B4FF 0%, #0055FF 100%);
-      --blue-gradient-hero: linear-gradient(135deg, #0055FF 0%, #00B4FF 55%, #38BDF8 100%);
-      --success: #059669; --success-bg: #ECFDF5; --success-border: #A7F3D0;
-      --danger: #DC2626; --danger-bg: #FEF2F2; --danger-border: #FECACA;
-      --warning: #D97706; --warning-bg: #FFFBEB;
-      --r-xs: 6px; --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-2xl: 28px; --r-3xl: 36px; --r-full: 9999px;
-      --shadow-2xs: 0 1px 1px rgba(10, 22, 51, 0.03);
-      --shadow-xs: 0 1px 2px rgba(10, 22, 51, 0.04), 0 1px 1px rgba(10, 22, 51, 0.02);
-      --shadow-sm: 0 2px 4px rgba(10, 22, 51, 0.04), 0 1px 2px rgba(10, 22, 51, 0.03);
-      --shadow-md: 0 4px 8px rgba(10, 22, 51, 0.05), 0 2px 4px rgba(10, 22, 51, 0.03);
-      --shadow-lg: 0 8px 16px rgba(10, 22, 51, 0.06), 0 4px 8px rgba(10, 22, 51, 0.04);
-      --shadow-xl: 0 16px 32px rgba(10, 22, 51, 0.08), 0 8px 16px rgba(10, 22, 51, 0.04);
-      --shadow-2xl: 0 28px 56px rgba(10, 22, 51, 0.12), 0 12px 24px rgba(10, 22, 51, 0.06);
-      --shadow-blue: 0 4px 12px rgba(0, 85, 255, 0.22), 0 10px 28px rgba(0, 85, 255, 0.14);
-      --shadow-blue-lg: 0 8px 20px rgba(0, 85, 255, 0.28), 0 16px 40px rgba(0, 85, 255, 0.16);
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+  --r-xs:6px;--r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;--r-2xl:36px;--r-full:9999px;
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body { background: var(--bg-page); color: var(--text-primary); font-family: var(--font); font-size: 14px; line-height: 1.5; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; opacity: 0; transition: opacity 0.4s ease; padding-bottom: 90px; }
-    body.ready { opacity: 1; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+  --sh-xs:0 1px 2px rgba(15,15,20,.04);
+  --sh-sm:0 2px 6px rgba(15,15,20,.04),0 1px 2px rgba(15,15,20,.02);
+  --sh-md:0 8px 20px rgba(15,15,20,.06),0 2px 6px rgba(15,15,20,.03);
+  --sh-lg:0 18px 40px rgba(15,15,20,.08),0 6px 14px rgba(15,15,20,.04);
+  --sh-xl:0 32px 64px rgba(15,15,20,.12),0 12px 24px rgba(15,15,20,.06);
+  --sh-blue:0 8px 24px rgba(0,85,255,.24),0 2px 8px rgba(0,85,255,.12);
+  --sh-blue-lg:0 16px 40px rgba(0,85,255,.32),0 4px 12px rgba(0,85,255,.18);
 
-    .app-shell { width: 100%; max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg-page); position: relative; display: flex; flex-direction: column; border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --ease-out:cubic-bezier(0.22,1,0.36,1);
+  --spring:cubic-bezier(0.34,1.56,0.64,1);
+  --spring-soft:cubic-bezier(0.25,1.5,0.5,1);
 
-    .site-header { position: sticky; top: 0; z-index: 40; background: var(--bg-glass); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-bottom: 1px solid transparent; padding: 14px 18px; transition: all 0.3s var(--ease-out); }
-    .site-header.scrolled { border-bottom-color: var(--border-subtle); padding: 10px 18px; box-shadow: var(--shadow-xs); }
-    .header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; }
-    .brand-logo { height: 32px; width: auto; max-width: 130px; object-fit: contain; cursor: pointer; display: block; transition: all 0.3s var(--ease-out); }
-    .site-header.scrolled .brand-logo { height: 28px; }
-    .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
-    .icon-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border-default); display: flex; align-items: center; justify-content: center; color: var(--text-primary); cursor: pointer; position: relative; text-decoration: none; transition: all 0.2s var(--ease-out); box-shadow: var(--shadow-2xs); flex-shrink: 0; }
-    .icon-btn:hover { background: var(--bg-hover); border-color: var(--border-strong); }
-    .icon-btn:active { transform: scale(0.9); }
-    .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
-    .cart-badge { position: absolute; top: -3px; right: -3px; background: var(--blue-gradient); color: #FFFFFF; font-size: 10px; font-weight: 800; min-width: 19px; height: 19px; padding: 0 5px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px var(--bg-page); line-height: 1; }
-    .cart-badge.visible { display: flex; }
+  --dur-fast:150ms;--dur:220ms;--dur-slow:320ms;--dur-slower:480ms;
+  --t-fast:var(--dur-fast) var(--ease);
+  --t:var(--dur) var(--ease);
+  --t-slow:var(--dur-slow) var(--ease);
+}
+html[data-theme="dark"]{
+  --bg:#08080A;--bg-card:#141416;--bg-soft:#18181B;--bg-mute:#1E1E22;
+  --fg:#F7F7F8;--fg-mute:#A1A1AA;--fg-soft:#71717A;--fg-faint:#4A4A52;
+  --border:#26262A;--border-strong:#3F3F46;--border-soft:#1E1E22;
+  --blue-soft:rgba(0,85,255,.18);
+  --green-bg:#0A1F17;--red-bg:#2A0F0F;--amber-bg:#2A1F0A;--purple-bg:#1A1028;
+  --sh-xs:0 1px 2px rgba(0,0,0,.5);
+  --sh-sm:0 2px 6px rgba(0,0,0,.4);
+  --sh-md:0 8px 20px rgba(0,0,0,.5);
+  --sh-lg:0 18px 40px rgba(0,0,0,.6);
+  --sh-xl:0 32px 64px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
 
-    .wallet-main { padding: 20px 18px 24px; flex: 1; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;scroll-behavior:smooth;scroll-padding-top:80px;overscroll-behavior-y:none}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:14px;line-height:1.5;color:var(--fg);background:var(--bg);
+  min-height:100dvh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  font-feature-settings:'cv11','ss01','ss03','tnum','calt';
+  transition:background-color .4s var(--ease),color .4s var(--ease);
+  overflow-x:hidden;position:relative;
+}
+img,svg{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none;transition:color var(--t)}
+input,textarea,select{font:inherit;color:inherit;font-family:inherit}
+h1,h2,h3,h4{line-height:1.1;font-weight:900;letter-spacing:-.035em}
+::selection{background:var(--blue-500);color:#FFF}
+:focus-visible{outline:2px solid var(--blue-500);outline-offset:3px;border-radius:var(--r-xs)}
+::-webkit-scrollbar{width:0;height:0}
 
-    /* ═══ BALANCE CARD PREMIUM ═══ */
-    .balance-card {
-      position: relative;
-      background: linear-gradient(135deg, #003BCC 0%, #0055FF 40%, #00B4FF 100%);
-      color: #FFFFFF;
-      border-radius: var(--r-2xl);
-      padding: 24px 22px 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 12px 32px rgba(0, 85, 255, 0.32), 0 4px 12px rgba(0, 85, 255, 0.2);
-      overflow: hidden;
-    }
-    .balance-card::after { content: ''; position: absolute; top: -70px; right: -70px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%); pointer-events: none; }
-    .balance-card::before { content: ''; position: absolute; bottom: -60px; left: -40px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); pointer-events: none; }
-    .balance-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; position: relative; z-index: 1; }
-    .balance-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; display: flex; align-items: center; gap: 8px; }
-    .balance-eye { background: rgba(255,255,255,0.16); border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(6px); transition: all 0.2s ease; padding: 0; }
-    .balance-eye:active { transform: scale(0.9); }
-    .balance-eye svg { width: 15px; height: 15px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
-    .balance-amount { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; position: relative; z-index: 1; transition: all 0.3s ease; }
-    .balance-value { font-size: 42px; font-weight: 900; letter-spacing: -1.8px; line-height: 1; font-variant-numeric: tabular-nums; }
-    .balance-currency { font-size: 18px; font-weight: 800; opacity: 0.85; letter-spacing: -0.3px; }
-    .balance-value.blurred { filter: blur(9px); user-select: none; }
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+@keyframes badgePop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes shine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes glowPulse{0%,100%{opacity:.55;filter:blur(40px)}50%{opacity:.85;filter:blur(60px)}}
+@keyframes spinner{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+@keyframes pricePulse{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes navLine{to{width:28px}}
 
-    .balance-sparkline { position: relative; z-index: 1; height: 40px; margin-bottom: 14px; }
-    .balance-sparkline svg { width: 100%; height: 100%; display: block; }
-    .sparkline-path { fill: none; stroke: rgba(255,255,255,0.85); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .sparkline-area { fill: url(#sparkGradient); opacity: 0.5; }
-    .sparkline-dot { fill: #FFFFFF; stroke: rgba(0, 85, 255, 0.4); stroke-width: 2; }
+.app{max-width:480px;margin:0 auto;padding-bottom:104px;position:relative;overflow-x:hidden}
+.section{padding:24px 20px;max-width:480px;margin:0 auto;position:relative}
 
-    .balance-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.18); font-size: 11.5px; font-weight: 600; position: relative; z-index: 1; gap: 12px; }
-    .balance-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-    .balance-stat-label { font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; }
-    .balance-stat-value { font-size: 13px; font-weight: 800; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--grad-blue);z-index:900;transition:width 100ms linear;box-shadow:0 0 12px var(--blue-glow)}
 
-    /* ═══ QUICK ACTIONS 4 ═══ */
-    .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
-    .qa-btn { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-family: inherit; transition: all 0.2s var(--ease-out); box-shadow: var(--shadow-xs); text-decoration: none; position: relative; }
-    .qa-btn:hover { border-color: var(--blue-200); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-    .qa-btn:active { transform: translateY(0) scale(0.97); }
-    .qa-btn.primary { background: var(--blue-gradient); border-color: transparent; box-shadow: var(--shadow-blue); }
-    .qa-icon { width: 34px; height: 34px; border-radius: 11px; background: var(--blue-50); color: var(--blue-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .qa-btn.primary .qa-icon { background: rgba(255,255,255,0.22); color: #FFFFFF; }
-    .qa-icon svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.2; fill: none; }
-    .qa-title { font-size: 10.5px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.15px; text-align: center; line-height: 1.15; }
-    .qa-btn.primary .qa-title { color: #FFFFFF; }
+/* TOPBAR */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(252,252,253,.78);
+  backdrop-filter:blur(24px) saturate(200%);
+  -webkit-backdrop-filter:blur(24px) saturate(200%);
+  border-bottom:1px solid var(--border-soft);
+}
+html[data-theme="dark"] .topbar{background:rgba(8,8,10,.78)}
+.topbar__inner{display:flex;align-items:center;justify-content:space-between;gap:8px;height:60px;padding:0 16px;max-width:480px;margin:0 auto}
+.topbar__left,.topbar__right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.topbar__title{font-size:16px;font-weight:900;letter-spacing:-.03em;color:var(--fg)}
 
-    /* ═══ SECTION TITLE ═══ */
-    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-    .section-title { font-size: 16px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; }
-    .section-count { font-size: 11px; font-weight: 800; color: var(--blue-600); background: var(--blue-50); padding: 3px 9px; border-radius: var(--r-full); }
+.iconbtn{
+  width:40px;height:40px;border-radius:var(--r-md);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--fg);flex-shrink:0;transition:all var(--t-fast);position:relative;
+  overflow:hidden;
+}
+.iconbtn::before{content:'';position:absolute;inset:0;background:var(--fg);opacity:0;border-radius:inherit;transition:opacity var(--t-fast);pointer-events:none}
+.iconbtn:hover::before{opacity:.05}
+.iconbtn:active{transform:scale(.9)}
+.iconbtn svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none}
+.iconbtn__badge{
+  position:absolute;top:2px;right:2px;min-width:16px;height:16px;padding:0 4px;
+  background:var(--blue-500);color:#FFF;font-size:9px;font-weight:800;
+  border-radius:var(--r-full);display:none;align-items:center;justify-content:center;
+  line-height:1;border:2px solid var(--bg-card);
+}
+.iconbtn__badge.is-on{display:inline-flex;animation:badgePop .4s var(--spring)}
+.theme-btn svg.icon-sun,.theme-btn svg.icon-moon{position:absolute;transition:all var(--dur-slower) var(--spring)}
+.theme-btn .icon-sun{display:none;transform:rotate(90deg) scale(0)}
+.theme-btn .icon-moon{display:block;transform:rotate(0) scale(1)}
+html[data-theme="dark"] .theme-btn .icon-sun{display:block;transform:rotate(0) scale(1)}
+html[data-theme="dark"] .theme-btn .icon-moon{display:none;transform:rotate(-90deg) scale(0)}
 
-    /* ═══ PAYMENT METHODS STRIP ═══ */
-    .pay-methods-strip { display: flex; gap: 6px; margin-bottom: 22px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-    .pay-methods-strip::-webkit-scrollbar { display: none; }
-    .pay-pill-mini { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-full); padding: 5px 11px 5px 6px; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-2xs); flex-shrink: 0; }
-    .pay-pill-mini-logo { width: 20px; height: 20px; border-radius: 6px; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 8px; font-weight: 900; color: var(--text-secondary); flex-shrink: 0; }
-    .pay-pill-mini-logo img { width: 100%; height: 100%; object-fit: contain; }
-    .pay-pill-mini-name { font-size: 10.5px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.1px; }
+/* BALANCE CARD */
+.balance-wrap{padding:20px;max-width:480px;margin:0 auto}
+.balance-card{
+  position:relative;
+  background:var(--grad-spotlight);
+  color:#FFF;
+  border-radius:var(--r-xl);
+  padding:24px;
+  overflow:hidden;
+  box-shadow:var(--sh-blue-lg);
+  isolation:isolate;
+}
+.balance-card::before{
+  content:'';position:absolute;inset:-2px;border-radius:inherit;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+  background-size:200% 100%;opacity:0;pointer-events:none;z-index:2;
+  animation:shine 3s linear infinite;
+}
+.balance-card:hover::before{opacity:1}
+.balance-glow1{position:absolute;bottom:-100px;left:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,255,255,.3) 0%,transparent 65%);filter:blur(24px);pointer-events:none}
+.balance-glow2{position:absolute;top:-80px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.16) 0%,transparent 65%);filter:blur(24px);pointer-events:none}
 
-    /* ═══ FILTERS ═══ */
-    .filter-pills { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-    .filter-pills::-webkit-scrollbar { display: none; }
-    .filter-pill { background: var(--bg-card); border: 1px solid var(--border-default); color: var(--text-secondary); padding: 7px 14px; border-radius: var(--r-full); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; transition: all 0.2s var(--ease-out); flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
-    .filter-pill:active { transform: scale(0.96); }
-    .filter-pill.active { background: var(--text-primary); border-color: var(--text-primary); color: #FFFFFF; }
-    .filter-pill svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .filter-pill-count { background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: var(--r-full); font-size: 9.5px; font-weight: 800; min-width: 16px; text-align: center; }
-    .filter-pill.active .filter-pill-count { background: var(--blue-600); color: #FFFFFF; }
+.balance-head{
+  position:relative;z-index:3;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-bottom:20px;
+}
+.balance-label{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 10px;background:rgba(255,255,255,.22);
+  border-radius:var(--r-full);font-size:10px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;color:#FFF;
+  backdrop-filter:blur(8px);
+}
+.balance-label svg{width:11px;height:11px;stroke:#FFF;stroke-width:2.4;fill:none}
+.balance-eye{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.18);
+  display:grid;place-items:center;
+  color:#FFF;transition:all var(--t-fast);
+  backdrop-filter:blur(8px);
+}
+.balance-eye:hover{background:rgba(255,255,255,.28);transform:scale(1.05)}
+.balance-eye:active{transform:scale(.92)}
+.balance-eye svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.2;fill:none}
+.balance-eye .eye-off{display:none}
+.balance-eye.is-hidden .eye-on{display:none}
+.balance-eye.is-hidden .eye-off{display:block}
 
-    /* ═══ TX GROUP ═══ */
-    .tx-group { margin-bottom: 18px; }
-    .tx-group-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-tertiary); margin: 0 0 8px 4px; display: flex; align-items: center; gap: 8px; }
-    .tx-group-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%); }
-    .tx-list { display: flex; flex-direction: column; gap: 8px; }
-    .tx-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 14px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xs); transition: all 0.2s ease; position: relative; overflow: hidden; cursor: pointer; }
-    .tx-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
-    .tx-item.deposit::before { background: var(--success); }
-    .tx-item.purchase::before { background: var(--blue-600); }
-    .tx-item:hover { border-color: var(--border-default); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
-    .tx-item:active { transform: translateY(0) scale(0.995); }
-    .tx-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
-    .tx-icon.deposit { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
-    .tx-icon.purchase { background: var(--blue-50); color: var(--blue-600); border: 1px solid var(--blue-100); }
-    .tx-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .tx-info { flex: 1; min-width: 0; }
-    .tx-title { font-size: 13px; font-weight: 800; color: var(--text-primary); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.2px; }
-    .tx-meta { font-size: 10.5px; color: var(--text-tertiary); font-weight: 600; margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .tx-ref { font-family: monospace; font-size: 9.5px; background: var(--bg-subtle); padding: 1px 6px; border-radius: var(--r-xs); color: var(--text-secondary); }
-    .tx-right { text-align: right; flex-shrink: 0; }
-    .tx-amount { font-size: 13.5px; font-weight: 900; letter-spacing: -0.3px; white-space: nowrap; font-variant-numeric: tabular-nums; }
-    .tx-amount.deposit { color: var(--success); }
-    .tx-amount.purchase { color: var(--text-primary); }
-    .tx-status { display: inline-block; margin-top: 4px; font-size: 8.5px; font-weight: 800; padding: 2px 7px; border-radius: var(--r-full); text-transform: uppercase; letter-spacing: 0.4px; }
-    .tx-status.valide, .tx-status.livre { background: var(--success-bg); color: var(--success); }
-    .tx-status.en_attente, .tx-status.en_attente_stock { background: var(--warning-bg); color: var(--warning); }
-    .tx-status.rejete { background: var(--danger-bg); color: var(--danger); }
+.balance-amount{
+  position:relative;z-index:3;
+  font-size:clamp(34px,10vw,44px);font-weight:900;
+  letter-spacing:-.045em;line-height:1;
+  margin-bottom:6px;
+  font-variant-numeric:tabular-nums;
+  transition:all .3s var(--ease);
+}
+.balance-amount small{font-size:15px;font-weight:700;opacity:.85;margin-left:6px;letter-spacing:0}
+.balance-amount.is-hidden-amount{letter-spacing:6px}
+.balance-sub{
+  position:relative;z-index:3;
+  font-size:12.5px;color:rgba(255,255,255,.85);
+  margin-bottom:20px;
+}
 
-    /* ═══ EMPTY ═══ */
-    .empty-tx { text-align: center; padding: 50px 24px; }
-    .empty-tx-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-    .empty-tx-icon svg { width: 30px; height: 30px; stroke: var(--text-tertiary); stroke-width: 1.8; fill: none; }
-    .empty-tx-title { font-size: 15px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
-    .empty-tx-sub { font-size: 12.5px; color: var(--text-secondary); max-width: 260px; margin: 0 auto; line-height: 1.5; }
+.balance-stats{
+  position:relative;z-index:3;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.15);
+}
+.balance-stat{display:flex;flex-direction:column;gap:2px}
+.balance-stat__label{
+  font-size:10px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(255,255,255,.65);
+}
+.balance-stat__value{
+  font-size:14px;font-weight:800;
+  color:#FFF;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+}
 
-    .skeleton-tx { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 12px 14px; display: flex; gap: 12px; align-items: center; }
-    .skeleton-block { background: linear-gradient(90deg, var(--bg-subtle) 0%, #E4EAF2 50%, var(--bg-subtle) 100%); background-size: 200% 100%; animation: skeleton-load 1.5s infinite; border-radius: var(--r-md); }
-    .skeleton-circle { width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; }
-    .skeleton-lines { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-    .skeleton-line { height: 12px; }
-    .skeleton-line-sm { height: 10px; width: 60%; }
-    @keyframes skeleton-load { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+/* QUICK ACTIONS */
+.quick-actions{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+  padding:0 20px;max-width:480px;margin:0 auto;
+}
+.qa{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:14px 8px;
+  background:var(--bg-card);
+  border:1px solid var(--border-soft);
+  border-radius:var(--r-md);
+  transition:all var(--t);cursor:pointer;
+  text-align:center;
+}
+.qa:hover{transform:translateY(-2px);border-color:var(--blue-200);box-shadow:var(--sh-sm)}
+.qa:active{transform:translateY(0) scale(.97)}
+.qa__icon{
+  width:40px;height:40px;border-radius:var(--r-md);
+  display:grid;place-items:center;
+  background:var(--blue-soft);color:var(--blue-600);
+  flex-shrink:0;
+}
+.qa__icon svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.2;fill:none}
+.qa__icon--green{background:var(--green-bg);color:var(--green)}
+.qa__icon--purple{background:var(--purple-bg);color:var(--purple)}
+.qa__icon--amber{background:var(--amber-bg);color:var(--amber)}
+.qa__label{
+  font-size:10.5px;font-weight:800;
+  color:var(--fg);letter-spacing:-.01em;
+  line-height:1.2;
+}
 
-    /* ═══ SECURITY BADGE ═══ */
-    .security-card { background: linear-gradient(135deg, #064E3B 0%, #059669 100%); border-radius: var(--r-xl); padding: 16px 18px; margin: 20px 0 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25); position: relative; overflow: hidden; }
-    .security-card::after { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
-    .security-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; z-index: 1; }
-    .security-icon svg { width: 20px; height: 20px; stroke: #FFFFFF; stroke-width: 2.2; fill: none; }
-    .security-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
-    .security-title { font-size: 13px; font-weight: 900; color: #FFFFFF; letter-spacing: -0.2px; margin-bottom: 2px; }
-    .security-desc { font-size: 11.5px; color: rgba(255,255,255,0.85); line-height: 1.4; font-weight: 600; }
+/* SECTION HEAD */
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:14px;
+}
+.section-head h2{font-size:20px;font-weight:900;letter-spacing:-.04em}
 
-    /* ═══ SHEET MODAL ═══ */
-    .sheet-backdrop { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 200; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); display: flex; align-items: flex-end; justify-content: center; }
-    .sheet-backdrop.active { opacity: 1; visibility: visible; }
-    .sheet-modal { width: 100%; max-width: 480px; max-height: 94vh; background: var(--bg-card); border-radius: var(--r-3xl) var(--r-3xl) 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.45s var(--ease-out); overflow: hidden; box-shadow: var(--shadow-2xl); }
-    .sheet-backdrop.active .sheet-modal { transform: translateY(0); }
-    .sheet-grabber { width: 40px; height: 4px; background: var(--border-strong); border-radius: var(--r-full); margin: 10px auto 4px; opacity: 0.6; flex-shrink: 0; }
-    .sheet-head { padding: 12px 20px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
-    .sheet-title { font-size: 17px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; }
-    .sheet-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-subtle); border: none; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; flex-shrink: 0; font-family: inherit; }
-    .sheet-close svg { width: 15px; height: 15px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .sheet-body { padding: 20px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
-    .sheet-footer { padding: 16px 20px 20px; background: var(--bg-card); border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
+/* FILTERS */
+.filters{
+  display:flex;gap:6px;margin-bottom:14px;
+  overflow-x:auto;padding-bottom:2px;
+  scrollbar-width:none;
+}
+.filters::-webkit-scrollbar{display:none}
+.filter{
+  padding:8px 14px;border-radius:var(--r-full);
+  background:var(--bg-card);color:var(--fg-mute);
+  font-size:12.5px;font-weight:700;
+  transition:all var(--t);border:1.5px solid var(--border-soft);
+  white-space:nowrap;flex-shrink:0;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.filter:hover{border-color:var(--border-strong);color:var(--fg)}
+.filter.is-active{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+html[data-theme="dark"] .filter.is-active{background:var(--blue-500);border-color:var(--blue-500);color:#FFF}
+.filter__count{
+  font-size:11px;opacity:.65;font-weight:700;
+  padding:1px 6px;border-radius:var(--r-full);
+  background:rgba(255,255,255,.15);
+}
+.filter:not(.is-active) .filter__count{background:var(--bg-mute)}
 
-    /* ═══ DEPOSIT MODAL — STEPS ═══ */
-    .dep-steps { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
-    .dep-step { display: flex; align-items: center; gap: 8px; flex: 1; }
-    .dep-step-circle { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-subtle); color: var(--text-tertiary); font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s var(--ease-spring); border: 2px solid var(--border-subtle); }
-    .dep-step.active .dep-step-circle { background: var(--blue-gradient); color: #FFFFFF; border-color: transparent; box-shadow: 0 4px 12px rgba(0, 85, 255, 0.3); transform: scale(1.05); }
-    .dep-step.completed .dep-step-circle { background: var(--success); color: #FFFFFF; border-color: transparent; }
-    .dep-step-label { font-size: 11px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; display: none; }
-    .dep-step.active .dep-step-label { color: var(--blue-600); display: block; }
-    .dep-step-line { height: 2px; flex: 1; background: var(--border-subtle); border-radius: 2px; transition: background 0.3s ease; }
-    .dep-step.completed + .dep-step-line, .dep-step.completed ~ .dep-step-line.active { background: var(--success); }
+/* TRANSACTIONS */
+.tx-list{display:flex;flex-direction:column;gap:8px}
+.tx{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;
+  background:var(--bg-card);
+  border:1px solid var(--border-soft);
+  border-left:3px solid var(--green);
+  border-radius:var(--r-md);
+  transition:all var(--t);
+}
+.tx:hover{border-color:var(--border);box-shadow:var(--sh-sm);transform:translateY(-1px)}
+.tx--out{border-left-color:var(--red)}
+.tx--pending{border-left-color:var(--amber)}
 
-    .dep-hero { text-align: center; padding: 8px 0 20px; }
-    .dep-hero-icon { width: 64px; height: 64px; border-radius: 20px; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; box-shadow: var(--shadow-blue-lg); }
-    .dep-hero-icon svg { width: 30px; height: 30px; stroke: #FFFFFF; stroke-width: 2; fill: none; }
-    .dep-hero-title { font-size: 18px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.4px; margin-bottom: 4px; }
-    .dep-hero-sub { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; max-width: 320px; margin: 0 auto; }
+.tx__icon{
+  width:40px;height:40px;border-radius:var(--r-md);
+  display:grid;place-items:center;
+  background:var(--green-bg);color:var(--green);
+  flex-shrink:0;
+}
+.tx__icon svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.4;fill:none}
+.tx__icon--out{background:var(--red-bg);color:var(--red)}
+.tx__icon--pending{background:var(--amber-bg);color:var(--amber)}
+.tx__icon--purple{background:var(--purple-bg);color:var(--purple)}
 
-    /* ═══ DEP METHODS ═══ */
-    .dep-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
-    .dep-pill { background: var(--bg-card); border: 1.5px solid var(--border-default); border-radius: var(--r-md); padding: 14px 8px 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.22s var(--ease-out); font-family: inherit; position: relative; overflow: visible; }
-    .dep-pill:active { transform: scale(0.97); }
-    .dep-pill.active { border-color: var(--blue-600); background: var(--blue-50); box-shadow: 0 0 0 1px var(--blue-600), 0 6px 16px rgba(0, 85, 255, 0.15); transform: translateY(-2px); }
-    .dep-pill-logo { width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border: 1px solid var(--border-subtle); }
-    .dep-pill-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .dep-pill-letter { font-size: 13px; font-weight: 900; letter-spacing: -0.3px; }
-    .dep-pill-name { font-size: 11px; font-weight: 800; color: var(--text-primary); text-align: center; letter-spacing: -0.1px; }
-    .dep-pill.active .dep-pill-name { color: var(--blue-700); }
-    .dep-pill-check { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: var(--blue-gradient); display: none; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0, 85, 255, 0.4); z-index: 2; }
-    .dep-pill.active .dep-pill-check { display: flex; }
-    .dep-pill-check svg { width: 11px; height: 11px; stroke: #FFFFFF; stroke-width: 3; fill: none; }
+.tx__body{flex:1;min-width:0}
+.tx__title{
+  font-size:13.5px;font-weight:800;
+  letter-spacing:-.01em;color:var(--fg);
+  margin-bottom:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.tx__meta{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;
+  color:var(--fg-soft);
+}
+.tx__meta-sep{width:3px;height:3px;border-radius:50%;background:var(--fg-faint)}
+.tx__pill{
+  padding:2px 7px;border-radius:var(--r-full);
+  font-size:9.5px;font-weight:800;
+  letter-spacing:.03em;text-transform:uppercase;
+}
+.tx__pill--success{background:var(--green-bg);color:var(--green)}
+.tx__pill--pending{background:var(--amber-bg);color:var(--amber)}
+.tx__pill--danger{background:var(--red-bg);color:var(--red)}
 
-    /* ═══ DEP INFO BOX ═══ */
-    .deposit-info { background: linear-gradient(135deg, var(--blue-50) 0%, rgba(0, 180, 255, 0.08) 100%); border: 1px solid var(--blue-100); border-radius: var(--r-md); padding: 14px; margin-bottom: 16px; position: relative; overflow: hidden; }
-    .deposit-info::after { content: ''; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%); pointer-events: none; }
-    .deposit-info-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; position: relative; z-index: 1; }
-    .deposit-info-label { font-size: 10.5px; font-weight: 800; color: var(--blue-700); text-transform: uppercase; letter-spacing: 0.5px; }
-    .btn-copy { background: #FFFFFF; border: 1px solid var(--blue-200); color: var(--blue-600); font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: var(--r-sm); cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: inherit; transition: all 0.15s ease; position: relative; z-index: 1; }
-    .btn-copy:hover { background: var(--blue-50); }
-    .btn-copy:active { transform: scale(0.96); }
-    .btn-copy svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2.4; fill: none; }
-    .deposit-info-value { font-family: 'SF Mono', 'Monaco', monospace; font-size: 16px; font-weight: 900; color: var(--blue-700); word-break: break-all; letter-spacing: 0.3px; position: relative; z-index: 1; line-height: 1.3; }
-    .deposit-info-hint { font-size: 11px; color: var(--blue-600); font-weight: 700; margin-top: 6px; position: relative; z-index: 1; opacity: 0.85; }
+.tx__amount{
+  font-size:14px;font-weight:900;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+  text-align:right;flex-shrink:0;
+}
+.tx__amount--in{color:var(--green)}
+.tx__amount--out{color:var(--red)}
+.tx__amount small{font-size:10px;font-weight:700;color:var(--fg-soft);margin-left:3px}
 
-    /* ═══ AMOUNT QUICK PICKER ═══ */
-    .amount-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
-    .amount-preset { background: var(--bg-subtle); border: 1.5px solid transparent; border-radius: var(--r-md); padding: 10px 4px; font-size: 12.5px; font-weight: 800; color: var(--text-primary); cursor: pointer; font-family: inherit; transition: all 0.18s ease; text-align: center; }
-    .amount-preset:hover { background: var(--bg-hover); border-color: var(--border-default); }
-    .amount-preset.active { background: var(--blue-50); border-color: var(--blue-600); color: var(--blue-700); box-shadow: 0 0 0 1px var(--blue-600); }
-    .amount-preset:active { transform: scale(0.96); }
+/* EMPTY */
+.empty{
+  text-align:center;padding:50px 20px;
+  animation:slideUp .4s var(--ease);
+}
+.empty__icon{
+  font-size:42px;margin-bottom:12px;
+  display:block;opacity:.5;
+  animation:float 3s ease-in-out infinite;
+}
+.empty__title{font-size:15px;font-weight:800;margin-bottom:4px}
+.empty__text{font-size:12.5px;color:var(--fg-mute);line-height:1.5;margin-bottom:16px}
+.empty__btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;
+  background:var(--blue-500);color:#FFF;
+  border-radius:var(--r-md);
+  font-size:13px;font-weight:800;
+  box-shadow:var(--sh-blue);
+  transition:all var(--t);
+}
+.empty__btn:hover{background:var(--blue-600);box-shadow:var(--sh-blue-lg);transform:translateY(-1px)}
+.empty__btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.4;fill:none}
 
-    /* ═══ FIELDS ═══ */
-    .field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
-    .field-label { font-size: 11.5px; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .field-label-hint { font-size: 10px; font-weight: 700; color: var(--text-tertiary); text-transform: none; letter-spacing: 0; }
-    .text-input { width: 100%; height: 46px; background: var(--bg-subtle); border: 1.5px solid transparent; border-radius: var(--r-md); padding: 0 14px; font-size: 14px; font-weight: 600; color: var(--text-primary); outline: none; font-family: inherit; transition: all 0.2s ease; }
-    .text-input:focus { background: var(--bg-card); border-color: var(--blue-600); box-shadow: 0 0 0 4px var(--blue-50); }
-    .text-input::placeholder { color: var(--text-quaternary); font-weight: 500; }
-    .text-input.money { font-size: 22px; font-weight: 900; height: 56px; letter-spacing: -0.5px; padding: 0 16px; font-variant-numeric: tabular-nums; }
+/* SECURITY CARD */
+.security-card{
+  display:flex;align-items:center;gap:14px;
+  padding:16px;
+  background:var(--green-bg);
+  border:1px solid rgba(0,168,107,.25);
+  border-radius:var(--r-lg);
+}
+.security-card__icon{
+  width:44px;height:44px;border-radius:var(--r-md);
+  background:var(--green);color:#FFF;
+  display:grid;place-items:center;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(0,168,107,.35);
+}
+.security-card__icon svg{width:22px;height:22px;stroke:#FFF;stroke-width:2.2;fill:none}
+.security-card__body{flex:1;min-width:0}
+.security-card__title{
+  font-size:13.5px;font-weight:800;
+  color:var(--green);letter-spacing:-.01em;
+  margin-bottom:2px;
+}
+.security-card__text{font-size:11.5px;color:var(--fg-mute);line-height:1.5}
 
-    .meru-hint { background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: var(--r-md); padding: 10px 12px; font-size: 12px; font-weight: 800; color: var(--blue-700); margin-top: 8px; display: none; align-items: center; gap: 8px; }
-    .meru-hint.visible { display: flex; }
-    .meru-hint svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.4; fill: none; flex-shrink: 0; }
+/* BOTTOM NAV */
+.bottomnav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;z-index:90;
+  background:rgba(252,252,253,.9);
+  backdrop-filter:blur(24px) saturate(200%);
+  -webkit-backdrop-filter:blur(24px) saturate(200%);
+  border-top:1px solid var(--border-soft);
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+html[data-theme="dark"] .bottomnav{background:rgba(8,8,10,.9)}
+.bottomnav__inner{display:grid;grid-template-columns:repeat(4,1fr);height:64px}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  color:var(--fg-soft);font-size:10.5px;font-weight:700;letter-spacing:-.01em;
+  transition:all var(--dur) var(--ease);position:relative;text-decoration:none;
+}
+.nav-item svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none;transition:all var(--dur) var(--spring-soft)}
+.nav-item:hover{color:var(--fg-mute)}
+.nav-item:active{transform:scale(.92)}
+.nav-item.is-active{color:var(--fg)}
+.nav-item.is-active svg{stroke-width:2.2;transform:translateY(-1px)}
+.nav-item.is-active::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:0;height:2.5px;background:var(--blue-500);border-radius:0 0 3px 3px;
+  animation:navLine .4s var(--ease) forwards;
+}
 
-    /* ═══ FILE UPLOAD ═══ */
-    .file-upload { position: relative; }
-    .file-upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2; }
-    .file-upload-box { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-subtle); border: 1.5px dashed var(--border-strong); border-radius: var(--r-md); transition: all 0.2s ease; }
-    .file-upload-box:hover { background: var(--bg-hover); border-color: var(--blue-400); }
-    .file-upload-box.has-file { background: var(--success-bg); border-color: var(--success-border); border-style: solid; }
-    .file-upload-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-50); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .file-upload-box.has-file .file-upload-icon { background: var(--success); }
-    .file-upload-icon svg { width: 17px; height: 17px; stroke: var(--blue-600); stroke-width: 2.2; fill: none; }
-    .file-upload-box.has-file .file-upload-icon svg { stroke: #FFFFFF; }
-    .file-upload-text { flex: 1; min-width: 0; }
-    .file-upload-title { font-size: 12.5px; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .file-upload-sub { font-size: 11px; color: var(--text-tertiary); font-weight: 600; margin-top: 2px; }
-    .file-upload-box.has-file .file-upload-title { color: var(--success); }
-    .file-upload-box.has-file .file-upload-sub { color: var(--success); }
+/* SIDEBAR */
+.sidebar-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:200;opacity:0;visibility:hidden;transition:all .35s var(--ease);
+}
+.sidebar-bg.is-open{opacity:1;visibility:visible}
+.sidebar{
+  position:fixed;top:0;right:0;width:min(84vw,340px);height:100dvh;
+  background:var(--bg-card);z-index:201;
+  transform:translateX(100%);transition:transform .4s var(--ease-out);
+  display:flex;flex-direction:column;box-shadow:var(--sh-xl);
+  padding-top:env(safe-area-inset-top,0);
+}
+.sidebar.is-open{transform:translateX(0)}
+.sidebar__head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border-soft);flex-shrink:0}
+.sidebar__logo{height:30px;width:auto}
+.sidebar__logo.is-dark{display:none}
+html[data-theme="dark"] .sidebar__logo.is-light{display:none}
+html[data-theme="dark"] .sidebar__logo.is-dark{display:block}
+.sidebar__body{flex:1;overflow-y:auto;padding:16px 12px}
+.sidebar__group{margin-bottom:22px}
+.sidebar__label{font-size:10px;font-weight:800;color:var(--fg-soft);letter-spacing:.1em;text-transform:uppercase;padding:0 12px;margin-bottom:8px;display:block}
+.sidebar__link{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;
+  border-radius:var(--r-md);color:var(--fg);font-size:14px;font-weight:700;
+  transition:background var(--t);width:100%;text-align:left;
+}
+.sidebar__link:hover{background:var(--bg-mute)}
+.sidebar__link.is-active{background:var(--blue-soft);color:var(--blue-600)}
+.sidebar__link svg{width:18px;height:18px;stroke:var(--blue-500);stroke-width:2;fill:none;flex-shrink:0}
+.sidebar__link.is-active svg{stroke:var(--blue-600)}
 
-    /* ═══ SUBMIT ═══ */
-    .btn-submit-deposit { width: 100%; height: 54px; background: var(--blue-gradient); color: #FFFFFF; border: none; border-radius: var(--r-md); font-size: 14.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit; box-shadow: var(--shadow-blue); transition: all 0.2s var(--ease-out); letter-spacing: -0.1px; position: relative; overflow: hidden; }
-    .btn-submit-deposit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0, 85, 255, 0.3); }
-    .btn-submit-deposit:active:not(:disabled) { transform: scale(0.985); }
-    .btn-submit-deposit:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
-    .btn-submit-deposit .spinner { width: 20px; height: 20px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #FFFFFF; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
-    .btn-submit-deposit.loading .spinner { display: block; }
-    .btn-submit-deposit.loading .btn-label { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+/* MODAL (Deposit) */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  z-index:300;opacity:0;visibility:hidden;transition:all .3s var(--ease);
+}
+.modal-bg.is-open{opacity:1;visibility:visible}
+.modal{
+  position:fixed;bottom:0;left:50%;transform:translate(-50%,100%);
+  width:100%;max-width:480px;max-height:94dvh;
+  background:var(--bg-card);border-radius:var(--r-2xl) var(--r-2xl) 0 0;
+  z-index:301;transition:transform .42s var(--ease-out);
+  display:flex;flex-direction:column;
+  box-shadow:0 -20px 60px rgba(0,0,0,.28);
+}
+.modal.is-open{transform:translate(-50%,0)}
+.modal__grab{width:36px;height:4px;background:var(--border-strong);border-radius:2px;margin:10px auto 6px;flex-shrink:0;cursor:grab}
+.modal__close{
+  position:absolute;top:14px;right:14px;z-index:5;
+  width:36px;height:36px;border-radius:50%;background:var(--bg-mute);
+  display:grid;place-items:center;color:var(--fg-mute);transition:all var(--t);
+}
+.modal__close:hover{background:var(--border);color:var(--fg);transform:rotate(90deg) scale(1.05)}
+.modal__close svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.4;fill:none}
+.modal__body{flex:1;overflow-y:auto;padding:8px 20px 24px}
 
-    .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transform: scale(0); animation: ripple-anim 0.6s var(--ease-out); pointer-events: none; }
-    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+/* Modal header */
+.mh{margin-bottom:20px}
+.mh__steps{
+  display:flex;gap:6px;margin-bottom:14px;
+}
+.mh__step{
+  flex:1;height:3px;border-radius:2px;
+  background:var(--bg-mute);
+  transition:background .3s var(--ease);
+}
+.mh__step.is-done{background:var(--blue-500)}
+.mh__step.is-current{background:var(--blue-500);position:relative;overflow:hidden}
+.mh__step.is-current::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--blue-500),var(--blue-400),var(--blue-500));
+  background-size:200% 100%;
+  animation:shine 1.5s linear infinite;
+}
+.mh__title{font-size:20px;font-weight:900;letter-spacing:-.03em;margin-bottom:4px}
+.mh__sub{font-size:12.5px;color:var(--fg-mute);line-height:1.5}
 
-    /* ═══ FOOTER ═══ */
-    .site-footer { background: var(--bg-card); border-top: 1px solid var(--border-subtle); padding: 18px; }
-    .footer-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--text-tertiary); gap: 12px; }
-    .footer-status { display: flex; align-items: center; gap: 6px; color: var(--success); font-weight: 700; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+/* Method cards */
+.methods{display:flex;flex-direction:column;gap:10px}
+.method{
+  display:flex;align-items:center;gap:12px;
+  padding:16px;
+  background:var(--bg-card);
+  border:2px solid var(--border);
+  border-radius:var(--r-md);
+  cursor:pointer;transition:all .25s var(--ease-out);
+  text-align:left;width:100%;
+}
+.method:hover{border-color:var(--border-strong);background:var(--bg-soft)}
+.method:active{transform:scale(.99)}
+.method.is-active{border-color:var(--blue-500);background:var(--blue-soft);box-shadow:0 4px 16px var(--blue-glow-soft)}
+html[data-theme="dark"] .method.is-active{background:rgba(0,85,255,.14)}
+.method__radio{
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--border-strong);
+  flex-shrink:0;display:grid;place-items:center;
+  transition:all .25s var(--spring);background:var(--bg-card);
+}
+.method.is-active .method__radio{border-color:var(--blue-500);background:var(--blue-500)}
+.method__radio::after{
+  content:'';width:8px;height:8px;border-radius:50%;
+  background:var(--bg-card);transform:scale(0);
+  transition:transform .25s var(--spring);
+}
+.method.is-active .method__radio::after{transform:scale(1);background:#FFF}
+.method__logo{
+  width:44px;height:44px;border-radius:var(--r-sm);
+  display:grid;place-items:center;
+  font-weight:900;font-size:11px;flex-shrink:0;
+  border:1px solid var(--border-soft);
+}
+.method__logo--moncash{background:linear-gradient(135deg,#FFE8E8,#FFC7C7);color:#E63946}
+.method__logo--natcash{background:linear-gradient(135deg,#E8FFEF,#C7F7D9);color:#00A86B}
+.method__logo--meru{background:linear-gradient(135deg,#F0E8FF,#DDC7FF);color:#7C3AED}
+html[data-theme="dark"] .method__logo--moncash{background:#3A1E1E;color:#FF8E8E}
+html[data-theme="dark"] .method__logo--natcash{background:#0A2A18;color:#4FE39A}
+html[data-theme="dark"] .method__logo--meru{background:#251A3D;color:#B89BFF}
+.method__body{flex:1;min-width:0}
+.method__name{font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--fg);margin-bottom:2px}
+.method__hint{font-size:11.5px;font-weight:600;color:var(--fg-soft)}
 
-    /* ═══ TOASTS ═══ */
-    #toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 400; width: calc(100% - 32px); max-width: 400px; pointer-events: none; }
-    .toast { background: var(--text-primary); color: #FFFFFF; padding: 14px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-2xl); transform: translateY(-20px); opacity: 0; transition: all 0.35s var(--ease-spring); overflow: hidden; position: relative; }
-    .toast::after { content: ''; position: absolute; bottom: 0; left: 0; height: 2px; background: var(--blue-600); width: 100%; transform-origin: left; animation: toast-progress 2.6s linear forwards; }
-    @keyframes toast-progress { from { transform: scaleX(1); } to { transform: scaleX(0); } }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.success::after { background: #34D399; }
-    .toast.danger { background: #7F1D1D; }
-    .toast.danger::after { background: #FCA5A5; }
-    .toast.warning { background: #78350F; }
-    .toast.warning::after { background: #FCD34D; }
-    .toast.info { background: #1E3A8A; }
-    .toast.info::after { background: #93C5FD; }
-    .toast-icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
-    .toast-icon svg { width: 18px; height: 18px; stroke-width: 2.5; fill: none; }
-    .toast.success .toast-icon svg { stroke: #34D399; }
-    .toast.danger .toast-icon svg { stroke: #FCA5A5; }
-    .toast.warning .toast-icon svg { stroke: #FCD34D; }
-    .toast.info .toast-icon svg { stroke: #93C5FD; }
-    .toast-msg { flex: 1; line-height: 1.35; }
+/* Amount step */
+.amount-presets{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;
+}
+.amount-preset{
+  padding:14px 12px;
+  background:var(--bg-mute);
+  border:2px solid transparent;
+  border-radius:var(--r-md);
+  cursor:pointer;transition:all var(--t);
+  text-align:center;
+  display:flex;flex-direction:column;gap:2px;align-items:center;
+}
+.amount-preset:hover{background:var(--bg-soft);border-color:var(--border-strong)}
+.amount-preset.is-active{background:var(--blue-soft);border-color:var(--blue-500);color:var(--blue-600)}
+html[data-theme="dark"] .amount-preset.is-active{background:rgba(0,85,255,.16)}
+.amount-preset__val{font-size:16px;font-weight:900;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.amount-preset__cur{font-size:10px;font-weight:700;color:var(--fg-soft);letter-spacing:.03em;text-transform:uppercase}
 
-    /* ═══ SIDEBAR COMPACTE ═══ */
-    .sidebar-overlay { position: fixed; inset: 0; background: rgba(10, 22, 51, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s var(--ease-out); }
-    .sidebar-overlay.active { opacity: 1; visibility: visible; }
-    .sidebar-drawer { position: fixed; top: 0; right: 0; width: min(80vw, 310px); height: 100vh; background: var(--bg-card); z-index: 101; transform: translateX(100%); transition: transform 0.4s var(--ease-out); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(10, 22, 51, 0.2); }
-    .sidebar-overlay.active .sidebar-drawer { transform: translateX(0); }
-    .sidebar-content { padding: 0; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-    .sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px 10px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-card); }
-    .sidebar-brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
-    .sidebar-logo-wrap { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--blue-50) 0%, var(--blue-100) 100%); border: 1px solid var(--blue-100); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
-    .sidebar-logo-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
-    .sidebar-brand-name { font-size: 12.5px; font-weight: 900; color: var(--text-primary); letter-spacing: -0.3px; line-height: 1.1; text-transform: uppercase; }
-    .sidebar-brand-sub { font-size: 8px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.9px; margin-top: 2px; }
-    .sidebar-close { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-subtle); border: 1px solid transparent; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all 0.18s var(--ease-out); flex-shrink: 0; }
-    .sidebar-close:hover { background: var(--bg-hover); border-color: var(--border-default); color: var(--text-primary); }
-    .sidebar-close:active { transform: scale(0.92); }
-    .sidebar-close svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none; }
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:12.5px;font-weight:700;color:var(--fg);letter-spacing:-.01em}
+.field__wrap{position:relative}
+.field input{
+  width:100%;height:52px;padding:0 14px;
+  background:var(--bg-mute);border:1.5px solid transparent;
+  border-radius:var(--r-md);font-size:15px;font-weight:700;
+  color:var(--fg);outline:none;transition:all .22s var(--ease);
+  font-variant-numeric:tabular-nums;
+}
+.field input::placeholder{color:var(--fg-faint);font-weight:500}
+.field input:focus{background:var(--bg-card);border-color:var(--blue-500);box-shadow:0 0 0 4px var(--blue-soft)}
+.field__suffix{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  font-size:11.5px;font-weight:800;color:var(--fg-soft);
+  letter-spacing:.04em;pointer-events:none;
+}
+.field__hint{font-size:11px;font-weight:600;color:var(--fg-soft);margin-top:2px}
+.field__error{font-size:11px;font-weight:700;color:var(--red);margin-top:2px;display:none}
+.field__error.is-on{display:block}
 
-    .sidebar-user-card { display: flex; align-items: center; gap: 9px; padding: 8px 10px; margin: 10px 10px 6px; background: var(--bg-card); border: 1.5px solid var(--blue-200); border-radius: 12px; flex-shrink: 0; box-shadow: 0 1px 6px rgba(0, 85, 255, 0.06); }
-    .sidebar-user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue-gradient); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 11px; font-weight: 800; letter-spacing: -0.3px; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0, 85, 255, 0.28); border: 1.5px solid #FFFFFF; }
-    .sidebar-user-info { flex: 1; min-width: 0; }
-    .sidebar-user-label { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--blue-600); margin-bottom: 1px; }
-    .sidebar-user-email { font-size: 10.5px; font-weight: 700; color: var(--text-primary); word-break: break-all; line-height: 1.3; letter-spacing: -0.2px; }
-    .sidebar-user-card.guest { background: var(--bg-card); border-color: var(--border-default); box-shadow: 0 1px 6px rgba(10, 22, 51, 0.04); }
-    .sidebar-user-card.guest .sidebar-user-avatar { background: linear-gradient(135deg, #94A3B8 0%, #64748B 100%); box-shadow: 0 2px 8px rgba(100, 116, 139, 0.25); }
-    .sidebar-user-card.guest .sidebar-user-label { color: var(--text-tertiary); }
-    .sidebar-user-card.guest .sidebar-user-email { color: var(--text-secondary); font-weight: 600; font-size: 10px; }
+/* Info box */
+.info-box{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:14px;background:var(--blue-soft);
+  border-left:3px solid var(--blue-500);
+  border-radius:var(--r-sm);
+  font-size:12.5px;font-weight:600;
+  color:var(--fg-mute);line-height:1.55;
+  margin-bottom:14px;
+}
+.info-box svg{width:16px;height:16px;stroke:var(--blue-500);stroke-width:2.2;fill:none;flex-shrink:0;margin-top:2px}
+.info-box strong{color:var(--fg);font-weight:800}
 
-    .sidebar-label { display: flex; align-items: center; gap: 8px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-tertiary); margin: 10px 12px 4px; flex-shrink: 0; }
-    .sidebar-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%); }
+/* Target box with copy */
+.target-box{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+  margin-bottom:14px;
+}
+.target-box__body{flex:1;min-width:0}
+.target-box__label{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-soft);margin-bottom:3px}
+.target-box__value{font-size:15px;font-weight:800;color:var(--fg);letter-spacing:-.01em;font-variant-numeric:tabular-nums;word-break:break-all}
+.target-box__copy{
+  width:38px;height:38px;border-radius:var(--r-sm);
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  display:grid;place-items:center;color:var(--fg-mute);
+  transition:all var(--t-fast);flex-shrink:0;
+}
+.target-box__copy:hover{border-color:var(--blue-500);color:var(--blue-600)}
+.target-box__copy:active{transform:scale(.92)}
+.target-box__copy.is-copied{background:var(--green);border-color:var(--green);color:#FFF}
+.target-box__copy svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.2;fill:none}
 
-    .sidebar-body { padding: 0 8px 12px; overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
-    .sidebar-body::-webkit-scrollbar { width: 3px; }
+/* Upload */
+.upload{
+  position:relative;
+  border:2px dashed var(--border-strong);
+  border-radius:var(--r-md);
+  padding:24px 16px;
+  text-align:center;
+  cursor:pointer;
+  transition:all var(--t);
+  background:var(--bg-soft);
+  margin-bottom:12px;
+}
+.upload:hover{border-color:var(--blue-500);background:var(--blue-soft)}
+.upload.is-loaded{border-style:solid;border-color:var(--green);background:var(--green-bg)}
+.upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload__icon{
+  width:44px;height:44px;border-radius:var(--r-md);
+  background:var(--bg-card);
+  display:grid;place-items:center;
+  margin:0 auto 10px;
+  color:var(--blue-600);
+  border:1px solid var(--border-soft);
+}
+.upload__icon svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.2;fill:none}
+.upload__title{font-size:13.5px;font-weight:800;color:var(--fg);margin-bottom:3px}
+.upload__hint{font-size:11.5px;font-weight:600;color:var(--fg-soft)}
+.upload__preview{
+  display:none;
+  width:100%;max-width:140px;height:auto;
+  border-radius:var(--r-sm);
+  margin:0 auto 10px;
+  box-shadow:var(--sh-sm);
+}
+.upload.is-loaded .upload__preview{display:block}
+.upload.is-loaded .upload__icon{display:none}
 
-    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
-    .lang-pill { background: var(--bg-card); border: 1px solid var(--border-default); padding: 5px 8px; border-radius: 8px; display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--text-primary); cursor: pointer; transition: all 0.18s var(--ease-out); box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); }
-    .lang-pill:hover { background: var(--bg-hover); border-color: var(--border-strong); }
-    .lang-pill:active { transform: scale(0.98); }
-    .lang-pill.active { background: var(--blue-50); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500); }
-    .lang-pill .flag { font-size: 11px; line-height: 1; flex-shrink: 0; }
+/* Modal footer */
+.modal__foot{
+  padding:16px 20px calc(20px + env(safe-area-inset-bottom,0));
+  border-top:1px solid var(--border-soft);background:var(--bg-card);
+  display:flex;align-items:center;gap:12px;flex-shrink:0;
+}
+.btn-back{
+  height:52px;padding:0 18px;
+  background:transparent;
+  border:1.5px solid var(--border);
+  border-radius:var(--r-md);
+  font-size:14px;font-weight:800;
+  color:var(--fg-mute);
+  transition:all var(--t);
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  flex-shrink:0;
+}
+.btn-back:hover{background:var(--bg-mute);border-color:var(--border-strong);color:var(--fg)}
+.btn-back:active{transform:scale(.98)}
+.btn-back svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.4;fill:none}
 
-    .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
-    .sidebar-nav-link { position: relative; display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 10px; background: var(--bg-card); border: 1.5px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; font-size: 12px; font-weight: 700; width: 100%; text-align: left; cursor: pointer; transition: all 0.18s var(--ease-out); letter-spacing: -0.15px; box-shadow: 0 1px 2px rgba(10, 22, 51, 0.03); font-family: inherit; }
-    .sidebar-nav-link:hover { border-color: var(--border-default); box-shadow: 0 2px 6px rgba(10, 22, 51, 0.06); transform: translateY(-1px); }
-    .sidebar-nav-link:active { transform: translateY(0) scale(0.99); }
-    .sidebar-nav-link svg { width: 14px; height: 14px; stroke: var(--blue-600); stroke-width: 2; fill: none; flex-shrink: 0; padding: 6px; background: var(--blue-50); border-radius: 8px; box-sizing: content-box; transition: all 0.2s var(--ease-out); }
-    .sidebar-nav-link:hover svg { background: var(--blue-100); transform: scale(1.04); }
-    .sidebar-nav-link.active { background: var(--bg-card); border-color: var(--blue-500); color: var(--blue-700); font-weight: 800; box-shadow: 0 0 0 1px var(--blue-500), 0 3px 10px rgba(0, 85, 255, 0.12); }
-    .sidebar-nav-link.active svg { background: var(--blue-100); stroke: var(--blue-700); stroke-width: 2.2; }
-    .sidebar-nav-link.active::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--blue-600); margin-left: auto; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.15); }
-    .sidebar-nav-link.danger { color: var(--danger); margin-top: 4px; border-color: var(--danger-border); }
-    .sidebar-nav-link.danger::before { content: ''; position: absolute; top: -7px; left: 6px; right: 6px; height: 1px; background: var(--border-subtle); }
-    .sidebar-nav-link.danger svg { stroke: var(--danger); background: var(--danger-bg); }
-    .sidebar-nav-link.danger:hover { background: var(--danger-bg); border-color: var(--danger); box-shadow: 0 2px 6px rgba(220, 38, 38, 0.15); }
-    .sidebar-nav-link.danger:hover svg { background: #FEE2E2; }
-    .sidebar-nav-link.sidebar-login-btn { background: var(--blue-gradient); color: #FFFFFF !important; border-color: transparent; justify-content: center; font-weight: 800; box-shadow: 0 3px 10px rgba(0, 85, 255, 0.28); margin-top: 4px; }
-    .sidebar-nav-link.sidebar-login-btn svg { background: rgba(255, 255, 255, 0.2); stroke: #FFFFFF; padding: 5px; }
-    .sidebar-nav-link.sidebar-login-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(0, 85, 255, 0.35); }
-    .sidebar-nav-link.sidebar-register-btn { background: var(--bg-card); justify-content: center; font-weight: 700; border-color: var(--border-default); }
-    .sidebar-nav-link.sidebar-register-btn svg { background: var(--bg-subtle); stroke: var(--text-secondary); }
+.btn-primary{
+  flex:1;height:52px;
+  background:var(--blue-500);color:#FFF;
+  border-radius:var(--r-md);
+  font-size:15px;font-weight:800;
+  letter-spacing:-.01em;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all var(--t);position:relative;overflow:hidden;
+  box-shadow:var(--sh-blue);
+}
+.btn-primary::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.3) 50%,transparent 70%);
+  background-size:200% 100%;opacity:0;
+}
+.btn-primary:hover:not(:disabled){background:var(--blue-600);box-shadow:var(--sh-blue-lg)}
+.btn-primary:hover:not(:disabled)::after{opacity:1;animation:shine 1.5s linear infinite}
+.btn-primary:active:not(:disabled){transform:scale(.98)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary svg{width:17px;height:17px;stroke:currentColor;stroke-width:2.4;fill:none}
+.btn-primary__spinner{
+  display:none;width:18px;height:18px;
+  border:2.5px solid rgba(255,255,255,.3);
+  border-top-color:#FFF;border-radius:50%;
+  animation:spinner .7s linear infinite;
+}
+.btn-primary.is-loading .btn-primary__spinner{display:block}
+.btn-primary.is-loading .btn-primary__text,
+.btn-primary.is-loading svg{display:none}
 
-    /* ═══ BOTTOM NAV ═══ */
-    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.94); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-top: 1px solid var(--border-subtle); padding: 8px 10px 12px; z-index: 55; box-shadow: 0 -2px 16px rgba(10, 22, 51, 0.04); }
-    .nav-track { position: relative; display: flex; align-items: center; justify-content: space-around; }
-    .nav-indicator { position: absolute; bottom: 0; height: 3px; border-radius: var(--r-full); background: var(--blue-gradient); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 2px 8px rgba(0, 85, 255, 0.4); width: 30px; }
-    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 4px; background: none; border: none; cursor: pointer; font-family: inherit; color: var(--text-tertiary); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); position: relative; text-decoration: none; }
-    .nav-item:active { transform: scale(0.92); }
-    .nav-item.active { color: var(--blue-600); }
-    .nav-icon-wrap { position: relative; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
-    .nav-icon-wrap svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; transition: all 0.2s ease; }
-    .nav-item.active .nav-icon-wrap svg { stroke-width: 2.2; transform: scale(1.05); }
-    .nav-label { font-size: 10.5px; font-weight: 700; letter-spacing: -0.1px; }
-    .nav-item.active .nav-label { font-weight: 800; }
-    .nav-item .nav-badge { position: absolute; top: -4px; right: -6px; background: var(--blue-gradient); color: #FFFFFF; font-size: 9px; font-weight: 800; min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--r-full); display: none; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #FFFFFF; line-height: 1; }
-    .nav-item .nav-badge.visible { display: flex; }
-  </style>
+/* Success screen */
+.success-screen{
+  display:none;
+  text-align:center;
+  padding:20px 0;
+}
+.success-screen.is-on{display:block;animation:slideUp .5s var(--ease-out)}
+.success-screen__icon{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--green);color:#FFF;
+  display:grid;place-items:center;
+  margin:0 auto 16px;
+  box-shadow:0 8px 24px rgba(0,168,107,.35);
+  animation:badgePop .5s var(--spring);
+}
+.success-screen__icon svg{width:34px;height:34px;stroke:#FFF;stroke-width:2.4;fill:none}
+.success-screen__title{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-bottom:6px}
+.success-screen__sub{font-size:13.5px;color:var(--fg-mute);line-height:1.55;margin-bottom:20px}
 
-  <link rel="stylesheet" href="/assets/css/design-system.css">
-  <link rel="stylesheet" href="/assets/css/ux-enhancements.css">
-  <link rel="stylesheet" href="/assets/css/features.css">
+/* TOAST */
+.toasts{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:8px;width:calc(100% - 32px);max-width:400px;pointer-events:none}
+.toast{
+  padding:14px 16px;border-radius:var(--r-md);
+  background:var(--fg);color:var(--bg);
+  font-size:13px;font-weight:600;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:var(--sh-xl);pointer-events:all;
+  animation:slideUp .4s var(--spring);
+  position:relative;overflow:hidden;line-height:1.4;
+}
+.toast::after{
+  content:'';position:absolute;bottom:0;left:0;height:2px;width:100%;
+  background:var(--blue-400);transform-origin:left;
+  animation:progressBar 2.6s linear forwards;
+}
+.toast--success::after{background:var(--green)}
+.toast--danger::after{background:var(--red)}
+@keyframes progressBar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+.hidden{display:none!important}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
 </head>
 <body>
 
-  <div id="toast-container"></div>
+<div class="progress" id="progress"></div>
+<div class="toasts" id="toasts"></div>
 
-  <div class="app-shell">
-
-    <header class="site-header" id="site-header">
-      <div class="header-top">
-        <img src="assets/logo.png" alt="DigitalPay" class="brand-logo" onclick="window.location.href='index.html'">
-        <div class="header-actions">
-          <a href="cart.html" class="icon-btn" aria-label="Panier">
-            <svg viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="cart-badge" id="cart-badge">0</span>
-          </a>
-          <button class="icon-btn" onclick="openSidebar()" aria-label="Menu">
-            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <main class="wallet-main">
-
-      <!-- BALANCE CARD PREMIUM -->
-      <div class="balance-card">
-        <div class="balance-top">
-          <div class="balance-label" data-i18n="balanceLabel">Solde disponible</div>
-          <button class="balance-eye" onclick="toggleBalanceVisibility()" aria-label="Afficher/Masquer">
-            <svg id="eye-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
-        </div>
-        <div class="balance-amount">
-          <span class="balance-value" id="balance-value">0</span>
-          <span class="balance-currency">HTG</span>
-        </div>
-        <div class="balance-sparkline">
-          <svg viewBox="0 0 300 40" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="sparkGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5"/>
-                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <path class="sparkline-area" id="spark-area" d="M0,30 L0,40 L300,40 L300,30 Z"/>
-            <path class="sparkline-path" id="spark-path" d="M0,30 L300,30"/>
-          </svg>
-        </div>
-        <div class="balance-footer">
-          <div class="balance-stat">
-            <div class="balance-stat-label" data-i18n="lastDeposit">Dernier dépôt</div>
-            <div class="balance-stat-value" id="last-deposit">—</div>
-          </div>
-          <div class="balance-stat" style="text-align: right;">
-            <div class="balance-stat-label" data-i18n="totalTx">Transactions</div>
-            <div class="balance-stat-value" id="total-tx">0</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- QUICK ACTIONS 4 -->
-      <div class="quick-actions">
-        <button class="qa-btn primary" onclick="openDepositModal()">
-          <div class="qa-icon"><svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg></div>
-          <div class="qa-title" data-i18n="qaDeposit">Recharger</div>
-        </button>
-        <a href="index.html" class="qa-btn">
-          <div class="qa-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
-          <div class="qa-title" data-i18n="qaShop">Boutique</div>
-        </a>
-        <a href="commande.html" class="qa-btn">
-          <div class="qa-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
-          <div class="qa-title" data-i18n="qaHistory">Historique</div>
-        </a>
-        <a href="help.html" class="qa-btn">
-          <div class="qa-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-          <div class="qa-title" data-i18n="qaSupport">Support</div>
-        </a>
-      </div>
-
-      <!-- PAYMENT METHODS STRIP -->
-      <div class="section-head">
-        <h3 class="section-title" data-i18n="payMethodsTitle">Méthodes acceptées</h3>
-      </div>
-      <div class="pay-methods-strip">
-        <div class="pay-pill-mini">
-          <div class="pay-pill-mini-logo"><img src="assets/moncash-logo.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='MC';"></div>
-          <span class="pay-pill-mini-name">MonCash</span>
-        </div>
-        <div class="pay-pill-mini">
-          <div class="pay-pill-mini-logo"><img src="assets/natcash-logo.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='NC';"></div>
-          <span class="pay-pill-mini-name">NatCash</span>
-        </div>
-        <div class="pay-pill-mini">
-          <div class="pay-pill-mini-logo"><img src="assets/meru.png" alt="" onerror="this.style.display='none'; this.parentElement.textContent='M';"></div>
-          <span class="pay-pill-mini-name">Meru USD</span>
-        </div>
-        <div class="pay-pill-mini">
-          <div class="pay-pill-mini-logo" style="background:var(--blue-gradient);">
-            <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#FFF;stroke-width:2.4;fill:none;"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg>
-          </div>
-          <span class="pay-pill-mini-name">Wallet</span>
-        </div>
-      </div>
-
-      <!-- HISTORIQUE -->
-      <div class="section-head">
-        <h3 class="section-title" data-i18n="txTitle">Historique</h3>
-        <span class="section-count" id="tx-count">0</span>
-      </div>
-
-      <div class="filter-pills" id="filter-pills">
-        <button class="filter-pill active" data-filter="all" onclick="setTxFilter('all', this)">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-          <span data-i18n="filterAll">Tout</span>
-          <span class="filter-pill-count" id="cnt-all">0</span>
-        </button>
-        <button class="filter-pill" data-filter="deposits" onclick="setTxFilter('deposits', this)">
-          <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg>
-          <span data-i18n="filterDeposits">Dépôts</span>
-          <span class="filter-pill-count" id="cnt-dep">0</span>
-        </button>
-        <button class="filter-pill" data-filter="purchases" onclick="setTxFilter('purchases', this)">
-          <svg viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span data-i18n="filterPurchases">Achats</span>
-          <span class="filter-pill-count" id="cnt-pur">0</span>
-        </button>
-      </div>
-
-      <div id="tx-container">
-        <div class="skeleton-tx"><div class="skeleton-block skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line-sm"></div></div></div>
-        <div class="skeleton-tx" style="margin-top:8px;"><div class="skeleton-block skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-block skeleton-line"></div><div class="skeleton-block skeleton-line-sm"></div></div></div>
-      </div>
-
-      <!-- SECURITY CARD -->
-      <div class="security-card">
-        <div class="security-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="security-text">
-          <div class="security-title" data-i18n="securityTitle">Transactions 100% sécurisées</div>
-          <div class="security-desc" data-i18n="securityDesc">Chiffrement SSL · Firebase Auth · Validation manuelle</div>
-        </div>
-      </div>
-
-    </main>
-
-    <footer class="site-footer">
-      <div class="footer-row">
-        <span>© 2026 DigitalPay S.A. — <a href="legal.html" style="color:var(--blue-600); font-weight:700; text-decoration:none;">Légal</a></span>
-        <div class="footer-status">
-          <span class="status-dot"></span>
-          <span data-i18n="footerStatus">Système 24/7</span>
-        </div>
-      </div>
-    </footer>
-
-    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()">
-      <aside class="sidebar-drawer" onclick="event.stopPropagation()">
-        <div class="sidebar-content">
-          <div class="sidebar-head">
-            <div class="sidebar-brand">
-              <div class="sidebar-logo-wrap"><img src="assets/logo.png" alt="DigitalPay"></div>
-              <div>
-                <div class="sidebar-brand-name">DigitalPay</div>
-                <div class="sidebar-brand-sub">Haiti</div>
-              </div>
-            </div>
-            <button class="sidebar-close" onclick="closeSidebar()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
-          </div>
-
-          <div id="sidebar-user-zone"></div>
-
-          <div class="sidebar-body">
-            <div class="sidebar-label" data-i18n="langLabel">Langue / Language</div>
-            <div class="lang-grid">
-              <button class="lang-pill active" data-lang="fr" onclick="setLang('fr', this)"><span class="flag">🇫🇷</span> Français</button>
-              <button class="lang-pill" data-lang="ht" onclick="setLang('ht', this)"><span class="flag">🇭🇹</span> Kreyòl</button>
-              <button class="lang-pill" data-lang="en" onclick="setLang('en', this)"><span class="flag">🇺🇸</span> English</button>
-              <button class="lang-pill" data-lang="es" onclick="setLang('es', this)"><span class="flag">🇪🇸</span> Español</button>
-            </div>
-            <div class="sidebar-label" data-i18n="navLabel">Navigation</div>
-            <nav class="sidebar-nav">
-              <a href="index.html" class="sidebar-nav-link">
-                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
-                <span data-i18n="navHome">Accueil</span>
-              </a>
-              <a href="commande.html" class="sidebar-nav-link">
-                <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                <span data-i18n="navHistory">Historique</span>
-              </a>
-              <a href="wallet.html" class="sidebar-nav-link active">
-                <svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg>
-                <span data-i18n="navWallet">Wallet</span>
-              </a>
-              <a href="index.html" class="sidebar-nav-link">
-                <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                <span data-i18n="navShop">Boutique</span>
-              </a>
-              <a href="help.html" class="sidebar-nav-link">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span data-i18n="navSupport">Support</span>
-              </a>
-
-              <div id="sidebar-auth-zone"></div>
-            </nav>
-          </div>
-        </div>
-      </aside>
+<!-- TOPBAR -->
+<header class="topbar" id="topbar">
+  <div class="topbar__inner">
+    <div class="topbar__left">
+      <a href="index.html" class="iconbtn" aria-label="Retour">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </a>
     </div>
+    <span class="topbar__title" data-i18n="page_title">Mon Portefeuille</span>
+    <div class="topbar__right">
+      <button class="iconbtn theme-btn" id="themeBtn" aria-label="Thème">
+        <svg class="icon-moon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
 
-    <!-- MODAL DÉPÔT PREMIUM -->
-    <div class="sheet-backdrop" id="deposit-backdrop" onclick="closeDepositModal()">
-      <div class="sheet-modal" onclick="event.stopPropagation()">
-        <div class="sheet-grabber"></div>
-        <div class="sheet-head">
-          <span class="sheet-title" data-i18n="depositTitle">Recharger mon portefeuille</span>
-          <button class="sheet-close" onclick="closeDepositModal()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+<main class="app">
+
+  <!-- BALANCE CARD -->
+  <div class="balance-wrap">
+    <div class="balance-card">
+      <div class="balance-glow1"></div>
+      <div class="balance-glow2"></div>
+
+      <div class="balance-head">
+        <span class="balance-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          <span data-i18n="balance_label">Solde disponible</span>
+        </span>
+        <button class="balance-eye" id="toggleBalance" aria-label="Masquer/afficher">
+          <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
+
+      <div class="balance-amount" id="balanceAmount">— <small>HTG</small></div>
+      <p class="balance-sub" data-i18n="balance_sub">Rechargez votre solde pour commander plus vite.</p>
+
+      <div class="balance-stats">
+        <div class="balance-stat">
+          <span class="balance-stat__label" data-i18n="stat_deposits">Total dépôts</span>
+          <span class="balance-stat__value" id="statDeposits">— HTG</span>
         </div>
-        <div class="sheet-body">
-
-          <!-- ÉTAPES -->
-          <div class="dep-steps" id="dep-steps">
-            <div class="dep-step active" data-step="1">
-              <div class="dep-step-circle">1</div>
-              <div class="dep-step-label" data-i18n="stepMethod">Méthode</div>
-            </div>
-            <div class="dep-step-line"></div>
-            <div class="dep-step" data-step="2">
-              <div class="dep-step-circle">2</div>
-              <div class="dep-step-label" data-i18n="stepAmount">Montant</div>
-            </div>
-            <div class="dep-step-line"></div>
-            <div class="dep-step" data-step="3">
-              <div class="dep-step-circle">3</div>
-              <div class="dep-step-label" data-i18n="stepProof">Preuve</div>
-            </div>
-          </div>
-
-          <!-- HERO -->
-          <div class="dep-hero">
-            <div class="dep-hero-icon">
-              <svg viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round"/></svg>
-            </div>
-            <div class="dep-hero-title" data-i18n="depHeroTitle">Ajouter des fonds</div>
-            <div class="dep-hero-sub" data-i18n="depHeroSub">Validation en 5-15 minutes pendant nos heures d'ouverture.</div>
-          </div>
-
-          <!-- ÉTAPE 1 : MÉTHODE -->
-          <div class="dep-block" data-block="method">
-            <div class="dep-methods">
-              <button class="dep-pill active" data-method="moncash" onclick="selectDepositMethod('moncash')">
-                <div class="dep-pill-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="dep-pill-logo">
-                  <img src="assets/moncash-logo.png" alt="MonCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#DC2626;&quot;>MC</span>';">
-                </div>
-                <span class="dep-pill-name">MonCash</span>
-              </button>
-              <button class="dep-pill" data-method="natcash" onclick="selectDepositMethod('natcash')">
-                <div class="dep-pill-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="dep-pill-logo">
-                  <img src="assets/natcash-logo.png" alt="NatCash" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#10B981;&quot;>NC</span>';">
-                </div>
-                <span class="dep-pill-name">NatCash</span>
-              </button>
-              <button class="dep-pill" data-method="meru" onclick="selectDepositMethod('meru')">
-                <div class="dep-pill-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="dep-pill-logo">
-                  <img src="assets/meru.png" alt="Meru" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;dep-pill-letter&quot; style=&quot;color:#7C3AED;&quot;>M</span>';">
-                </div>
-                <span class="dep-pill-name">Meru USD</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- ÉTAPE 2 : TARGET + MONTANT -->
-          <div class="dep-block" data-block="target">
-            <div class="deposit-info">
-              <div class="deposit-info-head">
-                <span class="deposit-info-label" id="dep-target-label" data-i18n="depTargetPhone">Envoyez au numéro</span>
-                <button class="btn-copy" onclick="copyDepositTarget()">
-                  <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                  <span data-i18n="copyBtn">Copier</span>
-                </button>
-              </div>
-              <div class="deposit-info-value" id="dep-target-value">+509 3643-5649</div>
-              <div class="deposit-info-hint" id="dep-target-hint">MonCash</div>
-            </div>
-          </div>
-
-          <!-- ÉTAPE 2bis : MONTANT -->
-          <div class="dep-block" data-block="amount">
-            <div class="field">
-              <label class="field-label">
-                <span id="dep-amount-label" data-i18n="depAmountHTG">Montant à créditer (HTG)</span>
-                <span class="field-label-hint" data-i18n="depAmountHint">Min 50 HTG</span>
-              </label>
-              <div class="amount-presets" id="amount-presets">
-                <button class="amount-preset" onclick="applyAmountPreset(500, this)">500</button>
-                <button class="amount-preset" onclick="applyAmountPreset(1000, this)">1 000</button>
-                <button class="amount-preset" onclick="applyAmountPreset(2500, this)">2 500</button>
-                <button class="amount-preset" onclick="applyAmountPreset(5000, this)">5 000</button>
-              </div>
-              <input type="number" class="text-input money" id="dep-amount" placeholder="0" min="50" max="1000000">
-              <div class="meru-hint" id="meru-hint">
-                <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg>
-                <span id="meru-conversion">1 USD = 150 HTG</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ÉTAPE 3 : PREUVE -->
-          <div class="dep-block" data-block="proof">
-            <div class="field">
-              <label class="field-label" data-i18n="txIdLabel">ID de transaction / N° expéditeur</label>
-              <input type="text" class="text-input" id="dep-txid" placeholder="Ex: 882910392" maxlength="50">
-            </div>
-
-            <div class="field">
-              <label class="field-label">
-                <span data-i18n="proofLabel">Capture du reçu</span>
-                <span class="field-label-hint" data-i18n="proofMax">Max 700 Ko</span>
-              </label>
-              <div class="file-upload" id="file-upload-wrapper">
-                <input type="file" class="file-upload-input" id="dep-proof" accept="image/*" onchange="handleDepositProof(this)">
-                <div class="file-upload-box" id="file-upload-box">
-                  <div class="file-upload-icon">
-                    <svg id="proof-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  </div>
-                  <div class="file-upload-text">
-                    <div class="file-upload-title" id="dep-proof-title" data-i18n="proofTitle">Ajouter une image</div>
-                    <div class="file-upload-sub" id="dep-proof-sub" data-i18n="proofSub">JPG, PNG — 700 Ko max</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="sheet-footer">
-          <button class="btn-submit-deposit" id="btn-submit-deposit" onclick="submitDeposit(event)">
-            <span class="spinner"></span>
-            <span class="btn-label" data-i18n="depSubmit">Soumettre la recharge</span>
-          </button>
+        <div class="balance-stat">
+          <span class="balance-stat__label" data-i18n="stat_spent">Total dépensé</span>
+          <span class="balance-stat__value" id="statSpent">— HTG</span>
         </div>
       </div>
     </div>
-
-    <nav class="bottom-nav">
-      <div class="nav-track" id="nav-track">
-        <div class="nav-indicator" id="nav-indicator"></div>
-        <a href="index.html" class="nav-item" data-nav="home">
-          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
-          <span class="nav-label">Accueil</span>
-        </a>
-        <a href="index.html" class="nav-item" data-nav="shop">
-          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
-          <span class="nav-label">Boutique</span>
-        </a>
-        <a href="cart.html" class="nav-item" data-nav="cart">
-          <div class="nav-icon-wrap">
-            <svg viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span class="nav-badge" id="nav-cart-badge">0</span>
-          </div>
-          <span class="nav-label">Panier</span>
-        </a>
-        <a href="wallet.html" class="nav-item active" data-nav="wallet">
-          <div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 002 2h14v-4"/><circle cx="16" cy="14" r="1.5"/></svg></div>
-          <span class="nav-label">Wallet</span>
-        </a>
-      </div>
-    </nav>
-
   </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAAOQkkCgGdPvP31MrSp7ap9P20mAtQxBY",
-      authDomain: "digitalpay-officiel-v2.firebaseapp.com",
-      projectId: "digitalpay-officiel-v2",
-      storageBucket: "digitalpay-officiel-v2.firebasestorage.app",
-      messagingSenderId: "1030926360593",
-      appId: "1:1030926360593:web:c6e0f502af4ef6b76711b0"
-    };
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions">
+    <button class="qa" id="qaRecharge">
+      <span class="qa__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </span>
+      <span class="qa__label" data-i18n="qa_recharge">Recharger</span>
+    </button>
+    <a href="index.html" class="qa">
+      <span class="qa__icon qa__icon--purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2 3h3l2.4 11.6a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 6H6"/></svg>
+      </span>
+      <span class="qa__label" data-i18n="qa_shop">Boutique</span>
+    </a>
+    <a href="commande.html" class="qa">
+      <span class="qa__icon qa__icon--amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </span>
+      <span class="qa__label" data-i18n="qa_orders">Commandes</span>
+    </a>
+    <a href="help.html" class="qa">
+      <span class="qa__icon qa__icon--green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      <span class="qa__label" data-i18n="qa_support">Support</span>
+    </a>
+  </div>
 
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+  <!-- HISTORY -->
+  <section class="section">
+    <div class="section-head">
+      <h2 data-i18n="history_title">Historique</h2>
+    </div>
 
-    const MERU_RATE = 150;
-    const MAX_FILE_SIZE = 716800;
-    const DEPOSIT_TARGETS = {
-      moncash: { type: 'phone', value: '+509 3643-5649', label: 'MonCash' },
-      natcash: { type: 'phone', value: '+509 3566-9814', label: 'NatCash' },
-      meru: { type: 'email', value: 'lemarquis3944@gmail.com', label: 'Meru USD' }
-    };
+    <div class="filters" id="filters">
+      <button class="filter is-active" data-filter="all">
+        <span data-i18n="filter_all">Tout</span>
+        <span class="filter__count" id="countAll">0</span>
+      </button>
+      <button class="filter" data-filter="deposit">
+        <span data-i18n="filter_deposit">Dépôts</span>
+        <span class="filter__count" id="countDeposit">0</span>
+      </button>
+      <button class="filter" data-filter="spend">
+        <span data-i18n="filter_spend">Achats</span>
+        <span class="filter__count" id="countSpend">0</span>
+      </button>
+    </div>
 
-    const STATE = {
-      user: null,
-      userBalance: 0,
-      transactions: [],
-      deposits: [],
-      purchases: [],
-      filter: 'all',
-      depositMethod: 'moncash',
-      lang: 'fr',
-      submitting: false,
-      balanceHidden: false,
-      sparklineData: [],
-      unsubBalance: null,
-      unsubDeposits: null,
-      unsubOrders: null
-    };
+    <div class="tx-list" id="txList"></div>
 
-    const VALIDATION = {
-      email: (str) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(str || '').trim()),
-      phone: (str) => {
-        const clean = String(str || '').replace(/[\s\-\(\)\.]/g, '');
-        return /^(\+?509)?\d{8}$/.test(clean) || /^\+\d{10,15}$/.test(clean);
-      },
-      amount: (val, min = 1, max = 1000000) => {
-        const n = parseFloat(val);
-        return !isNaN(n) && n >= min && n <= max;
-      },
-      imageFile: (file) => {
-        if (!file) return false;
-        if (file.size > MAX_FILE_SIZE) return false;
-        return file.type.startsWith('image/');
-      }
-    };
+    <div class="empty hidden" id="emptyState">
+      <span class="empty__icon">💳</span>
+      <h3 class="empty__title" data-i18n="empty_title">Aucune transaction</h3>
+      <p class="empty__text" data-i18n="empty_text">Rechargez votre portefeuille pour commencer.</p>
+      <button class="empty__btn" id="emptyRecharge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span data-i18n="empty_btn">Recharger maintenant</span>
+      </button>
+    </div>
+  </section>
 
-    function sanitize(str, maxLen = 200) {
-      return String(str || '').trim().slice(0, maxLen).replace(/[<>]/g, '');
-    }
+  <!-- SECURITY -->
+  <section class="section" style="padding-top:0">
+    <div class="security-card">
+      <div class="security-card__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="security-card__body">
+        <div class="security-card__title" data-i18n="security_title">Fonds sécurisés</div>
+        <div class="security-card__text" data-i18n="security_text">Votre solde est protégé par un chiffrement bancaire.</div>
+      </div>
+    </div>
+  </section>
 
-    const I18N = {
-      fr: {
-        toastLang: "Langue : Français",
-        balanceLabel: "Solde disponible",
-        lastDeposit: "Dernier dépôt",
-        totalTx: "Transactions",
-        qaDeposit: "Recharger", qaShop: "Boutique", qaHistory: "Historique", qaSupport: "Support",
-        payMethodsTitle: "Méthodes acceptées",
-        txTitle: "Historique",
-        filterAll: "Tout", filterDeposits: "Dépôts", filterPurchases: "Achats",
-        todayLabel: "Aujourd'hui", yesterdayLabel: "Hier", weekLabel: "Cette semaine", olderLabel: "Plus ancien",
-        emptyTxTitle: "Aucune transaction",
-        emptyTxSub: "Rechargez votre portefeuille ou effectuez un achat pour voir l'historique.",
-        depositTitle: "Recharger mon portefeuille",
-        stepMethod: "Méthode", stepAmount: "Montant", stepProof: "Preuve",
-        depHeroTitle: "Ajouter des fonds",
-        depHeroSub: "Validation en 5-15 minutes pendant nos heures d'ouverture.",
-        depTargetPhone: "Envoyez au numéro",
-        depTargetEmail: "Envoyez à l'adresse",
-        depAmountHTG: "Montant à créditer (HTG)",
-        depAmountUSD: "Montant envoyé (USD)",
-        depAmountHint: "Min 50 HTG",
-        txIdLabel: "ID de transaction / N° expéditeur",
-        proofLabel: "Capture du reçu",
-        proofMax: "Max 700 Ko",
-        proofTitle: "Ajouter une image",
-        proofSub: "JPG, PNG — 700 Ko max",
-        proofSelected: "Image ajoutée",
-        depSubmit: "Soumettre la recharge",
-        copyBtn: "Copier",
-        copied: "Copié !",
-        copyFail: "Copie impossible",
-        fileTooLarge: "Image trop lourde (max 700 Ko).",
-        fileWrongType: "Seules les images sont acceptées.",
-        fillAll: "Complétez tous les champs.",
-        invalidAmount: "Montant invalide.",
-        authRequired: "Veuillez vous connecter.",
-        depositSuccess: "Recharge soumise ! Validation sous 15 min.",
-        depositError: "Erreur lors de la soumission.",
-        statusPending: "En attente",
-        statusValid: "Validé",
-        statusRejected: "Rejeté",
-        statusDelivered: "Livré",
-        statusStock: "Stock",
-        securityTitle: "Transactions 100% sécurisées",
-        securityDesc: "Chiffrement SSL · Firebase Auth · Validation manuelle",
-        footerStatus: "Système 24/7",
-        langLabel: "Langue / Language",
-        navLabel: "Navigation",
-        navHome: "Accueil", navHistory: "Historique", navWallet: "Wallet", navShop: "Boutique", navSupport: "Support",
-        connectedAs: "Connecté", authLogout: "Se Déconnecter",
-        authLogin: "Se Connecter", authRegister: "Créer un compte",
-        meruHint: "Équivalent crédité",
-        balanceNow: "Maintenant",
-        balanceUnit: "HTG"
-      },
-      ht: {
-        toastLang: "Lang : Kreyòl Ayisyen",
-        balanceLabel: "Kòb ki disponib",
-        lastDeposit: "Dènye depo",
-        totalTx: "Tranzaksyon",
-        qaDeposit: "Rechaje", qaShop: "Boutik", qaHistory: "Istorik", qaSupport: "Sipò",
-        payMethodsTitle: "Mwayen nou aksepte",
-        txTitle: "Istorik",
-        filterAll: "Tout", filterDeposits: "Depo", filterPurchases: "Acha",
-        todayLabel: "Jodi a", yesterdayLabel: "Yè", weekLabel: "Semèn sa", olderLabel: "Pi ansyen",
-        emptyTxTitle: "Pa gen tranzaksyon",
-        emptyTxSub: "Rechaje bous ou oswa fè yon acha pou wè istorik la.",
-        depositTitle: "Rechaje bous mwen",
-        stepMethod: "Metòd", stepAmount: "Kantite", stepProof: "Prèv",
-        depHeroTitle: "Ajoute kòb",
-        depHeroSub: "Validasyon nan 5-15 minit pandan lè ouvèti nou yo.",
-        depTargetPhone: "Voye sou nimewo",
-        depTargetEmail: "Voye sou adrès",
-        depAmountHTG: "Kantite pou depoze (HTG)",
-        depAmountUSD: "Kantite ou voye (USD)",
-        depAmountHint: "Min 50 HTG",
-        txIdLabel: "ID tranzaksyon / Nimewo voye",
-        proofLabel: "Foto prèv peman",
-        proofMax: "Max 700 Ko",
-        proofTitle: "Ajoute yon imaj",
-        proofSub: "JPG, PNG — 700 Ko maks",
-        proofSelected: "Imaj ajoute",
-        depSubmit: "Voye demann rechaj la",
-        copyBtn: "Kopye",
-        copied: "Kopye !",
-        copyFail: "Pa ka kopye",
-        fileTooLarge: "Imaj twò lou (maks 700 Ko).",
-        fileWrongType: "Se sèlman imaj ki aksepte.",
-        fillAll: "Ranpli tout chan yo.",
-        invalidAmount: "Kantite pa valid.",
-        authRequired: "Tanpri konekte.",
-        depositSuccess: "Rechaj soumèt ! Validasyon nan 15 min.",
-        depositError: "Erè pandan soumisyon.",
-        statusPending: "Nan tann",
-        statusValid: "Valide",
-        statusRejected: "Rejte",
-        statusDelivered: "Livre",
-        statusStock: "Stòk",
-        securityTitle: "Tranzaksyon 100% sekirize",
-        securityDesc: "Chifreman SSL · Firebase Auth · Validasyon manyèl",
-        footerStatus: "Sistèm 24/7",
-        langLabel: "Lang / Language",
-        navLabel: "Navigasyon",
-        navHome: "Akèy", navHistory: "Istorik", navWallet: "Bous", navShop: "Boutik", navSupport: "Sipò",
-        connectedAs: "Konekte", authLogout: "Dekonekte",
-        authLogin: "Konekte", authRegister: "Kreye yon kont",
-        meruHint: "Ekivalan kredite",
-        balanceNow: "Kounye a",
-        balanceUnit: "HTG"
-      },
-      en: {
-        toastLang: "Language: English",
-        balanceLabel: "Available balance",
-        lastDeposit: "Last deposit",
-        totalTx: "Transactions",
-        qaDeposit: "Top up", qaShop: "Shop", qaHistory: "History", qaSupport: "Support",
-        payMethodsTitle: "Accepted methods",
-        txTitle: "History",
-        filterAll: "All", filterDeposits: "Deposits", filterPurchases: "Purchases",
-        todayLabel: "Today", yesterdayLabel: "Yesterday", weekLabel: "This week", olderLabel: "Older",
-        emptyTxTitle: "No transactions",
-        emptyTxSub: "Top up your wallet or make a purchase to see history.",
-        depositTitle: "Top up my wallet",
-        stepMethod: "Method", stepAmount: "Amount", stepProof: "Proof",
-        depHeroTitle: "Add funds",
-        depHeroSub: "Validation within 5-15 minutes during opening hours.",
-        depTargetPhone: "Send to number",
-        depTargetEmail: "Send to Meru address",
-        depAmountHTG: "Amount to credit (HTG)",
-        depAmountUSD: "Amount sent (USD)",
-        depAmountHint: "Min 50 HTG",
-        txIdLabel: "Transaction ID / Sender number",
-        proofLabel: "Receipt screenshot",
-        proofMax: "Max 700 KB",
-        proofTitle: "Add an image",
-        proofSub: "JPG, PNG — 700 KB max",
-        proofSelected: "Image added",
-        depSubmit: "Submit top-up",
-        copyBtn: "Copy",
-        copied: "Copied!",
-        copyFail: "Copy failed",
-        fileTooLarge: "File too large (max 700 KB).",
-        fileWrongType: "Only images are accepted.",
-        fillAll: "Please fill all fields.",
-        invalidAmount: "Invalid amount.",
-        authRequired: "Please sign in.",
-        depositSuccess: "Top-up submitted! Validated within 15 min.",
-        depositError: "Submission error.",
-        statusPending: "Pending",
-        statusValid: "Validated",
-        statusRejected: "Rejected",
-        statusDelivered: "Delivered",
-        statusStock: "Stock",
-        securityTitle: "100% secure transactions",
-        securityDesc: "SSL encryption · Firebase Auth · Manual validation",
-        footerStatus: "24/7 System",
-        langLabel: "Language / Langue",
-        navLabel: "Navigation",
-        navHome: "Home", navHistory: "History", navWallet: "Wallet", navShop: "Shop", navSupport: "Support",
-        connectedAs: "Signed in", authLogout: "Sign Out",
-        authLogin: "Sign In", authRegister: "Create account",
-        meruHint: "Equivalent credited",
-        balanceNow: "Now",
-        balanceUnit: "HTG"
-      },
-      es: {
-        toastLang: "Idioma: Español",
-        balanceLabel: "Saldo disponible",
-        lastDeposit: "Último depósito",
-        totalTx: "Transacciones",
-        qaDeposit: "Recargar", qaShop: "Tienda", qaHistory: "Historial", qaSupport: "Soporte",
-        payMethodsTitle: "Métodos aceptados",
-        txTitle: "Historial",
-        filterAll: "Todo", filterDeposits: "Depósitos", filterPurchases: "Compras",
-        todayLabel: "Hoy", yesterdayLabel: "Ayer", weekLabel: "Esta semana", olderLabel: "Más antiguo",
-        emptyTxTitle: "Sin transacciones",
-        emptyTxSub: "Recargue su billetera o haga una compra para ver el historial.",
-        depositTitle: "Recargar mi billetera",
-        stepMethod: "Método", stepAmount: "Monto", stepProof: "Prueba",
-        depHeroTitle: "Añadir fondos",
-        depHeroSub: "Validación en 5-15 minutos durante el horario de apertura.",
-        depTargetPhone: "Enviar al número",
-        depTargetEmail: "Enviar a la dirección Meru",
-        depAmountHTG: "Monto a acreditar (HTG)",
-        depAmountUSD: "Monto enviado (USD)",
-        depAmountHint: "Min 50 HTG",
-        txIdLabel: "ID de transacción / N° remitente",
-        proofLabel: "Captura del recibo",
-        proofMax: "Máx 700 KB",
-        proofTitle: "Añadir imagen",
-        proofSub: "JPG, PNG — 700 KB máx",
-        proofSelected: "Imagen añadida",
-        depSubmit: "Enviar recarga",
-        copyBtn: "Copiar",
-        copied: "¡Copiado!",
-        copyFail: "No se pudo copiar",
-        fileTooLarge: "Archivo muy grande (máx 700 KB).",
-        fileWrongType: "Solo se aceptan imágenes.",
-        fillAll: "Complete todos los campos.",
-        invalidAmount: "Monto inválido.",
-        authRequired: "Inicie sesión.",
-        depositSuccess: "¡Recarga enviada! Validación en 15 min.",
-        depositError: "Error de envío.",
-        statusPending: "Pendiente",
-        statusValid: "Validado",
-        statusRejected: "Rechazado",
-        statusDelivered: "Entregado",
-        statusStock: "Stock",
-        securityTitle: "Transacciones 100% seguras",
-        securityDesc: "Cifrado SSL · Firebase Auth · Validación manual",
-        footerStatus: "Sistema 24/7",
-        langLabel: "Idioma / Language",
-        navLabel: "Navegación",
-        navHome: "Inicio", navHistory: "Historial", navWallet: "Billetera", navShop: "Tienda", navSupport: "Soporte",
-        connectedAs: "Conectado", authLogout: "Cerrar Sesión",
-        authLogin: "Iniciar Sesión", authRegister: "Crear cuenta",
-        meruHint: "Equivalente acreditado",
-        balanceNow: "Ahora",
-        balanceUnit: "HTG"
-      }
-    };
+</main>
 
-    const t = (key) => (I18N[STATE.lang] && I18N[STATE.lang][key]) || key;
+<!-- BOTTOM NAV -->
+<nav class="bottomnav">
+  <div class="bottomnav__inner">
+    <a class="nav-item" href="index.html">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span data-i18n="nav_home">Accueil</span>
+    </a>
+    <a class="nav-item" href="index.html#catalog">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2 3h3l2.4 11.6a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 6H6"/></svg>
+      <span data-i18n="nav_shop">Boutique</span>
+    </a>
+    <a class="nav-item" href="cart.html">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span data-i18n="nav_cart">Panier</span>
+    </a>
+    <a class="nav-item is-active" href="wallet.html">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><circle cx="17" cy="15" r="1.2" fill="currentColor"/></svg>
+      <span data-i18n="nav_wallet">Wallet</span>
+    </a>
+  </div>
+</nav>
 
-    function formatHTG(n) { return Number(n || 0).toLocaleString('fr-FR') + ' HTG'; }
+<!-- SIDEBAR -->
+<div class="sidebar-bg" id="sidebarBg"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__head">
+    <img class="sidebar__logo is-light" src="../assets/logo.png" alt="TizèPay">
+    <img class="sidebar__logo is-dark" src="../assets/logo-dark.png" alt="TizèPay">
+    <button class="iconbtn" id="sidebarClose" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="sidebar__body">
+    <div class="sidebar__group">
+      <span class="sidebar__label" data-i18n="nav_label">Navigation</span>
+      <a class="sidebar__link" href="index.html"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span data-i18n="nav_home">Accueil</span></a>
+      <a class="sidebar__link" href="index.html#catalog"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2 3h3l2.4 11.6a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 6H6"/></svg><span data-i18n="nav_shop">Boutique</span></a>
+      <a class="sidebar__link" href="cart.html"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><span data-i18n="nav_cart">Panier</span></a>
+      <a class="sidebar__link is-active" href="wallet.html"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span data-i18n="nav_wallet">Wallet</span></a>
+      <a class="sidebar__link" href="commande.html"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span data-i18n="nav_orders">Mes commandes</span></a>
+      <a class="sidebar__link" href="help.html"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span data-i18n="nav_help">Aide & Tutoriel</span></a>
+    </div>
+  </div>
+</aside>
 
-    function escapeHtml(str) {
-      if (str === undefined || str === null) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
+<!-- MODAL DÉPÔT -->
+<div class="modal-bg" id="modalBg"></div>
+<div class="modal" id="modal">
+  <div class="modal__grab"></div>
+  <button class="modal__close" id="modalClose" aria-label="Fermer">
+    <svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/></line><line x1="18" y1="6" x2="6" y2="18"/></svg>
+  </button>
+  <div class="modal__body" id="modalBody"></div>
+  <div class="modal__foot" id="modalFoot"></div>
+</div>
 
-    function showToast(message, type = 'success') {
-      const container = document.getElementById('toast-container');
-      if (!container) return;
-      container.innerHTML = '';
-      const config = {
-        success: { icon: '<path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>' },
-        danger:  { icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' },
-        warning: { icon: '<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
-        info:    { icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>' }
-      };
-      const c = config[type] || config.success;
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = `<div class="toast-icon"><svg viewBox="0 0 24 24">${c.icon}</svg></div><div class="toast-msg">${escapeHtml(message)}</div>`;
-      container.appendChild(toast);
-      requestAnimationFrame(() => toast.classList.add('show'));
-      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 350); }, 2600);
-    }
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   TIZÈPAY — WALLET CONTROLLER
+   ═══════════════════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
 
-    function createRipple(e, el) {
-      const rect = el.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = (e.clientX || e.touches?.[0]?.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
-      const y = (e.clientY || e.touches?.[0]?.clientY || rect.top + rect.height / 2) - rect.top - size / 2;
-      const ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      el.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    }
+/* ═════════ STATE ═════════ */
+const STATE = {
+  lang: (()=>{
+    const l = localStorage.getItem('tzp_lang') || (navigator.language||'fr').slice(0,2).toLowerCase();
+    return ['fr','ht','en','es'].includes(l) ? l : 'fr';
+  })(),
+  user: null,
+  userData: null,
+  transactions: [],
+  filter: 'all',
+  deposit: { step: 0, method: null, amount: null, txId: null, proofDataUrl: null, proofFileName: null },
+  balanceHidden: localStorage.getItem('tzp_balance_hidden') === '1',
+  reducedMotion: matchMedia('(prefers-reduced-motion:reduce)').matches
+};
 
-    function vibrate(ms = 8) { if ('vibrate' in navigator) { try { navigator.vibrate(ms); } catch (e) {} } }
-
-    function copyToClipboard(text, successMsg) {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(() => showToast(successMsg, 'success')).catch(() => fallbackCopy(text, successMsg));
-      } else { fallbackCopy(text, successMsg); }
-    }
-
-    function fallbackCopy(text, successMsg) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); showToast(successMsg, 'success'); }
-      catch (e) { showToast(t('copyFail'), 'danger'); }
-      document.body.removeChild(ta);
-    }
-
-    function extractTimestamp(data) {
-      if (!data) return 0;
-      const fields = ['createdAtServer', 'createdAt'];
-      for (const f of fields) {
-        const v = data[f];
-        if (!v) continue;
-        if (typeof v.toMillis === 'function') return v.toMillis();
-        if (v.seconds) return v.seconds * 1000;
-        if (typeof v === 'number') return v;
-        if (typeof v === 'string') { const p = new Date(v).getTime(); if (!isNaN(p)) return p; }
-      }
-      return 0;
-    }
-
-    function applyTranslations() {
-      document.documentElement.setAttribute('lang', STATE.lang);
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (I18N[STATE.lang][key]) el.textContent = I18N[STATE.lang][key];
-      });
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (I18N[STATE.lang][key]) el.setAttribute('placeholder', I18N[STATE.lang][key]);
-      });
-      updateDepositMethodUI();
-      renderTransactions();
-    }
-
-    function setLang(code, btn) {
-      STATE.lang = code;
-      localStorage.setItem('dp_lang', code);
-      document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-      applyTranslations();
-      updateSidebarAuthUI();
-      showToast(t('toastLang'), 'info');
-    }
-
-    /* ═══ BALANCE UI ═══ */
-    function updateBalanceUI() {
-      const el = document.getElementById('balance-value');
-      if (el) {
-        el.textContent = STATE.balanceHidden ? '••••••' : Number(STATE.userBalance || 0).toLocaleString('fr-FR');
-        el.classList.toggle('blurred', STATE.balanceHidden);
-      }
-    }
-
-    function toggleBalanceVisibility() {
-      STATE.balanceHidden = !STATE.balanceHidden;
-      localStorage.setItem('dp_balance_hidden', STATE.balanceHidden ? '1' : '0');
-      updateBalanceUI();
-      const icon = document.getElementById('eye-icon');
-      if (icon) {
-        icon.innerHTML = STATE.balanceHidden
-          ? '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
-          : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
-      }
-      vibrate(5);
-    }
-
-    /* ═══ SPARKLINE (derniers 7 jours) ═══ */
-    function updateSparkline() {
-      const path = document.getElementById('spark-path');
-      const area = document.getElementById('spark-area');
-      if (!path || !area) return;
-
-      // Compile daily totals from transactions (last 7 days)
-      const days = [];
-      const now = new Date();
-      for (let i = 6; i >= 0; i--) {
-        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
-        days.push({ date: d, total: 0 });
-      }
-      STATE.transactions.forEach(tx => {
-        const d = new Date(tx.timestamp);
-        const idx = days.findIndex(day => day.date.getFullYear() === d.getFullYear() && day.date.getMonth() === d.getMonth() && day.date.getDate() === d.getDate());
-        if (idx >= 0) days[idx].total += tx.txType === 'deposit' ? tx.amount : 0;
-      });
-
-      const W = 300, H = 40, PAD = 4;
-      const chartW = W - PAD * 2;
-      const chartH = H - PAD * 2;
-      const max = Math.max(...days.map(d => d.total), 1);
-      const stepX = chartW / (days.length - 1);
-
-      let pathD = '';
-      let areaD = '';
-      days.forEach((day, i) => {
-        const x = PAD + i * stepX;
-        const y = PAD + chartH - (day.total / max) * chartH;
-        if (i === 0) {
-          pathD = `M${x.toFixed(1)},${y.toFixed(1)}`;
-          areaD = `M${x.toFixed(1)},${(H - PAD).toFixed(1)} L${x.toFixed(1)},${y.toFixed(1)}`;
-        } else {
-          pathD += ` L${x.toFixed(1)},${y.toFixed(1)}`;
-          areaD += ` L${x.toFixed(1)},${y.toFixed(1)}`;
-        }
-        if (i === days.length - 1) {
-          areaD += ` L${x.toFixed(1)},${(H - PAD).toFixed(1)} Z`;
-        }
-      });
-      path.setAttribute('d', pathD);
-      area.setAttribute('d', areaD);
-    }
-
-    /* ═══ STATS CARD TOP ═══ */
-    function updateBalanceStats() {
-      const lastDep = document.getElementById('last-deposit');
-      const totalTx = document.getElementById('total-tx');
-      if (lastDep) {
-        const dep = STATE.deposits.slice().sort((a, b) => b.timestamp - a.timestamp)[0];
-        if (dep) {
-          const d = new Date(dep.timestamp);
-          const now = new Date();
-          const diffMin = Math.floor((now - d) / 60000);
-          let label;
-          if (diffMin < 1) label = "À l'instant";
-          else if (diffMin < 60) label = `Il y a ${diffMin} min`;
-          else if (diffMin < 1440) label = `Il y a ${Math.floor(diffMin / 60)}h`;
-          else label = d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
-          lastDep.textContent = `+${dep.amount.toLocaleString()} HTG · ${label}`;
-        } else {
-          lastDep.textContent = '—';
-        }
-      }
-      if (totalTx) totalTx.textContent = STATE.transactions.length;
-    }
-
-    function updateFilterCounts() {
-      const all = STATE.transactions.length;
-      const deps = STATE.transactions.filter(x => x.txType === 'deposit').length;
-      const purs = STATE.transactions.filter(x => x.txType === 'purchase').length;
-      const el1 = document.getElementById('cnt-all'); if (el1) el1.textContent = all;
-      const el2 = document.getElementById('cnt-dep'); if (el2) el2.textContent = deps;
-      const el3 = document.getElementById('cnt-pur'); if (el3) el3.textContent = purs;
-    }
-
-    function setTxFilter(filter, btn) {
-      STATE.filter = filter;
-      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderTransactions();
-      vibrate(4);
-    }
-
-    /* ═══ RENDER TX GROUPÉ PAR DATE ═══ */
-    function groupTxByDate(items) {
-      const groups = { today: [], yesterday: [], week: [], older: [] };
-      const now = new Date();
-      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-      const yesterdayStart = todayStart - 86400000;
-      const weekStart = todayStart - 7 * 86400000;
-
-      items.forEach(tx => {
-        if (tx.timestamp >= todayStart) groups.today.push(tx);
-        else if (tx.timestamp >= yesterdayStart) groups.yesterday.push(tx);
-        else if (tx.timestamp >= weekStart) groups.week.push(tx);
-        else groups.older.push(tx);
-      });
-      return groups;
-    }
-
-    function renderTransactions() {
-      const container = document.getElementById('tx-container');
-      if (!container) return;
-
-      const list = STATE.transactions.slice().sort((a, b) => b.timestamp - a.timestamp);
-      let filtered = list;
-      if (STATE.filter === 'deposits') filtered = list.filter(x => x.txType === 'deposit');
-      if (STATE.filter === 'purchases') filtered = list.filter(x => x.txType === 'purchase');
-
-      const cEl = document.getElementById('tx-count');
-      if (cEl) cEl.textContent = filtered.length;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="empty-tx">
-            <div class="empty-tx-icon">
-              <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-            </div>
-            <div class="empty-tx-title">${escapeHtml(t('emptyTxTitle'))}</div>
-            <div class="empty-tx-sub">${escapeHtml(t('emptyTxSub'))}</div>
-          </div>
-        `;
+/* ═════════ FIREBASE ═════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDlucYnlEKoQnWhZXAAgU0y1s1iaGWorV8",
+  authDomain: "tizepayhaiti.firebaseapp.com",
+  projectId: "tizepayhaiti",
+  storageBucket: "tizepayhaiti.firebasestorage.app",
+  messagingSenderId: "9916938807",
+  appId: "1:9916938807:web:186218e8cf114dbfb61db2"
+};
+let fbAuth = null, fbDb = null;
+try {
+  if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+    fbAuth = firebase.auth();
+    fbDb = firebase.firestore();
+    fbAuth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = 'authentification/login.html';
         return;
       }
+      STATE.user = user;
+      Data.load();
+    });
+  } else {
+    window.location.href = 'authentification/login.html';
+  }
+} catch(e){ console.warn('[TizèPay]', e.message); }
 
-      const groups = groupTxByDate(filtered);
-      const groupOrder = [
-        { key: 'today', labelKey: 'todayLabel' },
-        { key: 'yesterday', labelKey: 'yesterdayLabel' },
-        { key: 'week', labelKey: 'weekLabel' },
-        { key: 'older', labelKey: 'olderLabel' }
-      ];
+/* ═════════ HAPTIC ═════════ */
+const Haptic = {
+  light(){ if(navigator.vibrate){ try{ navigator.vibrate(8); }catch(e){} } },
+  medium(){ if(navigator.vibrate){ try{ navigator.vibrate(15); }catch(e){} } },
+  success(){ if(navigator.vibrate){ try{ navigator.vibrate([10,30,10]); }catch(e){} } }
+};
 
-      let html = '';
-      groupOrder.forEach(g => {
-        if (groups[g.key].length === 0) return;
-        html += `<div class="tx-group"><div class="tx-group-label">${escapeHtml(t(g.labelKey))}</div><div class="tx-list">`;
-        groups[g.key].forEach(tx => {
-          html += renderTxItem(tx);
-        });
-        html += `</div></div>`;
+/* ═════════ I18N ═════════ */
+const I18N = {
+  fr:{
+    page_title:'Mon Portefeuille',
+    balance_label:'Solde disponible',
+    balance_sub:'Rechargez votre solde pour commander plus vite.',
+    stat_deposits:'Total dépôts', stat_spent:'Total dépensé',
+    qa_recharge:'Recharger', qa_shop:'Boutique', qa_orders:'Commandes', qa_support:'Support',
+    history_title:'Historique',
+    filter_all:'Tout', filter_deposit:'Dépôts', filter_spend:'Achats',
+    empty_title:'Aucune transaction',
+    empty_text:'Rechargez votre portefeuille pour commencer.',
+    empty_btn:'Recharger maintenant',
+    security_title:'Fonds sécurisés',
+    security_text:'Votre solde est protégé par un chiffrement bancaire.',
+    nav_home:'Accueil', nav_shop:'Boutique', nav_cart:'Panier', nav_wallet:'Wallet', nav_orders:'Mes commandes', nav_help:'Aide & Tutoriel', nav_label:'Navigation',
+    tx_deposit:'Dépôt', tx_spend:'Achat', tx_refund:'Remboursement',
+    tx_status_success:'Validé', tx_status_pending:'En attente', tx_status_rejected:'Rejeté',
+    method_moncash:'MonCash', method_natcash:'NatCash', method_meru:'Meru',
+    dep_step1_title:'Méthode de paiement',
+    dep_step1_sub:'Choisissez la méthode pour envoyer votre argent.',
+    dep_step2_title:'Montant',
+    dep_step2_sub:'Indiquez le montant que vous allez envoyer.',
+    dep_step3_title:'Confirmation',
+    dep_step3_sub:'Effectuez le transfert puis confirmez ici.',
+    dep_step4_title:'Envoyé !',
+    dep_step4_sub:'Votre dépôt est en attente de validation. Vous recevrez une notification dès qu\'il sera traité.',
+    dep_continue:'Continuer',
+    dep_back:'Retour',
+    dep_confirm:'Confirmer le dépôt',
+    dep_close:'Fermer',
+    dep_amount_label:'Montant à envoyer',
+    dep_amount_hint:'Minimum 100 HTG — Multiples de 50 préférés.',
+    dep_target_label:'Envoyez à ce numéro',
+    dep_txid_label:'ID de transaction',
+    dep_txid_placeholder:'Ex: 1234567890',
+    dep_txid_hint:'Le numéro de confirmation reçu par SMS.',
+    dep_proof_label:'Preuve de paiement',
+    dep_proof_title:'Télécharger le reçu',
+    dep_proof_hint:'Capture d\'écran du SMS ou reçu',
+    dep_proof_loaded:'Reçu chargé',
+    dep_info_meru_usd:'Envoyez le montant en USD via Meru.',
+    dep_info_local:'Envoyez le montant exact en gourdes.',
+    err_amount_required:'Veuillez entrer un montant',
+    err_amount_min:'Minimum 100 HTG',
+    err_amount_max:'Maximum 100 000 HTG',
+    err_txid_required:'Veuillez entrer l\'ID de transaction',
+    err_txid_short:'ID trop court',
+    err_proof_required:'Veuillez télécharger la preuve',
+    err_file_too_large:'Fichier trop volumineux (700 Ko max)',
+    err_file_type:'Format d\'image non supporté',
+    err_rate_limit:'Veuillez patienter 60 secondes avant un nouveau dépôt.',
+    toast_copied:'Numéro copié',
+    toast_deposit_sent:'Dépôt envoyé ! Validation en cours…'
+  },
+  ht:{
+    page_title:'Bous mwen',
+    balance_label:'Sòld disponib',
+    balance_sub:'Rechaje sòld ou pou kòmande pi vit.',
+    stat_deposits:'Total depo', stat_spent:'Total depanse',
+    qa_recharge:'Rechaje', qa_shop:'Boutik', qa_orders:'Kòmand', qa_support:'Sipò',
+    history_title:'Istorik',
+    filter_all:'Tout', filter_deposit:'Depo', filter_spend:'Acha',
+    empty_title:'Pa gen tranzaksyon',
+    empty_text:'Rechaje bous ou pou kòmanse.',
+    empty_btn:'Rechaje kounye a',
+    security_title:'Lajan sekirize',
+    security_text:'Sòld ou pwoteje ak chifreman bankè.',
+    nav_home:'Akèy', nav_shop:'Boutik', nav_cart:'Panye', nav_wallet:'Wallet', nav_orders:'Kòmand mwen', nav_help:'Èd & Tutoryèl', nav_label:'Navigasyon',
+    tx_deposit:'Depo', tx_spend:'Acha', tx_refund:'Ranbousman',
+    tx_status_success:'Valide', tx_status_pending:'An atant', tx_status_rejected:'Rejte',
+    method_moncash:'MonCash', method_natcash:'NatCash', method_meru:'Meru',
+    dep_step1_title:'Metòd peman',
+    dep_step1_sub:'Chwazi metòd pou voye lajan ou.',
+    dep_step2_title:'Kantite',
+    dep_step2_sub:'Antre kantite ou pral voye.',
+    dep_step3_title:'Konfimasyon',
+    dep_step3_sub:'Fè transfè a epi konfime isit la.',
+    dep_step4_title:'Voye !',
+    dep_step4_sub:'Depo ou an atant validasyon. W ap resevwa yon notifikasyon.',
+    dep_continue:'Kontinye',
+    dep_back:'Retounen',
+    dep_confirm:'Konfime depo',
+    dep_close:'Fèmen',
+    dep_amount_label:'Kantite pou voye',
+    dep_amount_hint:'Minimòm 100 HTG.',
+    dep_target_label:'Voye bay nimewo sa',
+    dep_txid_label:'ID tranzaksyon',
+    dep_txid_placeholder:'Eg: 1234567890',
+    dep_txid_hint:'Nimewo konfimasyon nan SMS la.',
+    dep_proof_label:'Prèv peman',
+    dep_proof_title:'Telechaje resi a',
+    dep_proof_hint:'Screenshot SMS oswa resi',
+    dep_proof_loaded:'Resi chaje',
+    dep_info_meru_usd:'Voye kantite USD via Meru.',
+    dep_info_local:'Voye kantite egzak an goud.',
+    err_amount_required:'Tanpri antre yon montan',
+    err_amount_min:'Minimòm 100 HTG',
+    err_amount_max:'Maksimòm 100 000 HTG',
+    err_txid_required:'Tanpri antre ID tranzaksyon',
+    err_txid_short:'ID twò kout',
+    err_proof_required:'Tanpri telechaje prèv la',
+    err_file_too_large:'Fichye twò gwo (700 Ko max)',
+    err_file_type:'Fòma imaj pa sipòte',
+    err_rate_limit:'Tanpri tann 60 segond.',
+    toast_copied:'Nimewo kopye',
+    toast_deposit_sent:'Depo voye ! Validasyon ap fèt…'
+  },
+  en:{
+    page_title:'My Wallet',
+    balance_label:'Available balance',
+    balance_sub:'Top up to order faster.',
+    stat_deposits:'Total deposits', stat_spent:'Total spent',
+    qa_recharge:'Top up', qa_shop:'Shop', qa_orders:'Orders', qa_support:'Support',
+    history_title:'History',
+    filter_all:'All', filter_deposit:'Deposits', filter_spend:'Purchases',
+    empty_title:'No transactions',
+    empty_text:'Top up your wallet to get started.',
+    empty_btn:'Top up now',
+    security_title:'Funds secured',
+    security_text:'Your balance is protected by bank-grade encryption.',
+    nav_home:'Home', nav_shop:'Shop', nav_cart:'Cart', nav_wallet:'Wallet', nav_orders:'My orders', nav_help:'Help & Tutorials', nav_label:'Navigation',
+    tx_deposit:'Deposit', tx_spend:'Purchase', tx_refund:'Refund',
+    tx_status_success:'Confirmed', tx_status_pending:'Pending', tx_status_rejected:'Rejected',
+    method_moncash:'MonCash', method_natcash:'NatCash', method_meru:'Meru',
+    dep_step1_title:'Payment method',
+    dep_step1_sub:'Choose how you want to send the money.',
+    dep_step2_title:'Amount',
+    dep_step2_sub:'Enter the amount you will send.',
+    dep_step3_title:'Confirmation',
+    dep_step3_sub:'Make the transfer then confirm here.',
+    dep_step4_title:'Sent!',
+    dep_step4_sub:'Your deposit is pending review. You\'ll receive a notification once processed.',
+    dep_continue:'Continue',
+    dep_back:'Back',
+    dep_confirm:'Confirm deposit',
+    dep_close:'Close',
+    dep_amount_label:'Amount to send',
+    dep_amount_hint:'Minimum 100 HTG.',
+    dep_target_label:'Send to this number',
+    dep_txid_label:'Transaction ID',
+    dep_txid_placeholder:'Ex: 1234567890',
+    dep_txid_hint:'The confirmation number from the SMS.',
+    dep_proof_label:'Payment proof',
+    dep_proof_title:'Upload receipt',
+    dep_proof_hint:'SMS screenshot or receipt',
+    dep_proof_loaded:'Receipt loaded',
+    dep_info_meru_usd:'Send the amount in USD via Meru.',
+    dep_info_local:'Send the exact amount in gourdes.',
+    err_amount_required:'Please enter an amount',
+    err_amount_min:'Minimum 100 HTG',
+    err_amount_max:'Maximum 100,000 HTG',
+    err_txid_required:'Please enter the transaction ID',
+    err_txid_short:'ID too short',
+    err_proof_required:'Please upload the proof',
+    err_file_too_large:'File too large (700 KB max)',
+    err_file_type:'Unsupported image format',
+    err_rate_limit:'Please wait 60 seconds before another deposit.',
+    toast_copied:'Number copied',
+    toast_deposit_sent:'Deposit sent! Review in progress…'
+  },
+  es:{
+    page_title:'Mi Cartera',
+    balance_label:'Saldo disponible',
+    balance_sub:'Recarga tu saldo para pedir más rápido.',
+    stat_deposits:'Total depósitos', stat_spent:'Total gastado',
+    qa_recharge:'Recargar', qa_shop:'Tienda', qa_orders:'Pedidos', qa_support:'Soporte',
+    history_title:'Historial',
+    filter_all:'Todo', filter_deposit:'Depósitos', filter_spend:'Compras',
+    empty_title:'Sin transacciones',
+    empty_text:'Recarga tu cartera para empezar.',
+    empty_btn:'Recargar ahora',
+    security_title:'Fondos seguros',
+    security_text:'Tu saldo está protegido con cifrado bancario.',
+    nav_home:'Inicio', nav_shop:'Tienda', nav_cart:'Carrito', nav_wallet:'Cartera', nav_orders:'Mis pedidos', nav_help:'Ayuda y Tutoriales', nav_label:'Navegación',
+    tx_deposit:'Depósito', tx_spend:'Compra', tx_refund:'Reembolso',
+    tx_status_success:'Confirmado', tx_status_pending:'Pendiente', tx_status_rejected:'Rechazado',
+    method_moncash:'MonCash', method_natcash:'NatCash', method_meru:'Meru',
+    dep_step1_title:'Método de pago',
+    dep_step1_sub:'Elige cómo enviar el dinero.',
+    dep_step2_title:'Monto',
+    dep_step2_sub:'Ingresa el monto que enviarás.',
+    dep_step3_title:'Confirmación',
+    dep_step3_sub:'Haz la transferencia y confirma aquí.',
+    dep_step4_title:'¡Enviado!',
+    dep_step4_sub:'Tu depósito está pendiente. Recibirás una notificación cuando sea procesado.',
+    dep_continue:'Continuar',
+    dep_back:'Atrás',
+    dep_confirm:'Confirmar depósito',
+    dep_close:'Cerrar',
+    dep_amount_label:'Monto a enviar',
+    dep_amount_hint:'Mínimo 100 HTG.',
+    dep_target_label:'Envía a este número',
+    dep_txid_label:'ID de transacción',
+    dep_txid_placeholder:'Ej: 1234567890',
+    dep_txid_hint:'El número del SMS de confirmación.',
+    dep_proof_label:'Comprobante',
+    dep_proof_title:'Subir recibo',
+    dep_proof_hint:'Captura del SMS o recibo',
+    dep_proof_loaded:'Recibo cargado',
+    dep_info_meru_usd:'Envía el monto en USD vía Meru.',
+    dep_info_local:'Envía el monto exacto en gourdes.',
+    err_amount_required:'Ingresa un monto',
+    err_amount_min:'Mínimo 100 HTG',
+    err_amount_max:'Máximo 100,000 HTG',
+    err_txid_required:'Ingresa el ID de transacción',
+    err_txid_short:'ID demasiado corto',
+    err_proof_required:'Sube el comprobante',
+    err_file_too_large:'Archivo muy grande (700 KB máx)',
+    err_file_type:'Formato de imagen no soportado',
+    err_rate_limit:'Espera 60 segundos antes de otro depósito.',
+    toast_copied:'Número copiado',
+    toast_deposit_sent:'¡Depósito enviado! Revisión en curso…'
+  }
+};
+
+const t = key => (I18N[STATE.lang] && I18N[STATE.lang][key]) || I18N.fr[key] || key;
+
+function applyTranslations(){
+  document.documentElement.lang = STATE.lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if(v) el.textContent = v;
+  });
+}
+
+/* ═════════ CONFIG ═════════ */
+const CONFIG = {
+  methods: {
+    moncash: { label:'MonCash', target:'+509 3643-5649', currency:'HTG', color:'moncash' },
+    natcash: { label:'NatCash', target:'+509 3566-9814', currency:'HTG', color:'natcash' },
+    meru:    { label:'Meru',    target:'lemarquis3944@gmail.com', currency:'USD', color:'meru', rate: 150 }
+  },
+  presets: [500, 1000, 2500, 5000],
+  minAmount: 100,
+  maxAmount: 100000,
+  maxFileSize: 716800,
+  rateLimitMs: 60000
+};
+
+/* ═════════ THEME ═════════ */
+const Theme = {
+  KEY:'tzp_theme',
+  sys(){ return matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'; },
+  stored(){ try{ return localStorage.getItem(this.KEY); }catch(e){ return null; } },
+  apply(th, anim=true){
+    const r = document.documentElement;
+    if(anim){ r.style.transition = 'background-color .4s ease, color .4s ease'; setTimeout(()=>r.style.transition='', 420); }
+    r.setAttribute('data-theme', th);
+    const m = document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute('content', th === 'dark' ? '#08080A' : '#FCFCFD');
+  },
+  set(th){ try{ localStorage.setItem(this.KEY, th); }catch(e){} this.apply(th); },
+  toggle(){ Haptic.light(); this.set(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+};
+Theme.apply(Theme.stored() || Theme.sys(), false);
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change', e => { if(!Theme.stored()) Theme.apply(e.matches ? 'dark' : 'light'); });
+
+/* ═════════ TOAST ═════════ */
+function toast(msg, type='success'){
+  const wrap = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast toast--' + type;
+  el.textContent = msg;
+  wrap.innerHTML = '';
+  wrap.appendChild(el);
+  setTimeout(()=>{
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-12px) scale(.95)';
+    setTimeout(()=>el.remove(), 320);
+  }, 2600);
+}
+
+/* ═════════ HELPERS ═════════ */
+const fmt = n => Number(n||0).toLocaleString('fr-FR');
+const fmtDate = (ts) => {
+  if(!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const now = new Date();
+  const diff = (now - d) / 1000;
+  if(diff < 60) return 'À l\'instant';
+  if(diff < 3600) return `Il y a ${Math.floor(diff/60)} min`;
+  if(diff < 86400) return `Il y a ${Math.floor(diff/3600)} h`;
+  if(diff < 172800) return 'Hier';
+  const day = String(d.getDate()).padStart(2,'0');
+  const month = String(d.getMonth()+1).padStart(2,'0');
+  return `${day}/${month}/${d.getFullYear()}`;
+};
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ═════════ DATA ═════════ */
+const Data = {
+  async load(){
+    try {
+      /* Listen to user doc for balance */
+      fbDb.collection('users').doc(STATE.user.uid).onSnapshot(doc => {
+        if(doc.exists){
+          STATE.userData = doc.data();
+          UI.renderBalance();
+        }
       });
-
-      container.innerHTML = html;
+      /* Load deposits */
+      const depositsSnap = await fbDb.collection('deposits')
+        .where('userId','==',STATE.user.uid)
+        .orderBy('createdAt','desc')
+        .limit(50)
+        .get();
+      const deposits = depositsSnap.docs.map(d => ({ id: d.id, _type: 'deposit', ...d.data() }));
+      /* Load orders that paid with wallet */
+      const ordersSnap = await fbDb.collection('orders')
+        .where('userId','==',STATE.user.uid)
+        .where('paymentMethod','==','wallet')
+        .orderBy('createdAt','desc')
+        .limit(50)
+        .get();
+      const orders = ordersSnap.docs.map(d => ({ id: d.id, _type: 'spend', ...d.data() }));
+      /* Merge + sort */
+      STATE.transactions = [...deposits, ...orders].sort((a,b) => {
+        const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return tb - ta;
+      });
+      UI.renderTransactions();
+    } catch(e){
+      console.warn('[Data] load failed:', e.message);
     }
+  }
+};
 
-    function renderTxItem(tx) {
-      const isDeposit = tx.txType === 'deposit';
-      const date = new Date(tx.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+/* ═════════ UI ═════════ */
+const UI = {
+  renderBalance(){
+    const amount = STATE.userData?.walletBalance || 0;
+    const amountEl = document.getElementById('balanceAmount');
+    if(STATE.balanceHidden){
+      amountEl.innerHTML = `•••••• <small>HTG</small>`;
+      amountEl.classList.add('is-hidden-amount');
+    } else {
+      amountEl.innerHTML = `${fmt(amount)} <small>HTG</small>`;
+      amountEl.classList.remove('is-hidden-amount');
+    }
+    /* Stats */
+    const deposits = STATE.transactions.filter(x => x._type === 'deposit' && x.status === 'valide');
+    const spends = STATE.transactions.filter(x => x._type === 'spend' && x.status !== 'rejete');
+    const totalDep = deposits.reduce((s, x) => s + (x.creditHTG || 0), 0);
+    const totalSpend = spends.reduce((s, x) => s + (x.item?.price || 0), 0);
+    document.getElementById('statDeposits').textContent = fmt(totalDep) + ' HTG';
+    document.getElementById('statSpent').textContent = fmt(totalSpend) + ' HTG';
+  },
 
-      let statusClass = 'en_attente';
-      let statusLabel = t('statusPending');
-      if (tx.status === 'valide') { statusClass = 'valide'; statusLabel = t('statusValid'); }
-      else if (tx.status === 'livre') { statusClass = 'livre'; statusLabel = t('statusDelivered'); }
-      else if (tx.status === 'rejete') { statusClass = 'rejete'; statusLabel = t('statusRejected'); }
-      else if (tx.status === 'en_attente_stock') { statusClass = 'en_attente'; statusLabel = t('statusStock'); }
+  renderTransactions(){
+    const list = document.getElementById('txList');
+    const empty = document.getElementById('emptyState');
+    let filtered = STATE.transactions;
+    if(STATE.filter === 'deposit') filtered = filtered.filter(x => x._type === 'deposit');
+    if(STATE.filter === 'spend') filtered = filtered.filter(x => x._type === 'spend');
 
-      const iconSvg = isDeposit
-        ? '<path d="M12 4v16m8-8H4" stroke-linecap="round"/>'
-        : '<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round"/>';
+    /* Counts */
+    document.getElementById('countAll').textContent = STATE.transactions.length;
+    document.getElementById('countDeposit').textContent = STATE.transactions.filter(x => x._type === 'deposit').length;
+    document.getElementById('countSpend').textContent = STATE.transactions.filter(x => x._type === 'spend').length;
 
-      return `
-        <div class="tx-item ${isDeposit ? 'deposit' : 'purchase'}">
-          <div class="tx-icon ${isDeposit ? 'deposit' : 'purchase'}">
-            <svg viewBox="0 0 24 24">${iconSvg}</svg>
-          </div>
-          <div class="tx-info">
-            <div class="tx-title">${escapeHtml(tx.title)}</div>
-            <div class="tx-meta">
-              <span>${escapeHtml(date)}</span>
-              <span class="tx-ref">${escapeHtml(tx.refId)}</span>
-            </div>
-          </div>
-          <div class="tx-right">
-            <div class="tx-amount ${isDeposit ? 'deposit' : 'purchase'}">${isDeposit ? '+' : '-'}${Number(tx.amount || 0).toLocaleString()} HTG</div>
-            <span class="tx-status ${statusClass}">${escapeHtml(statusLabel)}</span>
+    if(!filtered.length){
+      list.innerHTML = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    list.innerHTML = filtered.map(tx => UI.buildTx(tx)).join('');
+  },
+
+  buildTx(tx){
+    if(tx._type === 'deposit'){
+      const status = tx.status || 'en_attente';
+      const statusMap = { valide:'success', en_attente:'pending', rejete:'danger' };
+      const statusKey = { valide:'tx_status_success', en_attente:'tx_status_pending', rejete:'tx_status_rejected' };
+      const methodLabel = CONFIG.methods[tx.method]?.label || tx.method;
+      const isIn = status === 'valide';
+      return `<div class="tx ${status==='en_attente'?'tx--pending':(status==='rejete'?'tx--out':'')}">
+        <div class="tx__icon ${status==='en_attente'?'tx__icon--pending':(status==='rejete'?'tx__icon--out':'')}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="tx__body">
+          <div class="tx__title">${esc(t('tx_deposit'))} · ${esc(methodLabel)}</div>
+          <div class="tx__meta">
+            <span class="tx__pill tx__pill--${statusMap[status]}">${esc(t(statusKey[status]))}</span>
+            <span class="tx__meta-sep"></span>
+            <span>${esc(fmtDate(tx.createdAt))}</span>
           </div>
         </div>
-      `;
+        <div class="tx__amount ${isIn?'tx__amount--in':''}">
+          ${isIn?'+':''}${fmt(tx.creditHTG || tx.depositedAmount)}<small>HTG</small>
+        </div>
+      </div>`;
     }
+    /* Order */
+    const status = tx.status || 'en_attente';
+    const statusMap = { livre:'success', en_attente:'pending', en_attente_stock:'pending', rejete:'danger' };
+    const statusKey = { livre:'tx_status_success', en_attente:'tx_status_pending', en_attente_stock:'tx_status_pending', rejete:'tx_status_rejected' };
+    return `<div class="tx tx--out">
+      <div class="tx__icon tx__icon--out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 19 19 12 12 5"/></svg>
+      </div>
+      <div class="tx__body">
+        <div class="tx__title">${esc(tx.item?.title || t('tx_spend'))}</div>
+        <div class="tx__meta">
+          <span class="tx__pill tx__pill--${statusMap[status]||'pending'}">${esc(t(statusKey[status]||'tx_status_pending'))}</span>
+          <span class="tx__meta-sep"></span>
+          <span>${esc(fmtDate(tx.createdAt))}</span>
+        </div>
+      </div>
+      <div class="tx__amount tx__amount--out">
+        −${fmt(tx.item?.price || 0)}<small>HTG</small>
+      </div>
+    </div>`;
+  }
+};
 
-    function mergeTransactions() {
-      STATE.transactions = [...STATE.deposits, ...STATE.purchases];
-      renderTransactions();
-      updateFilterCounts();
-      updateBalanceStats();
-      updateSparkline();
-    }
-
-    function listenUserData() {
-      if (STATE.unsubBalance) STATE.unsubBalance();
-      if (STATE.unsubDeposits) STATE.unsubDeposits();
-      if (STATE.unsubOrders) STATE.unsubOrders();
-
-      const uid = STATE.user.uid;
-
-      STATE.unsubBalance = db.collection('users').doc(uid).onSnapshot(doc => {
-        if (doc.exists) STATE.userBalance = Number(doc.data().walletBalance) || 0;
-        else STATE.userBalance = 0;
-        updateBalanceUI();
-      }, () => {});
-
-      STATE.unsubDeposits = db.collection('deposits')
-        .where('userId', '==', uid)
-        .onSnapshot(snap => {
-          STATE.deposits = [];
-          snap.forEach(doc => {
-            const d = doc.data();
-            STATE.deposits.push({
-              txType: 'deposit',
-              title: `Dépôt ${(d.method || 'moncash').toUpperCase()}`,
-              amount: Number(d.creditHTG || d.depositedAmount || 0),
-              refId: d.depositId || doc.id,
-              status: d.status || 'en_attente',
-              timestamp: extractTimestamp(d)
-            });
-          });
-          mergeTransactions();
-        }, () => {});
-
-      STATE.unsubOrders = db.collection('orders')
-        .where('userId', '==', uid)
-        .onSnapshot(snap => {
-          STATE.purchases = [];
-          snap.forEach(doc => {
-            const o = doc.data();
-            if (o.paymentMethod !== 'wallet') return;
-            const it = o.item || {};
-            STATE.purchases.push({
-              txType: 'purchase',
-              title: `Achat ${it.title || 'Service'}`,
-              amount: Number(it.price || 0),
-              refId: o.orderId || doc.id,
-              status: o.status || 'livre',
-              timestamp: extractTimestamp(o)
-            });
-          });
-          mergeTransactions();
-        }, () => {});
-    }
-
-    /* ═══ MODAL ═══ */
-    function openDepositModal() {
-      document.getElementById('deposit-backdrop').classList.add('active');
-      document.body.style.overflow = 'hidden';
-      updateStepsUI();
-    }
-
-    function closeDepositModal() {
-      document.getElementById('deposit-backdrop').classList.remove('active');
-      document.body.style.overflow = '';
-      document.getElementById('dep-amount').value = '';
-      document.getElementById('dep-txid').value = '';
-      document.getElementById('dep-proof').value = '';
-      document.getElementById('dep-proof-title').textContent = t('proofTitle');
-      document.getElementById('dep-proof-sub').textContent = t('proofSub');
-      document.getElementById('dep-proof-sub').style.color = '';
-      document.getElementById('file-upload-box').classList.remove('has-file');
-      document.querySelectorAll('.amount-preset').forEach(b => b.classList.remove('active'));
-      updateStepsUI();
-    }
-
-    function updateStepsUI() {
-      const hasMethod = !!STATE.depositMethod;
-      const amountVal = parseFloat(document.getElementById('dep-amount')?.value || '0');
-      const hasAmount = amountVal > 0;
-      const txId = document.getElementById('dep-txid')?.value?.trim() || '';
-      const hasFile = document.getElementById('dep-proof')?.files?.length > 0;
-      const hasProof = txId && hasFile;
-
-      const steps = document.querySelectorAll('.dep-step');
-      const stepState = [
-        { active: !hasMethod, done: hasMethod },
-        { active: hasMethod && !hasAmount, done: hasAmount },
-        { active: hasMethod && hasAmount && !hasProof, done: hasProof }
-      ];
-      steps.forEach((step, i) => {
-        step.classList.remove('active', 'completed');
-        if (stepState[i]?.done) step.classList.add('completed');
-        else if (stepState[i]?.active) step.classList.add('active');
+/* ═════════ MODAL (Deposit) ═════════ */
+const Modal = {
+  els:{ bg:null, modal:null, body:null, foot:null },
+  init(){
+    this.els.bg = document.getElementById('modalBg');
+    this.els.modal = document.getElementById('modal');
+    this.els.body = document.getElementById('modalBody');
+    this.els.foot = document.getElementById('modalFoot');
+    document.getElementById('modalClose').addEventListener('click', ()=>Modal.close());
+    this.els.bg.addEventListener('click', ()=>Modal.close());
+  },
+  open(){
+    STATE.deposit = { step: 0, method: null, amount: null, txId: null, proofDataUrl: null, proofFileName: null };
+    this.render();
+    this.els.modal.classList.add('is-open');
+    this.els.bg.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    Haptic.medium();
+  },
+  close(){
+    this.els.modal.classList.remove('is-open');
+    this.els.bg.classList.remove('is-open');
+    document.body.style.overflow = '';
+  },
+  render(){
+    const step = STATE.deposit.step;
+    this.els.body.innerHTML = Modal.buildBody();
+    this.els.foot.innerHTML = Modal.buildFoot();
+    Modal.bindEvents();
+  },
+  buildBody(){
+    const step = STATE.deposit.step;
+    const steps = [1,2,3,4].map(i => `<div class="mh__step ${i<step+1?'is-done':(i===step+1?'is-current':'')}"></div>`).join('');
+    const titles = ['dep_step1_title','dep_step2_title','dep_step3_title','dep_step4_title'];
+    const subs = ['dep_step1_sub','dep_step2_sub','dep_step3_sub','dep_step4_sub'];
+    const header = `
+      <div class="mh">
+        <div class="mh__steps">${steps}</div>
+        <h3 class="mh__title">${esc(t(titles[step]))}</h3>
+        <p class="mh__sub">${esc(t(subs[step]))}</p>
+      </div>
+    `;
+    if(step === 0) return header + Modal.step1();
+    if(step === 1) return header + Modal.step2();
+    if(step === 2) return header + Modal.step3();
+    return header + Modal.step4();
+  },
+  step1(){
+    const methods = ['moncash','natcash','meru'];
+    return `<div class="methods">${methods.map(m => {
+      const data = CONFIG.methods[m];
+      return `<button class="method" data-method="${m}">
+        <span class="method__radio"></span>
+        <span class="method__logo method__logo--${data.color}">${data.label.slice(0,2).toUpperCase()}</span>
+        <div class="method__body">
+          <div class="method__name">${esc(data.label)}</div>
+          <div class="method__hint">${data.currency} · ${esc(data.target)}</div>
+        </div>
+      </button>`;
+    }).join('')}</div>`;
+  },
+  step2(){
+    const data = CONFIG.methods[STATE.deposit.method];
+    const isMeru = STATE.deposit.method === 'meru';
+    return `
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>${esc(t(isMeru ? 'dep_info_meru_usd' : 'dep_info_local'))}</span>
+      </div>
+      <div class="amount-presets">
+        ${CONFIG.presets.map(v => `<button class="amount-preset" data-amount="${v}">
+          <span class="amount-preset__val">${fmt(v)}</span>
+          <span class="amount-preset__cur">${data.currency}</span>
+        </button>`).join('')}
+      </div>
+      <div class="field">
+        <label for="amountInput">${esc(t('dep_amount_label'))}</label>
+        <div class="field__wrap">
+          <input type="number" id="amountInput" placeholder="500" min="${CONFIG.minAmount}" max="${CONFIG.maxAmount}" inputmode="numeric">
+          <span class="field__suffix">${data.currency}</span>
+        </div>
+        <span class="field__hint">${esc(t('dep_amount_hint'))}</span>
+        <span class="field__error" id="amountError"></span>
+      </div>
+    `;
+  },
+  step3(){
+    const data = CONFIG.methods[STATE.deposit.method];
+    const amt = STATE.deposit.amount;
+    const credit = STATE.deposit.method === 'meru' ? amt * CONFIG.methods.meru.rate : amt;
+    return `
+      <div class="target-box">
+        <div class="target-box__body">
+          <div class="target-box__label">${esc(t('dep_target_label'))}</div>
+          <div class="target-box__value" id="targetValue">${esc(data.target)}</div>
+        </div>
+        <button class="target-box__copy" id="copyTarget" data-target="${esc(data.target)}" aria-label="Copier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+      </div>
+      <div class="target-box">
+        <div class="target-box__body">
+          <div class="target-box__label">${esc(t('dep_amount_label'))}</div>
+          <div class="target-box__value">${fmt(amt)} ${data.currency}</div>
+          ${STATE.deposit.method === 'meru' ? `<div style="font-size:11px;color:var(--fg-soft);margin-top:2px;">≈ ${fmt(credit)} HTG crédités</div>` : ''}
+        </div>
+      </div>
+      <div class="field">
+        <label for="txIdInput">${esc(t('dep_txid_label'))}</label>
+        <div class="field__wrap">
+          <input type="text" id="txIdInput" placeholder="${esc(t('dep_txid_placeholder'))}" maxlength="60" autocomplete="off">
+        </div>
+        <span class="field__hint">${esc(t('dep_txid_hint'))}</span>
+        <span class="field__error" id="txIdError"></span>
+      </div>
+      <div class="field">
+        <label>${esc(t('dep_proof_label'))}</label>
+        <label class="upload" id="uploadZone">
+          <input type="file" id="proofInput" accept="image/*">
+          <img class="upload__preview" id="proofPreview" alt="">
+          <div class="upload__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="upload__title" id="uploadTitle">${esc(t('dep_proof_title'))}</div>
+          <div class="upload__hint">${esc(t('dep_proof_hint'))}</div>
+        </label>
+        <span class="field__error" id="proofError"></span>
+      </div>
+    `;
+  },
+  step4(){
+    return `
+      <div class="success-screen is-on">
+        <div class="success-screen__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 class="success-screen__title">${esc(t('dep_step4_title'))}</h3>
+        <p class="success-screen__sub">${esc(t('dep_step4_sub'))}</p>
+      </div>
+    `;
+  },
+  buildFoot(){
+    const step = STATE.deposit.step;
+    if(step === 3) return `<button class="btn-primary" id="modalCloseFoot" style="flex:1"><span class="btn-primary__text">${esc(t('dep_close'))}</span></button>`;
+    if(step === 0) return `<button class="btn-primary is-disabled" id="nextBtn" disabled style="flex:1"><span class="btn-primary__text">${esc(t('dep_continue'))}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+    const back = `<button class="btn-back" id="backBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>${esc(t('dep_back'))}</button>`;
+    const label = step === 2 ? t('dep_confirm') : t('dep_continue');
+    const btn = `<button class="btn-primary" id="nextBtn" style="flex:1"><span class="btn-primary__spinner"></span><span class="btn-primary__text">${esc(label)}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+    return back + btn;
+  },
+  bindEvents(){
+    const step = STATE.deposit.step;
+    if(step === 0){
+      document.querySelectorAll('.method').forEach(m => {
+        m.addEventListener('click', ()=>{
+          Haptic.light();
+          document.querySelectorAll('.method').forEach(x => x.classList.remove('is-active'));
+          m.classList.add('is-active');
+          STATE.deposit.method = m.dataset.method;
+          const next = document.getElementById('nextBtn');
+          if(next) next.disabled = false;
+        });
       });
     }
-
-    function selectDepositMethod(method) {
-      STATE.depositMethod = method;
-      document.querySelectorAll('.dep-pill').forEach(p => p.classList.toggle('active', p.dataset.method === method));
-      updateDepositMethodUI();
-      updateStepsUI();
-      vibrate(4);
-    }
-
-    function updateDepositMethodUI() {
-      const target = DEPOSIT_TARGETS[STATE.depositMethod];
-      const labelEl = document.getElementById('dep-target-label');
-      const valueEl = document.getElementById('dep-target-value');
-      const hintEl = document.getElementById('dep-target-hint');
-      const amountLabel = document.getElementById('dep-amount-label');
-      const amountInput = document.getElementById('dep-amount');
-      const meruHint = document.getElementById('meru-hint');
-      const presetsWrap = document.getElementById('amount-presets');
-
-      if (!target || !labelEl) return;
-
-      const labelKey = target.type === 'email' ? 'depTargetEmail' : 'depTargetPhone';
-      labelEl.textContent = t(labelKey);
-      valueEl.textContent = target.value;
-      hintEl.textContent = target.label;
-
-      if (STATE.depositMethod === 'meru') {
-        amountLabel.textContent = t('depAmountUSD');
-        amountInput.placeholder = '0';
-        amountInput.oninput = handleMeruAmountInput;
-        presetsWrap.style.display = 'none';
-      } else {
-        amountLabel.textContent = t('depAmountHTG');
-        amountInput.placeholder = '0';
-        amountInput.oninput = null;
-        meruHint.classList.remove('visible');
-        presetsWrap.style.display = 'grid';
-      }
-      updateStepsUI();
-    }
-
-    function applyAmountPreset(val, btn) {
-      document.querySelectorAll('.amount-preset').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const input = document.getElementById('dep-amount');
-      if (input) { input.value = val; updateStepsUI(); }
-      vibrate(4);
-    }
-
-    function handleMeruAmountInput(e) {
-      const val = parseFloat(e.target.value);
-      const hint = document.getElementById('meru-hint');
-      const conv = document.getElementById('meru-conversion');
-      if (!isNaN(val) && val > 0) {
-        const htg = Math.round(val * MERU_RATE);
-        conv.textContent = `${t('meruHint')} : ${htg.toLocaleString()} HTG`;
-        hint.classList.add('visible');
-      } else {
-        hint.classList.remove('visible');
-      }
-      updateStepsUI();
-    }
-
-    function copyDepositTarget() {
-      const target = DEPOSIT_TARGETS[STATE.depositMethod];
-      if (!target) return;
-      copyToClipboard(target.value, t('copied'));
-    }
-
-    function handleDepositProof(input) {
-      if (!input.files || !input.files[0]) return;
-      const file = input.files[0];
-
-      if (!VALIDATION.imageFile(file)) {
-        if (file.size > MAX_FILE_SIZE) showToast(t('fileTooLarge'), 'danger');
-        else showToast(t('fileWrongType'), 'danger');
-        input.value = '';
-        return;
-      }
-
-      const titleEl = document.getElementById('dep-proof-title');
-      const subEl = document.getElementById('dep-proof-sub');
-      const box = document.getElementById('file-upload-box');
-      const iconEl = document.getElementById('proof-icon');
-      titleEl.textContent = file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name;
-      subEl.textContent = t('proofSelected');
-      subEl.style.color = 'var(--success)';
-      box.classList.add('has-file');
-      iconEl.innerHTML = '<polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/>';
-      updateStepsUI();
-    }
-
-    async function submitDeposit(e) {
-      if (STATE.submitting) return;
-      if (!STATE.user) {
-        showToast(t('authRequired'), 'danger');
-        return;
-      }
-
-      const amountVal = document.getElementById('dep-amount').value.trim();
-      const txId = sanitize(document.getElementById('dep-txid').value, 50);
-      const proofFile = document.getElementById('dep-proof').files[0];
-      const btn = document.getElementById('btn-submit-deposit');
-
-      if (!amountVal || !txId || !proofFile) {
-        showToast(t('fillAll'), 'warning');
-        return;
-      }
-
-      const rawAmount = parseFloat(amountVal);
-      if (isNaN(rawAmount) || rawAmount <= 0) {
-        showToast(t('invalidAmount'), 'danger');
-        return;
-      }
-
-      if (!VALIDATION.imageFile(proofFile)) {
-        showToast(t('fileTooLarge'), 'danger');
-        return;
-      }
-
-      let creditHTG = rawAmount;
-      if (STATE.depositMethod === 'meru') creditHTG = Math.round(rawAmount * MERU_RATE);
-
-      STATE.submitting = true;
-      btn.disabled = true;
-      btn.classList.add('loading');
-
-      try {
-        const proofBase64 = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(proofFile);
+    if(step === 1){
+      const input = document.getElementById('amountInput');
+      document.querySelectorAll('.amount-preset').forEach(p => {
+        p.addEventListener('click', ()=>{
+          Haptic.light();
+          document.querySelectorAll('.amount-preset').forEach(x => x.classList.remove('is-active'));
+          p.classList.add('is-active');
+          input.value = p.dataset.amount;
         });
-
-        const depositId = 'DEP-' + Math.floor(100000 + Math.random() * 900000);
-
-        await db.collection('deposits').doc(depositId).set({
-          depositId: depositId,
+      });
+    }
+    if(step === 2){
+      const copyBtn = document.getElementById('copyTarget');
+      if(copyBtn){
+        copyBtn.addEventListener('click', async ()=>{
+          const target = copyBtn.dataset.target;
+          try {
+            await navigator.clipboard.writeText(target);
+            Haptic.success();
+            toast(t('toast_copied'), 'success');
+            copyBtn.classList.add('is-copied');
+            copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            setTimeout(()=>{ copyBtn.classList.remove('is-copied'); copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'; }, 2000);
+          } catch(e){ toast('Copie impossible', 'danger'); }
+        });
+      }
+      const fileInput = document.getElementById('proofInput');
+      const uploadZone = document.getElementById('uploadZone');
+      const preview = document.getElementById('proofPreview');
+      const title = document.getElementById('uploadTitle');
+      fileInput.addEventListener('change', ()=>{
+        const file = fileInput.files[0];
+        if(!file) return;
+        if(!file.type.startsWith('image/')){ toast(t('err_file_type'), 'danger'); return; }
+        if(file.size > CONFIG.maxFileSize){ toast(t('err_file_too_large'), 'danger'); return; }
+        const reader = new FileReader();
+        reader.onload = e => {
+          STATE.deposit.proofDataUrl = e.target.result;
+          STATE.deposit.proofFileName = file.name;
+          preview.src = e.target.result;
+          title.textContent = t('dep_proof_loaded');
+          uploadZone.classList.add('is-loaded');
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    const backBtn = document.getElementById('backBtn');
+    if(backBtn) backBtn.addEventListener('click', ()=>{ Haptic.light(); STATE.deposit.step--; Modal.render(); });
+    const nextBtn = document.getElementById('nextBtn');
+    if(nextBtn) nextBtn.addEventListener('click', ()=>Modal.next());
+    const closeFoot = document.getElementById('modalCloseFoot');
+    if(closeFoot) closeFoot.addEventListener('click', ()=>Modal.close());
+  },
+  async next(){
+    const step = STATE.deposit.step;
+    if(step === 0){
+      if(!STATE.deposit.method) return;
+      STATE.deposit.step = 1;
+      Modal.render();
+      return;
+    }
+    if(step === 1){
+      const input = document.getElementById('amountInput');
+      const v = parseFloat(input.value);
+      const errEl = document.getElementById('amountError');
+      if(!v){ errEl.textContent = t('err_amount_required'); errEl.classList.add('is-on'); return; }
+      if(v < CONFIG.minAmount){ errEl.textContent = t('err_amount_min'); errEl.classList.add('is-on'); return; }
+      if(v > CONFIG.maxAmount){ errEl.textContent = t('err_amount_max'); errEl.classList.add('is-on'); return; }
+      errEl.classList.remove('is-on');
+      STATE.deposit.amount = v;
+      STATE.deposit.step = 2;
+      Modal.render();
+      return;
+    }
+    if(step === 2){
+      const txIdEl = document.getElementById('txIdInput');
+      const txId = txIdEl.value.trim();
+      const txErr = document.getElementById('txIdError');
+      if(!txId){ txErr.textContent = t('err_txid_required'); txErr.classList.add('is-on'); return; }
+      if(txId.length < 4){ txErr.textContent = t('err_txid_short'); txErr.classList.add('is-on'); return; }
+      txErr.classList.remove('is-on');
+      if(!STATE.deposit.proofDataUrl){
+        const pErr = document.getElementById('proofError');
+        pErr.textContent = t('err_proof_required'); pErr.classList.add('is-on');
+        return;
+      }
+      /* Rate limit */
+      const last = localStorage.getItem('tzp_last_deposit');
+      if(last && (Date.now() - parseInt(last,10)) < CONFIG.rateLimitMs){
+        toast(t('err_rate_limit'), 'danger');
+        return;
+      }
+      /* Submit */
+      const btn = document.getElementById('nextBtn');
+      btn.classList.add('is-loading');
+      btn.disabled = true;
+      try {
+        const method = STATE.deposit.method;
+        const amount = STATE.deposit.amount;
+        const creditHTG = method === 'meru' ? amount * CONFIG.methods.meru.rate : amount;
+        const depositId = 'DEP-' + Date.now().toString(36).toUpperCase();
+        await fbDb.collection('deposits').doc(depositId).set({
+          depositId,
           userId: STATE.user.uid,
-          userEmail: STATE.user.email,
-          userName: STATE.user.displayName || 'Client DigitalPay',
-          method: STATE.depositMethod,
-          depositedAmount: rawAmount,
-          creditHTG: creditHTG,
+          userEmail: STATE.user.email || '',
+          userName: STATE.user.displayName || '',
+          method,
+          depositedAmount: amount,
+          creditHTG,
           transactionId: txId,
-          proofFileName: proofFile.name,
-          proofDataUrl: proofBase64,
+          proofFileName: STATE.deposit.proofFileName,
+          proofDataUrl: STATE.deposit.proofDataUrl,
           status: 'en_attente',
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           createdAtServer: firebase.firestore.FieldValue.serverTimestamp()
         });
-
-        vibrate(15);
-        showToast(t('depositSuccess'), 'success');
-        closeDepositModal();
-      } catch (err) {
-        showToast(t('depositError'), 'danger');
-        console.error('Deposit error:', err);
-      } finally {
-        STATE.submitting = false;
+        localStorage.setItem('tzp_last_deposit', Date.now().toString());
+        Haptic.success();
+        toast(t('toast_deposit_sent'), 'success');
+        STATE.deposit.step = 3;
+        Modal.render();
+      } catch(e){
+        console.error('[Deposit]', e);
+        toast('Erreur. Réessayez.', 'danger');
+        btn.classList.remove('is-loading');
         btn.disabled = false;
-        btn.classList.remove('loading');
       }
+      return;
     }
+  }
+};
 
-    /* ═══ SIDEBAR ═══ */
-    function updateSidebarAuthUI() {
-      const userZone = document.getElementById('sidebar-user-zone');
-      if (userZone) {
-        if (STATE.user) {
-          const email = STATE.user.email || '';
-          const initials = (email.substring(0, 2) || 'U').toUpperCase();
-          userZone.innerHTML = `
-            <div class="sidebar-user-card">
-              <div class="sidebar-user-avatar">${escapeHtml(initials)}</div>
-              <div class="sidebar-user-info">
-                <div class="sidebar-user-label">${escapeHtml(t('connectedAs'))}</div>
-                <div class="sidebar-user-email">${escapeHtml(email)}</div>
-              </div>
-            </div>
-          `;
-        } else {
-          userZone.innerHTML = `
-            <div class="sidebar-user-card guest">
-              <div class="sidebar-user-avatar">?</div>
-              <div class="sidebar-user-info">
-                <div class="sidebar-user-label">Invité</div>
-                <div class="sidebar-user-email">Non connecté</div>
-              </div>
-            </div>
-          `;
-        }
-      }
+/* ═════════ SIDEBAR ═════════ */
+const Sidebar = {
+  init(){
+    this.el = document.getElementById('sidebar');
+    this.bg = document.getElementById('sidebarBg');
+    this.bg.addEventListener('click', ()=>this.close());
+    document.getElementById('sidebarClose').addEventListener('click', ()=>this.close());
+  },
+  open(){ this.el.classList.add('is-open'); this.bg.classList.add('is-open'); document.body.style.overflow='hidden'; },
+  close(){ this.el.classList.remove('is-open'); this.bg.classList.remove('is-open'); document.body.style.overflow=''; }
+};
 
-      const zone = document.getElementById('sidebar-auth-zone');
-      if (!zone) return;
-      if (STATE.user) {
-        zone.innerHTML = `
-          <button class="sidebar-nav-link danger" onclick="handleLogout()">
-            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>${escapeHtml(t('authLogout'))}</span>
-          </button>
-        `;
-      } else {
-        zone.innerHTML = `
-          <a href="authentification/login.html" class="sidebar-nav-link sidebar-login-btn">
-            <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>${escapeHtml(t('authLogin'))}</span>
-          </a>
-          <a href="authentification/register.html" class="sidebar-nav-link sidebar-register-btn">
-            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-            <span>${escapeHtml(t('authRegister'))}</span>
-          </a>
-        `;
-      }
-    }
+/* ═════════ EVENTS ═════════ */
+function bindEvents(){
+  document.getElementById('themeBtn').addEventListener('click', ()=>Theme.toggle());
 
-    function handleLogout() {
-      auth.signOut().then(() => {
-        showToast(STATE.lang === 'fr' ? 'Déconnexion réussie' : 'Signed out', 'info');
-        closeSidebar();
-      });
-    }
+  /* Balance toggle */
+  document.getElementById('toggleBalance').addEventListener('click', ()=>{
+    STATE.balanceHidden = !STATE.balanceHidden;
+    localStorage.setItem('tzp_balance_hidden', STATE.balanceHidden ? '1' : '0');
+    document.getElementById('toggleBalance').classList.toggle('is-hidden', STATE.balanceHidden);
+    UI.renderBalance();
+    Haptic.light();
+  });
+  document.getElementById('toggleBalance').classList.toggle('is-hidden', STATE.balanceHidden);
 
-    function openSidebar() { document.getElementById('sidebar-overlay').classList.add('active'); document.body.style.overflow = 'hidden'; }
-    function closeSidebar() { document.getElementById('sidebar-overlay').classList.remove('active'); document.body.style.overflow = ''; }
+  /* Open deposit modal */
+  const openDep = ()=>{ if(STATE.user) Modal.open(); else window.location.href = 'authentification/login.html'; };
+  document.getElementById('qaRecharge').addEventListener('click', openDep);
+  document.getElementById('emptyRecharge').addEventListener('click', openDep);
 
-    function initScrollEffects() {
-      const header = document.getElementById('site-header');
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
-      }, { passive: true });
-    }
-
-    function initRipple() {
-      document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.btn-submit-deposit, .qa-btn, .dep-pill, .icon-btn, .filter-pill, .btn-copy, .amount-preset, .balance-eye');
-        if (btn && !btn.disabled) createRipple(e, btn);
-      });
-    }
-
-    function updateCartBadge() {
-      try {
-        const cart = JSON.parse(localStorage.getItem('dp_cart') || '[]');
-        const badge = document.getElementById('cart-badge');
-        const navBadge = document.getElementById('nav-cart-badge');
-        if (cart.length > 0) {
-          if (badge) { badge.textContent = cart.length; badge.classList.add('visible'); }
-          if (navBadge) { navBadge.textContent = cart.length; navBadge.classList.add('visible'); }
-        } else {
-          if (badge) badge.classList.remove('visible');
-          if (navBadge) navBadge.classList.remove('visible');
-        }
-      } catch (e) {}
-    }
-
-    function moveNavIndicator() {
-      const indicator = document.getElementById('nav-indicator');
-      const track = document.getElementById('nav-track');
-      const active = track?.querySelector('.nav-item.active');
-      if (!indicator || !track || !active) return;
-      const trackRect = track.getBoundingClientRect();
-      const btnRect = active.getBoundingClientRect();
-      indicator.style.left = (btnRect.left - trackRect.left + btnRect.width / 2 - 15) + 'px';
-    }
-
-    auth.onAuthStateChanged(user => {
-      STATE.user = user;
-
-      if (!user) {
-        showToast(t('authRequired'), 'warning');
-        setTimeout(() => window.location.href = 'authentification/login.html', 1000);
-        return;
-      }
-
-      updateSidebarAuthUI();
-      listenUserData();
+  /* Filters */
+  document.querySelectorAll('.filter').forEach(f => {
+    f.addEventListener('click', ()=>{
+      Haptic.light();
+      STATE.filter = f.dataset.filter;
+      document.querySelectorAll('.filter').forEach(x => x.classList.remove('is-active'));
+      f.classList.add('is-active');
+      UI.renderTransactions();
     });
+  });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('dp_lang') || 'fr';
-      STATE.lang = saved;
-      STATE.balanceHidden = localStorage.getItem('dp_balance_hidden') === '1';
-      const langBtn = document.querySelector(`.lang-pill[data-lang="${saved}"]`);
-      if (langBtn) {
-        document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
-        langBtn.classList.add('active');
-      }
-      applyTranslations();
-      updateBalanceUI();
-      updateSidebarAuthUI();
-      updateCartBadge();
-      initScrollEffects();
-      initRipple();
-      // Init steps
-      setTimeout(() => {
-        updateStepsUI();
-        moveNavIndicator();
-        document.body.classList.add('ready');
-      }, 100);
-      window.addEventListener('resize', moveNavIndicator);
-
-      // Live updates sur les champs du modal
-      const depAmount = document.getElementById('dep-amount');
-      const depTxId = document.getElementById('dep-txid');
-      if (depAmount) depAmount.addEventListener('input', updateStepsUI);
-      if (depTxId) depTxId.addEventListener('input', updateStepsUI);
+  /* Scroll progress */
+  const progress = document.getElementById('progress');
+  let raf = null;
+  addEventListener('scroll', ()=>{
+    if(raf) return;
+    raf = requestAnimationFrame(()=>{
+      const h = document.documentElement.scrollHeight - innerHeight;
+      progress.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
+      raf = null;
     });
+  }, { passive:true });
+}
 
-    window.addEventListener('beforeunload', () => {
-      if (STATE.unsubBalance) { try { STATE.unsubBalance(); } catch (e) {} }
-      if (STATE.unsubDeposits) { try { STATE.unsubDeposits(); } catch (e) {} }
-      if (STATE.unsubOrders) { try { STATE.unsubOrders(); } catch (e) {} }
-    });
-  </script>
-  <script src="/assets/js/notifications.js"></script>
-  <script src="/assets/js/chat.js"></script>
-  <script src="/assets/js/design-system.js"></script>
-  <script src="/assets/js/ux-enhancements.js"></script>
-  <script src="/assets/js/wishlist.js"></script>
-  <script src="/assets/js/features.js"></script>
+/* ═════════ INIT ═════════ */
+function init(){
+  applyTranslations();
+  Modal.init();
+  Sidebar.init();
+  bindEvents();
+}
+
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+
+})();
+</script>
 </body>
 </html>
